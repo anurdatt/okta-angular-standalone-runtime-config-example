@@ -1,0 +1,15 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+  <li class="breadcrumb-item"><a routerLink="../../courses">Courses</a></li>
+  <li class="breadcrumb-item active">Course-Play</li>
+</ol>
+
+<div class="bootstrap-wrapper">
+  <div class="container">
+    <app-video-course-player
+      [url]="vid"
+      [playlist]="lessonVideos"
+      [courseTitle]="name"
+    ></app-video-course-player>
+  </div>
+</div>

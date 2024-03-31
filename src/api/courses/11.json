@@ -1,0 +1,11 @@
+{
+  "id": 11,
+  "description": "Angular Material Course",
+  "longDescription": "Build Applications with the official Angular UI Widget Library",
+  "iconUrl": "https://s3-us-west-1.amazonaws.com/angular-university/course-images/angular-material-course-1.jpg",
+  "category": "BEGINNER",
+  "seqNo": 0,
+  "url": "https://lng-courses.s3.amazonaws.com/11",
+  "price": 50,
+  "lessonsCount": 11
+}

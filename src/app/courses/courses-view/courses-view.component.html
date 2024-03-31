@@ -1,0 +1,42 @@
+@if (title == null) {
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+  <li class="breadcrumb-item active">Courses</li>
+</ol>
+}
+<div class="bootstrap-wrapper">
+  <div class="container">
+    <div class="courses-panel">
+      <div class="courses-header">
+        <h2 class="courses-title" style="margin-bottom: 0">
+          {{ title == null ? "All Courses" : title }}
+        </h2>
+        <button
+          mat-mini-fab
+          routerLink="/courses/course-edit/new"
+          [matTooltip]="'Create a course'"
+          matTooltipPosition="above"
+          [matTooltipShowDelay]="1000"
+          [matTooltipHideDelay]="2000"
+          [matTooltipDisabled]="true"
+          *ngIf="
+            (isAuthenticated$ | async) &&
+            authService.isAdmin(userGroups$ | async)
+          "
+        >
+          <mat-icon class="add-course-button">add</mat-icon>
+        </button>
+      </div>
+    </div>
+    <mat-tab-group>
+      <mat-tab label="Beginners">
+        <app-courses-card-list [courses]="beginnerCourses$ | async">
+        </app-courses-card-list>
+      </mat-tab>
+      <mat-tab label="Advanced">
+        <app-courses-card-list [courses]="advancedCourses$ | async">
+        </app-courses-card-list>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>

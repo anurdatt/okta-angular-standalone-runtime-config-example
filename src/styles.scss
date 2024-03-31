@@ -1,1 +1,238 @@
 /* You can add global styles to this file, and also import other style files */
+
+@use "@angular/material" as mat;
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-elevation-z7 {
+  box-shadow: 0 4px 5px -2px #0003, 0 7px 10px 1px #00000024,
+    0 2px 16px 1px #0000001f;
+}
+
+@include mat.core();
+
+// $dark-primary-text: rgba(black, 0.87);
+
+// $light-primary-text: white;
+
+// $mat-primary: (
+//   50: #e8eaf6,
+//   100: #c5cae9,
+//   200: #9fa8da,
+//   300: #7986cb,
+//   400: #5c6bc0,
+//   500: #3f51b5,
+//   600: #3949ab,
+//   700: #303f9f,
+//   800: #283593,
+//   900: #1a237e,
+//   A100: #8c9eff,
+//   A200: #536dfe,
+//   A400: #3d5afe,
+//   A700: #304ffe,
+//   contrast: (
+//     50: $dark-primary-text,
+//     100: $dark-primary-text,
+//     200: $dark-primary-text,
+//     300: $light-primary-text,
+//     400: $light-primary-text,
+//     500: $light-primary-text,
+//     600: $light-primary-text,
+//     700: $light-primary-text,
+//     800: $light-primary-text,
+//     900: $light-primary-text,
+//     A100: $dark-primary-text,
+//     A200: $light-primary-text,
+//     A400: $light-primary-text,
+//     A700: $light-primary-text,
+//   ),
+// );
+
+// $mat-accent: (
+//   50: #fce4ec,
+//   100: #f8bbd0,
+//   200: #f48fb1,
+//   300: #f06292,
+//   400: #ec407a,
+//   500: #e91e63,
+//   600: #d81b60,
+//   700: #c2185b,
+//   800: #ad1457,
+//   900: #880e4f,
+//   A100: #ff80ab,
+//   A200: #ff4081,
+//   A400: #f50057,
+//   A700: #c51162,
+//   contrast: (
+//     50: $dark-primary-text,
+//     100: $dark-primary-text,
+//     200: $dark-primary-text,
+//     300: $dark-primary-text,
+//     400: $dark-primary-text,
+//     500: $light-primary-text,
+//     600: $light-primary-text,
+//     700: $light-primary-text,
+//     800: $light-primary-text,
+//     900: $light-primary-text,
+//     A100: $dark-primary-text,
+//     A200: $light-primary-text,
+//     A400: $light-primary-text,
+//     A700: $light-primary-text,
+//   ),
+// );
+
+// $primary: mat.define-palette($mat-primary, 500);
+
+// $accent: mat.define-palette($mat-accent, A200, A100, A400);
+
+// $theme: mat.define-light-theme(
+//   (
+//     color: (
+//       primary: $primary,
+//       accent: $accent,
+//     ),
+//     typography: mat.define-typography-config(),
+//     density: 0,
+//   )
+// );
+
+// @include mat.all-component-themes($theme);
+
+// @import "./mixins";
+
+// @include responsive-dialogs();
+
+@import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
+.highlight-date {
+  background: red;
+}
+
+.breadcrumb {
+  padding: 10px 12px;
+  list-style: none !important;
+  list-style-type: none;
+  background-color: #eee;
+  margin: 10px;
+}
+.breadcrumb li {
+  display: inline;
+  font-size: 12px;
+}
+.breadcrumb li + li:before {
+  padding: 8px;
+  color: black;
+  content: "/\00a0";
+}
+.breadcrumb li a {
+  color: #0275d8;
+  text-decoration: none;
+}
+ol.breadcrumb li a:hover {
+  color: #01447e;
+  text-decoration: underline;
+}
+
+// .breadcrumb {
+//   padding: 0 0.5rem;
+// }
+
+// .breadcrumb ul {
+//   display: flex;
+//   flex-wrap: wrap;
+//   list-style: none;
+//   margin: 0;
+//   padding: 0;
+// }
+
+// .breadcrumb li:not(:last-child)::after {
+//   display: inline-block;
+//   margin: 0 0.25rem;
+//   content: "→";
+// }
+
+.alert {
+  display: flex;
+  justify-content: center;
+  max-width: 100%;
+  box-sizing: border-box;
+  border: 1px;
+}
+
+// .alert {
+//   position: fixed;
+//   top: 0;
+//   right: 0.5rem;
+//   border: 1px solid rgba(0, 0, 0, 0.2);
+//   border-radius: 0.25rem;
+//   padding: 2rem;
+//   background: #fff;
+//   color: #f65656;
+//   box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.5);
+//   transition: all 0.2s ease-in-out;
+//   opacity: 0;
+// }
+
+.alert-success {
+  background-color: lightgreen;
+}
+
+.alert-failure {
+  background-color: lightsalmon;
+}
+
+blockquote {
+  padding-left: 16px;
+  border-left: 3px solid #ddd;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Semi-transparent white background */
+  z-index: 9999; /* Ensure the spinner appears above other content */
+}
+
+.spinner {
+  border: 4px solid rgba(0, 0, 0, 0.3); /* Light gray border */
+  border-top: 4px solid #007bff; /* Blue border on top */
+  border-radius: 50%; /* Circular shape */
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite; /* Rotate animation */
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-message {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}

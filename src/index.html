@@ -1,13 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>OktaAngularStandaloneRuntimeConfigExample</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-</head>
-<body>
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <title>LNG - The learning zone</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@highlightjs/cdn-assets@11.9.0/styles/default.min.css"
+    />
+    <script type="module">
+      import hljs from "https://unpkg.com/@highlightjs/cdn-assets@11.9.0/es/highlight.min.js";
+      //  and it's easy to individually load & register additional languages
+      import javascript from "https://unpkg.com/@highlightjs/cdn-assets@11.9.0/es/languages/javascript.min.js";
+      hljs.registerLanguage("javascript", javascript);
+      hljs.highlightAll();
+    </script>
+
+    <script>
+      window.addEventListener("scroll", function () {
+        console.log("Scroll event triggered");
+      });
+    </script>
+  </head>
+  <body class="mat-typography">
+    <app-root></app-root>
+  </body>
 </html>

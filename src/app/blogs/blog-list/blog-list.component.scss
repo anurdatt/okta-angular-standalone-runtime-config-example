@@ -1,0 +1,115 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  // flex-wrap: wrap;
+  justify-content: center;
+}
+
+.blogs-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.blogs-title {
+  text-align: center;
+  margin-right: 15px;
+}
+
+.all-posts {
+  display: block;
+  flex-direction: row;
+  width: 70%;
+  justify-content: space-evenly;
+}
+
+.all-categories {
+  display: flex;
+  flex-direction: row;
+  width: 30%;
+}
+
+.posts {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+}
+
+.post-card {
+  display: flex;
+  width: calc(100% - 20px); //calc(33.33% - 20px);
+  margin: 10px;
+}
+
+.post-actions {
+  display: flex;
+  // justify-content: center;
+}
+
+.post-actions button {
+  margin-right: 5px;
+}
+
+.card-header {
+  align-items: center;
+  cursor: pointer;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.post-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden; /* Ensure the image stays within the rounded border */
+  background-color: #ccc;
+  // margin-right: 10px;
+  margin: 0;
+}
+
+.post-message-avatar {
+  width: 112px;
+  height: 112px;
+}
+
+.post-avatar img {
+  width: 100%;
+  height: auto;
+}
+
+.post-date {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.post-reading-time {
+  margin-left: 8px;
+  color: #666;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  // .post-card {
+  //   width: calc(50% - 20px);
+  // }
+
+  .container {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+  .all-posts {
+    width: 100%;
+  }
+}
+
+// @media (max-width: 480px) {
+//   .post-card {
+//     width: calc(100% - 20px);
+//   }
+// }

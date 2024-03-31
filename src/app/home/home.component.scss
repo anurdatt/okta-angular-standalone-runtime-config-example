@@ -1,0 +1,144 @@
+.head {
+  background-color: #673ab7;
+  border-top-style: solid;
+  border-top-color: gold;
+  border-top-width: thin;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+// .ctr {
+//   min-width: 0;
+
+//   margin: 0 64px;
+
+//   max-width: 1192px;
+
+//   width: 100%;
+// }
+
+.left-head {
+  display: block;
+  width: 60%;
+  max-width: 60%;
+
+  // width: 550px;
+
+  z-index: 2;
+
+  // flex-direction: column;
+
+  height: 100%;
+  max-height: 100%;
+
+  // padding-top: 93px;
+
+  // padding-bottom: 92px;
+
+  // display: flex;
+}
+
+.right-head {
+  display: block;
+  width: 40%;
+  max-width: 40%;
+  z-index: 2;
+
+  // flex-direction: column;
+
+  height: 100%;
+
+  // padding-top: 93px;
+
+  // padding-bottom: 92px;
+
+  // display: flex;
+}
+
+.handset-portrait .left-head {
+  width: 100%;
+  max-width: 100%;
+  // margin: 0;
+  // padding: 16px 0;
+}
+
+.handset-portrait .right-head {
+  width: 0%;
+  display: none;
+}
+
+.main-header {
+  margin-bottom: 35px;
+  display: block;
+}
+
+.sub-header {
+  width: 80%;
+
+  margin-bottom: 50px;
+
+  display: block;
+}
+
+.sheader h3 {
+  font-size: 24px;
+}
+.sub-heading {
+  line-height: 24px;
+  font-size: 18px;
+  color: gold; //#eb9317;
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.signup button {
+  font-size: 20px;
+}
+
+.start-button {
+  width: 213px;
+  padding: 8px 20px;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 99em;
+  border-color: rgba(25, 25, 25, 1);
+  background: rgba(25, 25, 25, 1);
+  fill: rgba(255, 255, 255, 1);
+  color: rgba(255, 255, 255, 1);
+  font-family: sohne, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+button {
+  margin: 0;
+  cursor: pointer;
+}
+
+.heading {
+  letter-spacing: -0.05em;
+  line-height: 90px;
+  font-size: 80px;
+  color: gold; //rgb(213, 255, 114);
+  font-feature-settings: "pnum", "lnum";
+  font-family: gt-super, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-weight: 400;
+}
+
+.handset-portrait .heading {
+  // letter-spacing: -0.05em;
+  line-height: 80px;
+  font-size: 70px;
+}
+
+.tablet-portrait .handset-landscape .sub-heading {
+  line-height: 20px;
+  font-size: 14px;
+}

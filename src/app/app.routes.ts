@@ -1,9 +1,47 @@
+// import { Routes } from '@angular/router';
+// import { OktaAuthGuard, OktaCallbackComponent } from '@okta/okta-angular';
+// import { ProfileComponent } from './profile/profile.component';
+
+// export const routes: Routes = [
+//   { path: 'profile', component: ProfileComponent, canActivate: [OktaAuthGuard] },
+//   { path: 'protected', loadChildren: () => import('./protected/routes').then(m => m.PROTECTED_FEATURE_ROUTES), canActivate: [OktaAuthGuard] },
+//   { path: 'login/callback', component: OktaCallbackComponent }
+// ];
+
 import { Routes } from '@angular/router';
 import { OktaAuthGuard, OktaCallbackComponent } from '@okta/okta-angular';
-import { ProfileComponent } from './profile/profile.component';
+import { HomeComponent } from './home/home.component';
+import { AboutComponent } from './about/about.component';
 
 export const routes: Routes = [
-  { path: 'profile', component: ProfileComponent, canActivate: [OktaAuthGuard] },
-  { path: 'protected', loadChildren: () => import('./protected/routes').then(m => m.PROTECTED_FEATURE_ROUTES), canActivate: [OktaAuthGuard] },
-  { path: 'login/callback', component: OktaCallbackComponent }
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  {
+    path: 'home',
+    component: HomeComponent,
+  },
+  {
+    path: 'callback',
+    component: OktaCallbackComponent,
+  },
+  {
+    path: 'notes',
+    canActivate: [OktaAuthGuard],
+    loadChildren: () =>
+      import('./notes/notes.routes').then((mod) => mod.NOTE_ROUTES),
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
+  },
+  {
+    path: 'blogs',
+    // canActivate: [OktaAuthGuard],
+    loadChildren: () =>
+      import('./blogs/blogs.routes').then((mod) => mod.BLOG_ROUTES),
+  },
+  {
+    path: 'courses',
+    loadChildren: () =>
+      import('./courses/courses.routes').then((mod) => mod.COURSE_ROUTES),
+  },
 ];

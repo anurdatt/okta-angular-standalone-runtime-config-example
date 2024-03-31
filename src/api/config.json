@@ -1,4 +1,5 @@
 {
-  "issuer": "https://{yourOktaDomain}/oauth2/default",
-  "clientId": "{yourClientId}"
+  "issuer": "https://dev-76789052.okta.com/oauth2/auselj90dmLJUlb5z5d7",
+  "clientId": "0oae3aix2gO5RuAev5d7",
+  "pkce": true
 }

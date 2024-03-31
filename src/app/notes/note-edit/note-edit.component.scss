@@ -1,0 +1,39 @@
+.notes-card {
+  margin: 10px 10px;
+  max-width: 100%;
+  // width: 100%;
+  font-family: "Roboto";
+}
+
+.notes-edit-form {
+  display: flex;
+  flex-direction: column;
+  // display: inline-block;
+}
+
+.field-label {
+  color: indigo;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+}
+
+.notes-cancel-button {
+  margin-left: 10px;
+  // margin-right: 10px;
+}
+
+.example-loading-shade {
+  position: relative;
+  top: 0;
+  left: 0;
+  bottom: 56px;
+  right: 0;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,81 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+  <li class="breadcrumb-item"><a routerLink="../../../notes">Notes</a></li>
+  <li class="breadcrumb-item active">Note-Edit</li>
+</ol>
+<mat-card class="notes-card mat-elevation-z7">
+  <mat-card-header>
+    <mat-card-title>Notes Detail</mat-card-title>
+  </mat-card-header>
+  <mat-card-content style="margin-top: 10px">
+    @if (isLoadingResults) {
+    <div class="example-loading-shade">
+      <mat-spinner></mat-spinner>
+    </div>
+    }
+    <div *ngIf="feedback" class="alert alert-{{ feedback.type }} m-2">
+      {{ feedback.message }}
+    </div>
+    <form
+      *ngIf="note"
+      #editForm="ngForm"
+      (ngSubmit)="save()"
+      class="notes-edit-form"
+    >
+      <mat-form-field>
+        <label for="id" class="field-label">Id</label>
+        <input
+          [(ngModel)]="note.id"
+          id="id"
+          name="id"
+          matInput
+          disabled=""
+          placeholder="n/a"
+        />
+        <!-- {{ note.id || "n/a" }} -->
+      </mat-form-field>
+      <mat-form-field>
+        <label for="title" class="field-label">Title</label>
+        <input
+          [(ngModel)]="note.title"
+          id="title"
+          name="title"
+          matInput
+          placeholder="Note title"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <label for="text" class="field-label">Text</label>
+        <textarea
+          [(ngModel)]="note.text"
+          id="text"
+          name="text"
+          type="textarea"
+          matInput
+          placeholder="Note Text"
+        ></textarea>
+      </mat-form-field>
+
+      <div class="button-group">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!editForm?.form.valid"
+          class="notes-save-button"
+        >
+          Save
+        </button>
+        <button
+          mat-raised-button
+          color="secondary"
+          class="notes-cancel-button"
+          (click)="cancel()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

@@ -25,8 +25,8 @@ a:hover {
   padding: 4px 8px;
 
   &:hover {
-  background-color: #2d8c9e;
-  color: #fff;
+    background-color: #2d8c9e;
+    color: #fff;
   }
 }
 
@@ -35,3 +35,36 @@ p {
   text-align: center;
   font-size: large;
 }
+
+body {
+  margin: 0;
+}
+
+main {
+  margin: 30px;
+}
+
+mat-toolbar a {
+  color: gold;
+}
+
+.right-of-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.menu-panel {
+  background-color: gold;
+  height: 100%;
+  // padding-top: 0px;
+  // padding-bottom: 0px !important;
+  // border-style: dotted;
+  margin-top: -8px;
+  margin-bottom: -8px;
+  // padding-top: -8px;
+}
+// .mat-menu-context {
+//   padding-top: 0px !important;
+//   padding-bottom: 0px !important;
+// }

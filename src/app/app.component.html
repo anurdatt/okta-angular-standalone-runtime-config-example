@@ -1,4 +1,4 @@
-<div class="toolbar">
+<!-- <div class="toolbar">
   @if (isAuthenticated$ | async) {
   <div>
     <nav class="routes">
@@ -15,4 +15,79 @@
 
 <p>Learn more about Okta at <a href="https://developer.okta.com">developer.okta.com</a></p>
 
-<router-outlet></router-outlet>
+<router-outlet></router-outlet> -->
+
+<mat-sidenav-container fullscreen>
+  <mat-sidenav #sidenav>
+    <mat-nav-list (click)="sidenav.close()">
+      <a mat-list-item routerLink="courses">
+        <mat-icon>library_books</mat-icon>
+        <span>Courses</span>
+      </a>
+
+      <a mat-list-item routerLink="blogs">
+        <mat-icon>newspaper</mat-icon>
+        <span>Blogs</span>
+      </a>
+
+      <a mat-list-item routerLink="notes">
+        <mat-icon>event_note</mat-icon>
+        <span>Notes</span>
+      </a>
+
+      <a mat-list-item routerLink="about">
+        <mat-icon>question_answer</mat-icon>
+        <span>About</span>
+      </a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-toolbar color="primary">
+    <button mat-icon-button (click)="sidenav.open()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <a
+      mat-raised-button
+      routerLink="home"
+      style="
+        background-image: url('../assets/pexels-pixabay-247819.jpg');
+        margin-right: 10px;
+      "
+      >LNG</a
+    >
+
+    <a mat-button [matMenuTriggerFor]="dropdown"> Screens </a>
+
+    <mat-menu #dropdown>
+      <div class="menu-panel">
+        <button mat-menu-item routerLink="courses">Courses</button>
+
+        <button mat-menu-item routerLink="blogs">Blogs</button>
+
+        <button mat-menu-item routerLink="notes">Notes</button>
+        <button mat-menu-item routerLink="about">About</button>
+      </div>
+    </mat-menu>
+    <div class="right-of-toolbar">
+      <!-- <a mat-button routerLink="about"
+        ><mat-icon>question_answer</mat-icon>About</a
+      > -->
+      <a mat-button *ngIf="!(isAuthenticated$ | async)" (click)="signIn()">
+        <mat-icon>account_circle</mat-icon>
+        Login/Register
+      </a>
+      <a mat-button *ngIf="isAuthenticated$ | async" (click)="signOut()">
+        <mat-icon>logout</mat-icon>
+        Logout
+      </a>
+    </div>
+  </mat-toolbar>
+
+  <router-outlet
+    ><div *ngIf="loading" class="loading-spinner">
+      <div class="spinner"></div>
+      <div class="loading-message">Loading...</div>
+    </div>
+  </router-outlet>
+</mat-sidenav-container>

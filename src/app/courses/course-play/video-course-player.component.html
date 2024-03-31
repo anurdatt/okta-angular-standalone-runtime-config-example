@@ -1,0 +1,44 @@
+<!-- video-course-player.component.html -->
+<div class="video-course-player">
+  <h2 class="course-title">{{ playList[currentIndex].title }}</h2>
+  <div class="player-container">
+    <div class="video-container">
+      <video #videoPlayer controls [controlsList]="ctlList">
+        <source [src]="currentVideoUrl" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <!-- <div class="controls">
+      <button class="control-button" (click)="playPause()">
+        {{ isPlaying ? "Pause" : "Play" }}
+      </button>
+      <button class="control-button" (click)="previousVideo()">Previous</button>
+      <button class="control-button" (click)="nextVideo()">Next</button>
+      <input
+        type="range"
+        class="progress-bar"
+        [value]="currentTime"
+        (input)="seek($event)"
+      />
+      <span class="current-time">{{ formatTime(currentTime) }}</span>
+      <span class="duration">{{ formatTime(duration) }}</span>
+    </div> -->
+    </div>
+    <div class="playlist">
+      <h3>
+        <strong>{{ courseTitle }}</strong>
+      </h3>
+      <div class="playlist-body">
+        <ul>
+          <li
+            *ngFor="let video of playList; let i = index"
+            (click)="selectVideo(i)"
+            [ngClass]="{ selected: i == currentIndex }"
+          >
+            {{ video.title }}
+          </li>
+        </ul>
+      </div>
+      <!-- <button (click)="playRandomVideo()">Play Random Video</button> -->
+    </div>
+  </div>
+</div>

@@ -1,0 +1,81 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+  <li class="breadcrumb-item"><a routerLink="../../../blogs">Blogs</a></li>
+  <li class="breadcrumb-item active">Blog-Edit</li>
+</ol>
+
+<div class="container">
+  @if (isLoadingResults) {
+  <!-- <div class="example-loading-shade">
+    <mat-spinner></mat-spinner>
+  </div> -->
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <div class="loading-message">Loading...</div>
+  </div>
+  } @if (feedback) {
+  <div class="alert alert-{{ feedback.type }} m-2">
+    {{ feedback.message }}
+  </div>
+  } @if (post) {
+  <form #editForm="ngForm" (ngSubmit)="save()" class="blogs-edit-form">
+    <mat-form-field>
+      <label for="title" class="field-label">Title</label>
+      <input
+        [(ngModel)]="post.title"
+        id="title"
+        name="title"
+        matInput
+        placeholder="Blog title"
+        maxlength="150"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <label for="text" class="field-label">Description</label>
+      <textarea
+        [(ngModel)]="post.description"
+        id="description"
+        name="description"
+        type="textarea"
+        matInput
+        placeholder="Blog description"
+        maxLength="500"
+      ></textarea>
+    </mat-form-field>
+    <mat-form-field>
+      <label for="avatarImg" class="field-label">Avatar image URL</label>
+      <input
+        [(ngModel)]="post.avatar_image_url"
+        id="avatarImg"
+        name="avatarImg"
+        matInput
+        placeholder="Blog Avatar Image Url"
+        required
+      />
+    </mat-form-field>
+    <app-ngxeditor [content]="post.content"></app-ngxeditor>
+    <div class="button-group">
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!editForm?.form.valid"
+        class="blogs-save-button"
+      >
+        Save
+      </button>
+      <button
+        mat-raised-button
+        color="secondary"
+        class="blogs-cancel-button"
+        (click)="cancel()"
+      >
+        Cancel
+      </button>
+    </div>
+  </form>
+  }
+</div>
+<!-- <button class="scroll-top-button" *ngIf="isShow" (click)="gotoTop()">👆</button> -->
+<app-scroll-top-button></app-scroll-top-button>
