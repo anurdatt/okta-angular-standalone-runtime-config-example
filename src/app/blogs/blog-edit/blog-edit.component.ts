@@ -88,7 +88,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
   async save() {
     console.log(this.post.title);
     // this.post.title = this.post.title.replace(/'/g, "\\'"); //replaceAll("'", "\\\\'");
-    console.log(this.post.title);
+    // console.log(this.post.title);
     // this.post.title.replace(/\'/g, "\\'");
     this.post.content = JSON.stringify(this.editor.doc);
     this.post.author = await this.authService.getUserFullname();

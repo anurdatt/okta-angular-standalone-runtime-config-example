@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../shared/okta/auth.service';
 import { BlogsService } from '../blogs.service';
 import { BlogUtil } from '../util/BlogUtil';
+import { Subscription, catchError, of as observableOf } from 'rxjs';
 
 // export interface Tile {
 //   color: string;
@@ -82,19 +83,61 @@ export class BlogListComponent implements OnInit, OnDestroy {
   //   // Add more posts as needed
   // ];
 
+  deleteSubscription: Subscription;
+  isLoadingResults = false;
+  feedback: any = {};
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public authService: AuthService
+    public authService: AuthService,
+    private blogService: BlogsService
   ) {}
 
-  openPost(id: number) {
+  openPost(id: string) {
     this.router.navigate(['../../../blogs', 'blog-view', id]);
+  }
+
+  deletePost(id: string) {
+    console.log(`deleting post : ${id}`);
+    this.isLoadingResults = true;
+    this.deleteSubscription = this.blogService
+      .deletePostById(id)
+      .pipe(
+        catchError((err) => {
+          console.log('delete failed with error: ' + JSON.stringify(err));
+          return observableOf({ err });
+        })
+      )
+      .subscribe((p) => {
+        // this.post = p;
+        this.isLoadingResults = false;
+        if (p != null && p['hasOwnProperty']('err')) {
+          this.feedback = {
+            type: 'failure',
+            message: 'Error occured in deleting!',
+          };
+        } else {
+          this.feedback = {
+            type: 'success',
+            message: 'Delete completed successfully!',
+          };
+        }
+        setTimeout(() => {
+          // this.feedback = {};
+          this.router.navigate(['blogs']);
+          this.router
+            .navigate(['/'], { skipLocationChange: true })
+            .then(() => this.router.navigate(['blogs']));
+        }, 1000);
+      });
   }
 
   ngOnInit(): void {
     this.posts = this.route.snapshot.data['posts'];
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.deleteSubscription?.unsubscribe();
+  }
 }

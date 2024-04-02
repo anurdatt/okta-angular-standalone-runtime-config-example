@@ -29,6 +29,19 @@
   <div class="bootstrap-wrapper" style="margin-top: 20px">
     <div class="container">
       <div class="all-posts">
+        @if (isLoadingResults) {
+        <!-- <div class="example-loading-shade">
+          <mat-spinner></mat-spinner>
+        </div> -->
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+          <div class="loading-message">Loading...</div>
+        </div>
+        } @if (feedback) {
+        <div class="alert alert-{{ feedback.type }} m-2">
+          {{ feedback.message }}
+        </div>
+        }
         <mat-card class="post-card" *ngFor="let post of posts">
           <mat-card-header class="card-header" (click)="openPost(post.id)">
             <div mat-card-avatar class="post-avatar" mat-card-sm-image>
@@ -52,9 +65,11 @@
                 ><p>{{ post.description }}</p></mat-card-subtitle
               >
             </div>
+            @if (post.avatar_image_url) {
             <div class="post-message-avatar">
               <img mat-card-md-image src="{{ post.avatar_image_url }}" />
             </div>
+            }
           </mat-card-content>
           <mat-card-actions class="post-actions">
             <!-- <button mat-button>Read More</button> -->
@@ -72,6 +87,17 @@
               [routerLink]="['/blogs/blog-edit', post.id]"
             >
               <small>EDIT POST</small>
+            </button>
+            <button
+              mat-button
+              color="accent"
+              *ngIf="
+                (authService.isAuthenticated$ | async) &&
+                authService.isAdmin(authService.userGroups$ | async)
+              "
+              (click)="deletePost(post.id)"
+            >
+              <small>DELETE POST</small>
             </button>
           </mat-card-actions>
         </mat-card>

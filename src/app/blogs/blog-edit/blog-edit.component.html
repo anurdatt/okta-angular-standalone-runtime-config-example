@@ -18,9 +18,9 @@
     {{ feedback.message }}
   </div>
   } @if (post) {
-  <form #editForm="ngForm" (ngSubmit)="save()" class="blogs-edit-form">
+  <form #ef="ngForm" class="blogs-edit-form">
     <mat-form-field>
-      <label for="title" class="field-label">Title</label>
+      <label for="title" class="field-label">Title*</label>
       <input
         [(ngModel)]="post.title"
         id="title"
@@ -51,7 +51,6 @@
         name="avatarImg"
         matInput
         placeholder="Blog Avatar Image Url"
-        required
       />
     </mat-form-field>
     <app-ngxeditor [content]="post.content"></app-ngxeditor>
@@ -59,9 +58,9 @@
       <button
         mat-raised-button
         color="primary"
-        type="submit"
-        [disabled]="!editForm?.form.valid"
+        [disabled]="!ef?.form.valid"
         class="blogs-save-button"
+        (click)="save()"
       >
         Save
       </button>

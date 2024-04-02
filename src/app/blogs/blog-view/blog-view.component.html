@@ -73,7 +73,7 @@
     <!-- Add comment form -->
     <div class="add-comment-form">
       <h3 style="font-weight: bold">Add a Comment</h3>
-      <form (ngSubmit)="submitComment()">
+      <form>
         <mat-form-field style="width: 100%">
           <mat-label>Your Name</mat-label>
           <input
@@ -95,7 +95,9 @@
             required
           ></textarea>
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit">Submit</button>
+        <button mat-raised-button color="primary" click="submitComment()">
+          Submit
+        </button>
       </form>
     </div>
   </section>

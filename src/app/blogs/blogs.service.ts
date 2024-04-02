@@ -20,10 +20,16 @@ export class BlogsService {
     return this.http.get<Post[]>(url, { headers, params });
   }
 
-  findPostById(id: number): Observable<Post> {
+  findPostById(id: string): Observable<Post> {
     const url = `${environment.blogsApiUrl}/api/posts/${id}`;
     const params = new HttpParams();
     return this.http.get<Post>(url, { headers, params });
+  }
+
+  deletePostById(id: string): Observable<any> {
+    const url = `${environment.blogsApiUrl}/api/posts/${id}`;
+    const params = new HttpParams();
+    return this.http.delete<any>(url, { headers, params });
   }
 
   save(entity: Post): Observable<Post> {
