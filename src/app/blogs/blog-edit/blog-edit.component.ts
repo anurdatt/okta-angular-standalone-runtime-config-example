@@ -1,4 +1,10 @@
-import { Component, ViewChild, OnInit, OnDestroy } from '@angular/core';
+import {
+  Component,
+  ViewChild,
+  OnInit,
+  OnDestroy,
+  HostListener,
+} from '@angular/core';
 
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxeditorComponent } from './ngxeditor.component';
@@ -12,9 +18,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../shared/okta/auth.service';
-import { ScrollTopComponent } from '../../shared/scroll/scroll-top.component';
+// import { ScrollTopComponent } from '../../shared/scroll/scroll-top.component';
 import { CommonModule } from '@angular/common';
-import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarHorizontalPosition } from '@angular/material/snack-bar';
+import { MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+// import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
 
 @Component({
   selector: 'app-blog-edit',
@@ -28,7 +37,7 @@ import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.
     MatInputModule,
     MatButtonModule,
     FormsModule,
-    ScrollTopButtonComponent,
+    // ScrollTopButtonComponent,
   ],
   templateUrl: './blog-edit.component.html',
   styleUrl: './blog-edit.component.scss',
@@ -40,17 +49,28 @@ export class BlogEditComponent implements OnInit, OnDestroy {
 
   post: Post;
   isLoadingResults = true;
+  isSavingResults = false;
   feedback: any = {};
   findSubscription: Subscription;
   saveSubscription: Subscription;
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private service: BlogsService,
-    private authService: AuthService
+    private authService: AuthService,
+    private _snackbar: MatSnackBar
   ) {
     // super();
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  OnScroll($event: any) {
+    console.log('Scroll event : ' + JSON.stringify($event));
+    console.log('window scrol top = ' + window.scrollY);
   }
 
   ngOnInit(): void {
@@ -62,21 +82,39 @@ export class BlogEditComponent implements OnInit, OnDestroy {
           if (id == 'new') return observableOf(new Post());
           return this.service.findPostById(id).pipe(
             catchError((err) => {
-              console.error('FindById failed with error : ' + err);
-              this.feedback = {
-                type: 'warning',
-                message: 'Error occured in loading!',
-              };
-              this.isLoadingResults = false;
+              console.error(
+                'FindById failed with error : ' + JSON.stringify(err)
+              );
+
               return observableOf(null);
             })
           );
         })
       )
       .subscribe((post: Post) => {
-        this.post = post;
-        this.feedback = {};
         this.isLoadingResults = false;
+        if (post == null) {
+          // this.feedback = {
+          //   type: 'warning',
+          //   message: 'Error occured in loading!',
+          // };
+
+          this._snackbar.open('Error occured in loading!', 'Failure', {
+            // panelClass: ['alert', 'alert-failure'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        } else {
+          this.post = post;
+          // this.feedback = {};
+
+          this._snackbar.open('Load completed successfully!', 'Success', {
+            // panelClass: ['alert', 'alert-success'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 1000,
+          });
+        }
       });
   }
 
@@ -95,7 +133,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
     this.post.date = new Date().toISOString().split('T')[0]; // new Date().toLocaleDateString('en-GB');
 
     console.log(`saving post : ${JSON.stringify(this.post)}`);
-    this.isLoadingResults = true;
+    this.isSavingResults = true;
     this.saveSubscription = this.service
       .save(this.post)
       .pipe(
@@ -105,23 +143,34 @@ export class BlogEditComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((p) => {
-        this.post = p;
-        this.isLoadingResults = false;
+        this.isSavingResults = false;
         if (p == null) {
-          this.feedback = {
-            type: 'failure',
-            message: 'Error occured in saving!',
-          };
+          // this.feedback = {
+          //   type: 'failure',
+          //   message: 'Error occured in saving!',
+          // };
+          this._snackbar.open('Error occured in saving!', 'Failure', {
+            // panelClass: ['alert', 'alert-failure'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
         } else {
-          this.feedback = {
-            type: 'success',
-            message: 'Save completed successfully!',
-          };
+          this.post = p;
+          // this.feedback = {
+          //   type: 'success',
+          //   message: 'Save completed successfully!',
+          // };
+          this._snackbar.open('Save completed successfully!', 'Success', {
+            // panelClass: ['alert', 'alert-success'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            // duration: 1000,
+          });
+          setTimeout(() => {
+            this.feedback = {};
+            this.router.navigate(['blogs']);
+          }, 1000);
         }
-        setTimeout(() => {
-          this.feedback = {};
-          this.router.navigate(['blogs']);
-        }, 1000);
       });
   }
 

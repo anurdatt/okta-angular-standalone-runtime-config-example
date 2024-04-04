@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Post } from '../post';
@@ -11,13 +11,12 @@ import { AuthService } from '../../shared/okta/auth.service';
 import { BlogsService } from '../blogs.service';
 import { BlogUtil } from '../util/BlogUtil';
 import { Subscription, catchError, of as observableOf } from 'rxjs';
-
-// export interface Tile {
-//   color: string;
-//   cols: number;
-//   rows: number;
-//   text: string;
-// }
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { Tag } from '../Tag';
 
 @Component({
   selector: 'app-blog-list',
@@ -36,13 +35,6 @@ import { Subscription, catchError, of as observableOf } from 'rxjs';
   styleUrl: './blog-list.component.scss',
 })
 export class BlogListComponent implements OnInit, OnDestroy {
-  // tiles: Tile[] = [
-  //   { text: 'One', cols: 3, rows: 1, color: 'lightblue' },
-  //   { text: 'Two', cols: 1, rows: 2, color: 'lightgreen' },
-  //   { text: 'Three', cols: 1, rows: 1, color: 'lightpink' },
-  //   { text: 'Four', cols: 2, rows: 1, color: '#DDBDF1' },
-  // ];
-
   blogUtil: BlogUtil = new BlogUtil();
 
   posts: Post[];
@@ -83,54 +75,108 @@ export class BlogListComponent implements OnInit, OnDestroy {
   //   // Add more posts as needed
   // ];
 
+  tags: Tag[] = [
+    {
+      id: 'Technology-15551',
+      name: 'Technology',
+    },
+    {
+      id: 'Science-67698',
+      name: 'Science',
+    },
+    {
+      id: 'Software-76977',
+      name: 'Software',
+    },
+    {
+      id: 'Programming-15791',
+      name: 'Programming',
+    },
+    {
+      id: 'Arts-15443',
+      name: 'Arts',
+    },
+    {
+      id: 'Mythology-45234',
+      name: 'Mythology',
+    },
+    {
+      id: 'Life-23343',
+      name: 'Life',
+    },
+  ];
+
   deleteSubscription: Subscription;
-  isLoadingResults = false;
+  isDeletingResults = false;
   feedback: any = {};
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     public authService: AuthService,
-    private blogService: BlogsService
+    private blogService: BlogsService,
+    private _snackbar: MatSnackBar
   ) {}
 
   openPost(id: string) {
     this.router.navigate(['../../../blogs', 'blog-view', id]);
   }
 
+  @HostListener('window:scroll', ['$event'])
+  OnScroll($event: any) {
+    console.log('Scroll event : ' + JSON.stringify($event));
+    console.log('window scrol top = ' + window.scrollY);
+  }
+
   deletePost(id: string) {
-    console.log(`deleting post : ${id}`);
-    this.isLoadingResults = true;
-    this.deleteSubscription = this.blogService
-      .deletePostById(id)
-      .pipe(
-        catchError((err) => {
-          console.log('delete failed with error: ' + JSON.stringify(err));
-          return observableOf({ err });
-        })
-      )
-      .subscribe((p) => {
-        // this.post = p;
-        this.isLoadingResults = false;
-        if (p != null && p['hasOwnProperty']('err')) {
-          this.feedback = {
-            type: 'failure',
-            message: 'Error occured in deleting!',
-          };
-        } else {
-          this.feedback = {
-            type: 'success',
-            message: 'Delete completed successfully!',
-          };
-        }
-        setTimeout(() => {
-          // this.feedback = {};
-          this.router.navigate(['blogs']);
-          this.router
-            .navigate(['/'], { skipLocationChange: true })
-            .then(() => this.router.navigate(['blogs']));
-        }, 1000);
-      });
+    if (confirm('Are you sure?')) {
+      console.log(`deleting post : ${id}`);
+      this.isDeletingResults = true;
+      this.deleteSubscription = this.blogService
+        .deletePostById(id)
+        .pipe(
+          catchError((err) => {
+            console.log('delete failed with error: ' + JSON.stringify(err));
+            return observableOf({ err });
+          })
+        )
+        .subscribe((p) => {
+          // this.post = p;
+          this.isDeletingResults = false;
+          if (p != null && p['hasOwnProperty']('err')) {
+            // this.feedback = {
+            //   type: 'failure',
+            //   message: 'Error occured in deleting!',
+            // };
+            this._snackbar.open('Error occured in deleting!', 'Failure', {
+              // panelClass: ['alert', 'alert-failure'],
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+            });
+          } else {
+            // this.feedback = {
+            //   type: 'success',
+            //   message: 'Delete completed successfully!',
+            // };
+            this._snackbar.open('Delete completed successfully!', 'Success', {
+              // panelClass: ['alert', 'alert-success'],
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              // duration: 1000,
+            });
+
+            setTimeout(() => {
+              // this.feedback = {};
+              this.router
+                .navigate(['/'], { skipLocationChange: true })
+                .then(() => this.router.navigate(['blogs']));
+            }, 1000);
+          }
+        });
+    }
   }
 
   ngOnInit(): void {

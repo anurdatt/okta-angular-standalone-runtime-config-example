@@ -37,8 +37,8 @@
   display: flex;
   flex-direction: row;
   // align-items: center;
-  margin-top: 20px; //8px;
-  margin-bottom: 20px;
+  margin-top: 30px; //8px;
+  margin-bottom: 30px;
   // font-size: smaller;
   // font-style: italic;
 }
@@ -63,6 +63,56 @@
   margin-right: 5px;
   // color: #666;
   // cursor: pointer;
+}
+
+.blog-post-actions {
+  margin-bottom: 30px;
+  position: relative; /* Added for positioning fade lines */
+}
+
+.actions-line {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+// .action-line-left {
+//   justify-items: left;
+//   width: 50%;
+// }
+// .action-line-right {
+//   justify-items: right;
+//   width: 50%;
+// }
+
+.actions-line mat-icon {
+  margin-right: 5px;
+}
+
+.action-count small {
+  margin-right: 15px;
+}
+
+.mat-icon {
+  font-size: 18px; /* Adjust the font size as needed */
+  opacity: 0.7; /* Adjust the opacity to make it lighter */
+  height: 18px;
+  width: 18px;
+  line-height: 16px;
+}
+
+.actions-fade-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(0, 0, 0, 0.3),
+    transparent
+  );
 }
 
 .blog-post-content {

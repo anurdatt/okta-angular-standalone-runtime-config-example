@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .blogs-title {
@@ -22,18 +22,32 @@
   flex-direction: row;
   width: 70%;
   justify-content: space-evenly;
+  // overflow: scroll;
+}
+
+.category-container {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  // justify-content: space-evenly;
 }
 
 .all-categories {
-  display: flex;
-  flex-direction: row;
-  width: 30%;
+  display: block;
+}
+
+.all-categories .category-button {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  // border-radius: 20%;
 }
 
 .posts {
   display: flex;
   flex-direction: column;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
+  overflow: scroll;
+  height: 500px;
 }
 
 .post-card {
@@ -105,6 +119,11 @@
   }
   .all-posts {
     width: 100%;
+  }
+  .category-container {
+    width: 100%;
+    // display: flex;
+    // flex-direction: row;
   }
 }
 

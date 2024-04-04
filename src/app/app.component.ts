@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import {
   NavigationCancel,
   NavigationEnd,
@@ -62,6 +62,12 @@ export class AppComponent {
         this.loading = false;
       }
     });
+  }
+
+  @HostListener('window:scroll', ['$event'])
+  OnScroll($event: any) {
+    console.log('Scroll event : ' + JSON.stringify($event));
+    console.log('window scrol top = ' + window.scrollY);
   }
 
   public async signIn(): Promise<void> {

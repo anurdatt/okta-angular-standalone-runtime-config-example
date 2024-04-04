@@ -9,39 +9,39 @@ export class ScrollService {
   private scrollPosition$ = new BehaviorSubject<number>(0);
 
   constructor() {
-    // fromEvent(window, 'scroll')
-    //   .pipe(
-    //     map(() => {
-    //       console.log({ scroll: window.scrollY });
-    //       return window.scrollY;
-    //     }),
-    //     distinctUntilChanged()
-    //   )
-    //   .subscribe((position) => {
-    //     console.log({ position });
-    //     return this.scrollPosition$.next(position);
-    //   });
-
-    const scrollEvent$ = fromEvent(window, 'scroll');
-
-    scrollEvent$
+    fromEvent(window, 'scroll')
       .pipe(
         map(() => {
           console.log({ scroll: window.scrollY });
           return window.scrollY;
-        })
+        }),
+        distinctUntilChanged()
       )
-      .subscribe({
-        next: (scrollY) => {
-          console.log('Next Scroll Y:', scrollY);
-        },
-        error: (error) => {
-          console.error('Scroll Event Error:', error);
-        },
-        complete: () => {
-          console.log('Scroll Event Completed');
-        },
+      .subscribe((position) => {
+        console.log({ position });
+        return this.scrollPosition$.next(position);
       });
+
+    // const scrollEvent$ = fromEvent(window, 'scroll');
+
+    // scrollEvent$
+    //   .pipe(
+    //     map(() => {
+    //       console.log({ scroll: window.scrollY });
+    //       return window.scrollY;
+    //     })
+    //   )
+    //   .subscribe({
+    //     next: (scrollY) => {
+    //       console.log('Next Scroll Y:', scrollY);
+    //     },
+    //     error: (error) => {
+    //       console.error('Scroll Event Error:', error);
+    //     },
+    //     complete: () => {
+    //       console.log('Scroll Event Completed');
+    //     },
+    //   });
   }
 
   getScrollPosition(): Observable<number> {

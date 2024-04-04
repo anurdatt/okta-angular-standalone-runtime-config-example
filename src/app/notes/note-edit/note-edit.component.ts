@@ -9,8 +9,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Note } from '../note';
-import { of, Subscription } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { of as observableOf, Subscription } from 'rxjs';
+import { map, switchMap, catchError } from 'rxjs/operators';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-note-edit',
@@ -32,14 +37,19 @@ export class NoteEditComponent implements OnInit, OnDestroy {
   note: Note;
   feedback: any = {};
   isLoadingResults = true;
+  isSavingResults = false;
 
   findSubscription: Subscription;
   saveSubscription: Subscription = null;
 
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private notesService: NotesService
+    private notesService: NotesService,
+    private _snackbar: MatSnackBar
   ) {
     console.log('In note edit component');
   }
@@ -54,46 +64,81 @@ export class NoteEditComponent implements OnInit, OnDestroy {
         map((p) => p['id']),
         switchMap((id) => {
           this.isLoadingResults = true;
-          if (id == 'new') return of(new Note());
+          if (id == 'new') return observableOf(new Note());
           return this.notesService.findById(id);
         })
       )
-      .subscribe(
-        (note: Note) => {
-          this.isLoadingResults = false;
+      .pipe(
+        catchError((err) => {
+          console.error('FindById failed with error : ' + JSON.stringify(err));
+          return observableOf(null);
+        })
+      )
+      .subscribe((note: Note) => {
+        this.isLoadingResults = false;
+        if (note == null) {
+          //   this.feedback = {
+          //     type: 'warning',
+          //     message: 'Error occured in loading!',
+          //   };
+          this._snackbar.open('Error occured in loading!', 'Failure', {
+            // panelClass: ['alert', 'alert-failure'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        } else {
           this.note = note;
-          this.feedback = {};
-        },
-        (err) => {
-          this.isLoadingResults = false;
-          this.feedback = {
-            type: 'warning',
-            message: 'Error occured in loading!',
-          };
+          // this.feedback = {};
+          this._snackbar.open('Load completed successfully!', 'Success', {
+            // panelClass: ['alert', 'alert-success'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 1000,
+          });
         }
-      );
+      });
   }
 
   save() {
-    this.saveSubscription = this.notesService.save(this.note).subscribe(
-      (note) => {
-        this.note = note;
-        this.feedback = {
-          type: 'success',
-          message: 'Save completed successfully!',
-        };
-        setTimeout(() => {
-          this.feedback = {};
-          this.router.navigate(['notes']);
-        }, 1000);
-      },
-      (err) => {
-        this.feedback = {
-          type: 'failure',
-          message: 'Error occured in saving!',
-        };
-      }
-    );
+    this.isSavingResults = true;
+    this.saveSubscription = this.notesService
+      .save(this.note)
+      .pipe(
+        catchError((err) => {
+          console.error('Save failed with error : ' + JSON.stringify(err));
+          return observableOf(null);
+        })
+      )
+      .subscribe((note) => {
+        this.isSavingResults = false;
+        if (note == null) {
+          //   this.feedback = {
+          //     type: 'failure',
+          //     message: 'Error occured in saving!',
+          //   };
+          this._snackbar.open('Error occured in saving!', 'Failure', {
+            // panelClass: ['alert', 'alert-failure'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        } else {
+          this.note = note;
+          // this.feedback = {
+          //   type: 'success',
+          //   message: 'Save completed successfully!',
+          // };
+          this._snackbar.open('Save completed successfully!', 'Success', {
+            // panelClass: ['alert', 'alert-success'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            // duration: 1000,
+          });
+          setTimeout(() => {
+            this.feedback = {};
+            this.router.navigate(['notes']);
+          }, 1000);
+        }
+      });
   }
 
   cancel() {

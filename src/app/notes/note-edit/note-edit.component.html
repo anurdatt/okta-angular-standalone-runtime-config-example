@@ -8,7 +8,7 @@
     <mat-card-title>Notes Detail</mat-card-title>
   </mat-card-header>
   <mat-card-content style="margin-top: 10px">
-    @if (isLoadingResults) {
+    @if (isLoadingResults || isSavingResults) {
     <div class="example-loading-shade">
       <mat-spinner></mat-spinner>
     </div>

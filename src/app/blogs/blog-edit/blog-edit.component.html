@@ -5,13 +5,17 @@
 </ol>
 
 <div class="container">
-  @if (isLoadingResults) {
+  @if (isLoadingResults || isSavingResults) {
   <!-- <div class="example-loading-shade">
     <mat-spinner></mat-spinner>
   </div> -->
   <div class="loading-spinner">
     <div class="spinner"></div>
+    @if (isSavingResults) {
+    <div class="loading-message">Saving...</div>
+    } @else {
     <div class="loading-message">Loading...</div>
+    }
   </div>
   } @if (feedback) {
   <div class="alert alert-{{ feedback.type }} m-2">
@@ -77,4 +81,4 @@
   }
 </div>
 <!-- <button class="scroll-top-button" *ngIf="isShow" (click)="gotoTop()">👆</button> -->
-<app-scroll-top-button></app-scroll-top-button>
+<!-- <app-scroll-top-button></app-scroll-top-button> -->

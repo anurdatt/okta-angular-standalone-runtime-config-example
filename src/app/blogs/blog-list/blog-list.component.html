@@ -9,7 +9,9 @@
       <mat-grid-tile colspan="3" rowspan="2"> -->
 <section class="posts">
   <div class="blogs-header">
-    <h2 class="blogs-title" style="margin-bottom: 0">The LNG Blog</h2>
+    <h2 class="blogs-title" style="margin-bottom: 0; font-weight: bolder">
+      The LNG Blog
+    </h2>
     <button
       mat-mini-fab
       routerLink="/blogs/blog-edit/new"
@@ -26,16 +28,16 @@
       <mat-icon class="add-course-button">add</mat-icon>
     </button>
   </div>
-  <div class="bootstrap-wrapper" style="margin-top: 20px">
+  <div class="bootstrap-wrapper" style="margin-top: 30px">
     <div class="container">
       <div class="all-posts">
-        @if (isLoadingResults) {
+        @if (isDeletingResults) {
         <!-- <div class="example-loading-shade">
           <mat-spinner></mat-spinner>
         </div> -->
         <div class="loading-spinner">
           <div class="spinner"></div>
-          <div class="loading-message">Loading...</div>
+          <div class="loading-message">Deleting...</div>
         </div>
         } @if (feedback) {
         <div class="alert alert-{{ feedback.type }} m-2">
@@ -86,24 +88,35 @@
               "
               [routerLink]="['/blogs/blog-edit', post.id]"
             >
-              <small>EDIT POST</small>
+              <!-- <small>EDIT POST</small> -->
+              <mat-icon>edit</mat-icon>
             </button>
             <button
               mat-button
-              color="accent"
+              color="warn"
               *ngIf="
                 (authService.isAuthenticated$ | async) &&
                 authService.isAdmin(authService.userGroups$ | async)
               "
               (click)="deletePost(post.id)"
             >
-              <small>DELETE POST</small>
+              <!-- <small>DELETE POST</small> -->
+              <mat-icon>delete</mat-icon>
             </button>
           </mat-card-actions>
         </mat-card>
       </div>
-      <div class="all-categories">
-        <H3 style="margin: 10px">All Categories</H3>
+      <div class="category-container">
+        <H3 style="margin: 10px"
+          ><strong>Discover more of what matters to you</strong></H3
+        >
+        <div class="all-categories">
+          @for (item of tags; track $index) {
+          <button mat-stroked-button color="primary" class="category-button">
+            {{ item.name }}
+          </button>
+          }
+        </div>
       </div>
     </div>
   </div>

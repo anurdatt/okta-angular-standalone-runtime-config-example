@@ -19,6 +19,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../shared/okta/auth.service';
+import { MatIconModule } from '@angular/material/icon';
+// import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
 
 @Component({
   selector: 'app-blog-view',
@@ -34,6 +36,8 @@ import { AuthService } from '../../shared/okta/auth.service';
     MatButtonModule,
     MatFormFieldModule,
     NgxEditorModule,
+    MatIconModule,
+    // ScrollTopButtonComponent,
   ],
   templateUrl: './blog-view.component.html',
   styleUrl: './blog-view.component.scss',
