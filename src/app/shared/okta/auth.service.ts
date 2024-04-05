@@ -65,7 +65,7 @@ export class AuthService implements OnDestroy {
             //   //     })
             //   //   )
             .subscribe((groups: CustomUserClaim[] | CustomUserClaim) => {
-              console.log({ gc: groups });
+              // console.log({ gc: groups });
               this.userGroupsSubject.next(groups);
             });
         } else {
@@ -97,7 +97,7 @@ export class AuthService implements OnDestroy {
   // }
 
   isAdmin(groups): boolean {
-    console.log({ groups });
+    // console.log({ groups });
     if (Array.isArray(groups)) {
       return groups.includes(this.adminSearchString);
     } else {

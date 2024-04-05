@@ -10,7 +10,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 hljs.registerLanguage('javascript', javascript);
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { Comment } from '../comment';
 import { FormsModule } from '@angular/forms';
@@ -20,6 +20,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from '../../shared/okta/auth.service';
 import { MatIconModule } from '@angular/material/icon';
+import { ScrollService } from '../../shared/scroll/scroll.service';
+import { MatTooltip } from '@angular/material/tooltip';
 // import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
 
 @Component({
@@ -37,6 +39,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatFormFieldModule,
     NgxEditorModule,
     MatIconModule,
+    MatTooltip
     // ScrollTopButtonComponent,
   ],
   templateUrl: './blog-view.component.html',
@@ -53,10 +56,14 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
   blogUtil: BlogUtil = new BlogUtil();
   safeContent$: BehaviorSubject<any> = new BehaviorSubject('');
 
+  authSubscription: Subscription;
+  scrollSubscription: Subscription;
+
   constructor(
     private route: ActivatedRoute,
     public sanitizer: DomSanitizer,
-    private authService: AuthService
+    private authService: AuthService,
+    public scrollService: ScrollService
   ) {}
 
   toHtml(jsonString: string) {
@@ -79,7 +86,7 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     };
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     this.post = this.route.snapshot.data['post'];
     // this.comments = this.loadComments();
     this.comments = [
@@ -99,11 +106,15 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     // });
     // }, 5000);
 
-    this.authService.isAuthenticated$.subscribe(async (authenticated) => {
+    this.authSubscription = this.authService.isAuthenticated$.subscribe(async (authenticated) => {
       if (authenticated) {
         this.newComment.author = await this.authService.getUserFullname();
       }
     });
+
+    this.scrollSubscription = this.scrollService.getScrollPosition().subscribe(p => {
+      console.log("From BlogView - scroll position = " + p.toString());
+    })
   }
 
   ngAfterViewInit(): void {
@@ -116,7 +127,11 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     // });
     // }, 5000);
+    this.scrollService.scrollToTop(0, 'instant');
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    this.authSubscription.unsubscribe();
+    this.scrollSubscription.unsubscribe();
+  }
 }

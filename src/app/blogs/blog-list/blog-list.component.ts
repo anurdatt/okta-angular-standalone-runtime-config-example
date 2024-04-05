@@ -17,6 +17,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { Tag } from '../Tag';
+import { TrackScrollDirective } from '../../shared/scroll/track-scroll.directive';
 
 @Component({
   selector: 'app-blog-list',
@@ -29,6 +30,7 @@ import { Tag } from '../Tag';
     MatButtonModule,
     MatTooltipModule,
     MatIconModule,
+    TrackScrollDirective
   ],
   providers: [BlogsService],
   templateUrl: './blog-list.component.html',
@@ -125,11 +127,11 @@ export class BlogListComponent implements OnInit, OnDestroy {
     this.router.navigate(['../../../blogs', 'blog-view', id]);
   }
 
-  @HostListener('window:scroll', ['$event'])
-  OnScroll($event: any) {
-    console.log('Scroll event : ' + JSON.stringify($event));
-    console.log('window scrol top = ' + window.scrollY);
-  }
+  // @HostListener('scroll', ['$event'])
+  // OnScroll($event: any) {
+  //   console.log('Scroll event : ' + JSON.stringify($event));
+  //   console.log('window scrol top = ' + window.scrollY);
+  // }
 
   deletePost(id: string) {
     if (confirm('Are you sure?')) {

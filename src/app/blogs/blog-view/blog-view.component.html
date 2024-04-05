@@ -112,11 +112,19 @@
             required
           ></textarea>
         </mat-form-field>
-        <button mat-raised-button color="primary" click="submitComment()">
+        <button class="comment-submit" mat-raised-button color="primary" click="submitComment()">
           Submit
         </button>
       </form>
     </div>
   </section>
   <!-- <app-scroll-top-button></app-scroll-top-button> -->
+  <button class="scroll-top-button" *ngIf="scrollService.hasScrolledToHeight(200) | async" 
+  (click)="scrollService.scrollToTop(74)"
+  [matTooltip]="'Back to Top'"
+          matTooltipPosition="above"
+          [matTooltipShowDelay]="1000"
+          [matTooltipHideDelay]="2000"
+          [matTooltipDisabled]="false"
+  >👆</button>
 </div>

@@ -18,6 +18,7 @@ import { tap, take } from 'rxjs';
 import { authInterceptor } from './shared/okta/auth.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { AuthService } from './shared/okta/auth.service';
+import { ScrollService } from './shared/scroll/scroll.service';
 
 function configInitializer(
   httpBackend: HttpBackend,
@@ -50,5 +51,6 @@ export const appConfig: ApplicationConfig = {
     },
     provideAnimationsAsync(),
     AuthService,
+    ScrollService
   ],
 };

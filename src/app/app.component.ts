@@ -18,6 +18,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { TrackScrollDirective } from './shared/scroll/track-scroll.directive';
+import { ScrollService } from './shared/scroll/scroll.service';
 
 @Component({
   selector: 'app-root',
@@ -34,6 +36,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
+    TrackScrollDirective
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -50,7 +53,7 @@ export class AppComponent {
 
   loading: boolean = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private scrollService: ScrollService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.loading = true;
@@ -68,6 +71,7 @@ export class AppComponent {
   OnScroll($event: any) {
     console.log('Scroll event : ' + JSON.stringify($event));
     console.log('window scrol top = ' + window.scrollY);
+    this.scrollService.scrollPosition$.next(window.scrollY);
   }
 
   public async signIn(): Promise<void> {

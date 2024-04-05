@@ -1,3 +1,4 @@
+<div class="comp-container" track-scroll>
 <ol class="breadcrumb">
   <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
   <li class="breadcrumb-item active">Blogs</li>
@@ -9,7 +10,7 @@
       <mat-grid-tile colspan="3" rowspan="2"> -->
 <section class="posts">
   <div class="blogs-header">
-    <h2 class="blogs-title" style="margin-bottom: 0; font-weight: bolder">
+    <h2 class="blogs-title">
       The LNG Blog
     </h2>
     <button
@@ -107,8 +108,8 @@
         </mat-card>
       </div>
       <div class="category-container">
-        <H3 style="margin: 10px"
-          ><strong>Discover more of what matters to you</strong></H3
+        <H3 style="margin: 10px; line-height: 1.2; padding: 0px 10px;"
+          >Discover more of what matters to you</H3
         >
         <div class="all-categories">
           @for (item of tags; track $index) {
@@ -155,3 +156,4 @@
           </mat-grid-list>
         </div>
       </mat-grid-tile> -->
+</div>

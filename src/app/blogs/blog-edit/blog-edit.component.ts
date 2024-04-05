@@ -19,7 +19,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../shared/okta/auth.service';
 // import { ScrollTopComponent } from '../../shared/scroll/scroll-top.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarHorizontalPosition } from '@angular/material/snack-bar';
 import { MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
@@ -62,7 +62,8 @@ export class BlogEditComponent implements OnInit, OnDestroy {
     private router: Router,
     private service: BlogsService,
     private authService: AuthService,
-    private _snackbar: MatSnackBar
+    private _snackbar: MatSnackBar,
+    private location: Location
   ) {
     // super();
   }
@@ -175,6 +176,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
   }
 
   cancel() {
-    this.router.navigate(['blogs']);
+    // this.router.navigate(['blogs']);
+    this.location.back();
   }
 }
