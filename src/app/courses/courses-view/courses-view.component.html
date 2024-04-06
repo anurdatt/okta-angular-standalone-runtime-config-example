@@ -8,7 +8,7 @@
   <div class="container">
     <div class="courses-panel">
       <div class="courses-header">
-        <h2 class="courses-title">
+        <h2 [ngClass]="{ 'courses-title': title == null }">
           {{ title == null ? "All Courses" : title }}
         </h2>
         <button
