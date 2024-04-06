@@ -51,6 +51,13 @@
   display: block;
 }
 
+.category-button {
+  border-top-left-radius: 0; 
+  border-bottom-left-radius: 30%; 
+  // background-color: gold;
+  // background-color: map-get($map: $theme , $key: $mat-accent);
+}
+
 .all-categories .category-button {
   margin-left: 10px;
   margin-bottom: 10px;
@@ -121,7 +128,22 @@
   margin-left: 8px;
   color: #666;
   cursor: pointer;
+  // width: -webkit-fill-available;
+  margin-right: 10px;
 }
+
+.post-action-buttons {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.post-action-buttons button {
+  height: 25px;
+  padding: 0px 5px;
+}
+
+
 
 @media (max-width: 768px) {
   // .post-card {

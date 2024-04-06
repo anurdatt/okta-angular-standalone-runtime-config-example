@@ -181,6 +181,12 @@ export class BlogListComponent implements OnInit, OnDestroy {
     }
   }
 
+  likePost(id: string) {
+  }
+
+  bookmarkPost(id: string) {
+  }
+
   ngOnInit(): void {
     this.posts = this.route.snapshot.data['posts'];
   }

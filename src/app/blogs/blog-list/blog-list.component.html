@@ -80,6 +80,27 @@
             <span class="post-reading-time" (click)="openPost(post.id)"
               >{{ blogUtil.calculateReadingTime(post.content) }} min read</span
             >
+            <button mat-flat-button color="accent" class="category-button" style="height: 25px; padding: 0px 5px;">
+              <small>Programming</small>
+            </button>
+            <!-- <div class="post-action-buttons" style="padding: 5px; width: 100%;justify-content: space-evenly;"> -->
+            <div class="post-action-buttons">
+              
+              <button
+              mat-button
+              (click)="likePost(post.id)"
+              style="min-width: fit-content;"
+            >
+              <mat-icon>thumb_up</mat-icon>
+            </button>
+            <button
+              mat-button
+              (click)="bookmarkPost(post.id)"
+              style="min-width: fit-content;"
+            >
+              <mat-icon>bookmark</mat-icon>
+            </button>
+            
             <button
               mat-button
               color="accent"
@@ -88,6 +109,7 @@
                 authService.isAdmin(authService.userGroups$ | async)
               "
               [routerLink]="['/blogs/blog-edit', post.id]"
+              style="min-width: fit-content;"
             >
               <!-- <small>EDIT POST</small> -->
               <mat-icon>edit</mat-icon>
@@ -100,10 +122,12 @@
                 authService.isAdmin(authService.userGroups$ | async)
               "
               (click)="deletePost(post.id)"
+              style="min-width: fit-content;"
             >
               <!-- <small>DELETE POST</small> -->
               <mat-icon>delete</mat-icon>
             </button>
+          </div>
           </mat-card-actions>
         </mat-card>
       </div>
@@ -113,7 +137,7 @@
         >
         <div class="all-categories">
           @for (item of tags; track $index) {
-          <button mat-stroked-button color="primary" class="category-button">
+          <button mat-flat-button color="accent" class="category-button">
             {{ item.name }}
           </button>
           }

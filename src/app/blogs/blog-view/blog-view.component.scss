@@ -75,16 +75,22 @@
   align-items: center;
   margin-bottom: 10px;
   margin-top: 10px;
-  margin-left: 10px;
+  // margin-left: 10px;
+  justify-content: space-between;
 }
-// .action-line-left {
-//   justify-items: left;
-//   width: 50%;
-// }
-// .action-line-right {
-//   justify-items: right;
-//   width: 50%;
-// }
+.action-line-left {
+  justify-items: left;
+  // width: 50%;
+}
+.action-line-right {
+  justify-items: right;
+  // width: 50%;
+}
+
+.actions-line button {
+  height: 30px; 
+  min-width: fit-content;
+}
 
 .actions-line mat-icon {
   margin-right: 5px;
