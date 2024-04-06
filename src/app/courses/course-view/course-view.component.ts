@@ -54,7 +54,7 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     this.course = this.route.snapshot.data['course'];
 
     this.loadLessonsPage();
-    window.scrollTo({top: 0, behavior: 'instant'});
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
   ngOnDestroy(): void {

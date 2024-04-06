@@ -39,7 +39,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatFormFieldModule,
     NgxEditorModule,
     MatIconModule,
-    MatTooltip
+    MatTooltip,
     // ScrollTopButtonComponent,
   ],
   templateUrl: './blog-view.component.html',
@@ -106,15 +106,19 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     // });
     // }, 5000);
 
-    this.authSubscription = this.authService.isAuthenticated$.subscribe(async (authenticated) => {
-      if (authenticated) {
-        this.newComment.author = await this.authService.getUserFullname();
+    this.authSubscription = this.authService.isAuthenticated$.subscribe(
+      async (authenticated) => {
+        if (authenticated) {
+          this.newComment.author = await this.authService.getUserFullname();
+        }
       }
-    });
+    );
 
-    this.scrollSubscription = this.scrollService.getScrollPosition().subscribe(p => {
-      console.log("From BlogView - scroll position = " + p.toString());
-    })
+    this.scrollSubscription = this.scrollService
+      .getScrollPosition()
+      .subscribe((p) => {
+        console.log('From BlogView - scroll position = ' + p.toString());
+      });
   }
 
   ngAfterViewInit(): void {
@@ -127,7 +131,7 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     });
     // });
     // }, 5000);
-    this.scrollService.scrollToTop(0, 'instant');
+    this.scrollService.scrollToTop(0, 'auto');
   }
 
   ngOnDestroy(): void {

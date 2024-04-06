@@ -36,7 +36,7 @@ import { ScrollService } from './shared/scroll/scroll.service';
     MatSidenavModule,
     MatListModule,
     MatToolbarModule,
-    TrackScrollDirective
+    TrackScrollDirective,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

@@ -1,0 +1,84 @@
+<div class="comp-container">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+    <li class="breadcrumb-item active">Blogs</li>
+  </ol>
+
+  <!-- <div class="bootstrap-wrapper">
+  <div class="container" style="display: block">
+    <mat-grid-list cols="5" rowHeight="300px">
+      <mat-grid-tile colspan="3" rowspan="2"> -->
+  <section class="posts">
+    <div class="blogs-header">
+      <h2 class="blogs-title">The LNG Blog</h2>
+      <button
+        mat-mini-fab
+        routerLink="/blogs/blog-edit/new"
+        [matTooltip]="'Create a blog'"
+        matTooltipPosition="above"
+        [matTooltipShowDelay]="1000"
+        [matTooltipHideDelay]="2000"
+        [matTooltipDisabled]="true"
+        *ngIf="
+          (authService.isAuthenticated$ | async) &&
+          authService.isAdmin(authService.userGroups$ | async)
+        "
+      >
+        <mat-icon class="add-course-button">add</mat-icon>
+      </button>
+    </div>
+    <div class="bootstrap-wrapper" style="margin-top: 30px">
+      <div class="container">
+        <div class="all-posts">
+          <app-blog-list [posts]="posts"> </app-blog-list>
+        </div>
+        <div class="category-container">
+          <H3 style="margin: 10px; line-height: 1.2; padding: 0px 10px"
+            >Discover more of what matters to you</H3
+          >
+          <div class="all-categories">
+            @for (item of tags; track $index) {
+            <button mat-flat-button color="accent" class="category-button">
+              {{ item.name }}
+            </button>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- </mat-grid-tile>
+      <mat-grid-tile colspan="2"> <h2>Categories</h2></mat-grid-tile>
+    </mat-grid-list>
+  </div>
+</div> -->
+
+  <!-- 
+<mat-grid-tile [colspan]="2" [rowspan]="2" [style.background]=""
+        >Blank</mat-grid-tile
+      >
+      @for (tile of tiles; track tile) {
+      <mat-grid-tile
+        [colspan]="4"
+        [rowspan]="1"
+        [style.background]="tile.color"
+        >{{ tile.text }}</mat-grid-tile
+      >
+      @if (tile.text == "Two") {
+      <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]=""
+        >Blank</mat-grid-tile
+      >
+      } }
+      <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="">
+        <div style="width: 100%; height: 100%">
+          <mat-grid-list cols="3" rowHeight="300px">
+            <mat-grid-tile [colspan]="2" [rowspan]="1" [style.background]="">
+              hi
+            </mat-grid-tile>
+            <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="">
+              hello
+            </mat-grid-tile>
+          </mat-grid-list>
+        </div>
+      </mat-grid-tile> -->
+</div>

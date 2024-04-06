@@ -5,12 +5,13 @@ import { OktaAuthGuard } from '@okta/okta-angular';
 import { BlogViewComponent } from './blog-view/blog-view.component';
 import { postResolver } from './post.resolver';
 import { postsResolver } from './posts.resolver';
+import { BlogsViewComponent } from './blogs-view/blogs-view.component';
 
 export const BLOG_ROUTES: Routes = [
   // { path: '', redirectTo: 'blog-list', pathMatch: 'full' },
   {
     path: '',
-    component: BlogListComponent,
+    component: BlogsViewComponent,
     pathMatch: 'full',
     resolve: {
       posts: postsResolver,

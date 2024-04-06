@@ -1,183 +1,102 @@
-<div class="comp-container" track-scroll>
-<ol class="breadcrumb">
-  <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-  <li class="breadcrumb-item active">Blogs</li>
-</ol>
-
-<!-- <div class="bootstrap-wrapper">
-  <div class="container" style="display: block">
-    <mat-grid-list cols="5" rowHeight="300px">
-      <mat-grid-tile colspan="3" rowspan="2"> -->
-<section class="posts">
-  <div class="blogs-header">
-    <h2 class="blogs-title">
-      The LNG Blog
-    </h2>
-    <button
-      mat-mini-fab
-      routerLink="/blogs/blog-edit/new"
-      [matTooltip]="'Create a blog'"
-      matTooltipPosition="above"
-      [matTooltipShowDelay]="1000"
-      [matTooltipHideDelay]="2000"
-      [matTooltipDisabled]="true"
-      *ngIf="
-        (authService.isAuthenticated$ | async) &&
-        authService.isAdmin(authService.userGroups$ | async)
-      "
-    >
-      <mat-icon class="add-course-button">add</mat-icon>
-    </button>
-  </div>
-  <div class="bootstrap-wrapper" style="margin-top: 30px">
-    <div class="container">
-      <div class="all-posts">
-        @if (isDeletingResults) {
-        <!-- <div class="example-loading-shade">
+@if (isDeletingResults) {
+<!-- <div class="example-loading-shade">
           <mat-spinner></mat-spinner>
         </div> -->
-        <div class="loading-spinner">
-          <div class="spinner"></div>
-          <div class="loading-message">Deleting...</div>
-        </div>
-        } @if (feedback) {
-        <div class="alert alert-{{ feedback.type }} m-2">
-          {{ feedback.message }}
-        </div>
-        }
-        <mat-card class="post-card" *ngFor="let post of posts">
-          <mat-card-header class="card-header" (click)="openPost(post.id)">
-            <div mat-card-avatar class="post-avatar" mat-card-sm-image>
-              @if (post.author.startsWith("Anuran")) {
-              <img
-                src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
-              />
-              }
-            </div>
-
-            <span class="post-date"
-              ><strong>{{ post.author }}</strong></span
-            >
-            <span><small>-</small></span>
-            <span class="post-date">{{ blogUtil.formatDate(post.date) }}</span>
-          </mat-card-header>
-          <mat-card-content class="card-content" (click)="openPost(post.id)">
-            <div class="post-message">
-              <mat-card-title>{{ post.title }}</mat-card-title>
-              <mat-card-subtitle
-                ><p>{{ post.description }}</p></mat-card-subtitle
-              >
-            </div>
-            @if (post.avatar_image_url) {
-            <div class="post-message-avatar">
-              <img mat-card-md-image src="{{ post.avatar_image_url }}" />
-            </div>
-            }
-          </mat-card-content>
-          <mat-card-actions class="post-actions">
-            <!-- <button mat-button>Read More</button> -->
-
-            <span class="post-reading-time" (click)="openPost(post.id)"
-              >{{ blogUtil.calculateReadingTime(post.content) }} min read</span
-            >
-            <button mat-flat-button color="accent" class="category-button" style="height: 25px; padding: 0px 5px;">
-              <small>Programming</small>
-            </button>
-            <!-- <div class="post-action-buttons" style="padding: 5px; width: 100%;justify-content: space-evenly;"> -->
-            <div class="post-action-buttons">
-              
-              <button
-              mat-button
-              (click)="likePost(post.id)"
-              style="min-width: fit-content;"
-            >
-              <mat-icon>thumb_up</mat-icon>
-            </button>
-            <button
-              mat-button
-              (click)="bookmarkPost(post.id)"
-              style="min-width: fit-content;"
-            >
-              <mat-icon>bookmark</mat-icon>
-            </button>
-            
-            <button
-              mat-button
-              color="accent"
-              *ngIf="
-                (authService.isAuthenticated$ | async) &&
-                authService.isAdmin(authService.userGroups$ | async)
-              "
-              [routerLink]="['/blogs/blog-edit', post.id]"
-              style="min-width: fit-content;"
-            >
-              <!-- <small>EDIT POST</small> -->
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button
-              mat-button
-              color="warn"
-              *ngIf="
-                (authService.isAuthenticated$ | async) &&
-                authService.isAdmin(authService.userGroups$ | async)
-              "
-              (click)="deletePost(post.id)"
-              style="min-width: fit-content;"
-            >
-              <!-- <small>DELETE POST</small> -->
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-          </mat-card-actions>
-        </mat-card>
-      </div>
-      <div class="category-container">
-        <H3 style="margin: 10px; line-height: 1.2; padding: 0px 10px;"
-          >Discover more of what matters to you</H3
-        >
-        <div class="all-categories">
-          @for (item of tags; track $index) {
-          <button mat-flat-button color="accent" class="category-button">
-            {{ item.name }}
-          </button>
-          }
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<!-- </mat-grid-tile>
-      <mat-grid-tile colspan="2"> <h2>Categories</h2></mat-grid-tile>
-    </mat-grid-list>
-  </div>
-</div> -->
-
-<!-- 
-<mat-grid-tile [colspan]="2" [rowspan]="2" [style.background]=""
-        >Blank</mat-grid-tile
-      >
-      @for (tile of tiles; track tile) {
-      <mat-grid-tile
-        [colspan]="4"
-        [rowspan]="1"
-        [style.background]="tile.color"
-        >{{ tile.text }}</mat-grid-tile
-      >
-      @if (tile.text == "Two") {
-      <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]=""
-        >Blank</mat-grid-tile
-      >
-      } }
-      <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="">
-        <div style="width: 100%; height: 100%">
-          <mat-grid-list cols="3" rowHeight="300px">
-            <mat-grid-tile [colspan]="2" [rowspan]="1" [style.background]="">
-              hi
-            </mat-grid-tile>
-            <mat-grid-tile [colspan]="1" [rowspan]="1" [style.background]="">
-              hello
-            </mat-grid-tile>
-          </mat-grid-list>
-        </div>
-      </mat-grid-tile> -->
+<div class="loading-spinner">
+  <div class="spinner"></div>
+  <div class="loading-message">Deleting...</div>
 </div>
+} @if (feedback) {
+<div class="alert alert-{{ feedback.type }} m-2">
+  {{ feedback.message }}
+</div>
+}
+<mat-card class="post-card" *ngFor="let post of posts">
+  <mat-card-header class="card-header" (click)="openPost(post.id)">
+    <div mat-card-avatar class="post-avatar" mat-card-sm-image>
+      @if (post.author.startsWith("Anuran")) {
+      <img
+        src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
+      />
+      }
+    </div>
+
+    <span class="post-date"
+      ><strong>{{ post.author }}</strong></span
+    >
+    <span><small>-</small></span>
+    <span class="post-date">{{ blogUtil.formatDate(post.date) }}</span>
+  </mat-card-header>
+  <mat-card-content class="card-content" (click)="openPost(post.id)">
+    <div class="post-message">
+      <mat-card-title>{{ post.title }}</mat-card-title>
+      <mat-card-subtitle
+        ><p>{{ post.description }}</p></mat-card-subtitle
+      >
+    </div>
+    @if (post.avatar_image_url) {
+    <div class="post-message-avatar">
+      <img mat-card-md-image src="{{ post.avatar_image_url }}" />
+    </div>
+    }
+  </mat-card-content>
+  <mat-card-actions class="post-actions">
+    <!-- <button mat-button>Read More</button> -->
+
+    <span class="post-reading-time" (click)="openPost(post.id)"
+      >{{ blogUtil.calculateReadingTime(post.content) }} min read</span
+    >
+    <button
+      mat-flat-button
+      color="accent"
+      class="category-button"
+      style="height: 25px"
+    >
+      <small>Programming</small>
+    </button>
+    <!-- <div class="post-action-buttons" style="padding: 5px; width: 100%;justify-content: space-evenly;"> -->
+    <div class="post-action-buttons">
+      <button
+        mat-button
+        (click)="likePost(post.id)"
+        style="min-width: fit-content"
+      >
+        <mat-icon>thumb_up</mat-icon>
+      </button>
+      <button
+        mat-button
+        (click)="bookmarkPost(post.id)"
+        style="min-width: fit-content"
+      >
+        <mat-icon>bookmark</mat-icon>
+      </button>
+
+      <button
+        mat-button
+        color="accent"
+        *ngIf="
+          (authService.isAuthenticated$ | async) &&
+          authService.isAdmin(authService.userGroups$ | async)
+        "
+        [routerLink]="['/blogs/blog-edit', post.id]"
+        style="min-width: fit-content"
+      >
+        <!-- <small>EDIT POST</small> -->
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button
+        mat-button
+        color="warn"
+        *ngIf="
+          (authService.isAuthenticated$ | async) &&
+          authService.isAdmin(authService.userGroups$ | async)
+        "
+        (click)="deletePost(post.id)"
+        style="min-width: fit-content"
+      >
+        <!-- <small>DELETE POST</small> -->
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-card-actions>
+</mat-card>

@@ -1,13 +1,41 @@
 <!-- video-course-player.component.html -->
-<div class="video-course-player">
-  <h2 class="course-title">{{ playList[currentIndex].title }}</h2>
-  <div class="player-container">
-    <div class="video-container">
-      <video #videoPlayer controls [controlsList]="ctlList">
-        <source [src]="currentVideoUrl" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      <!-- <div class="controls">
+<!-- <div class="video-course-player"> -->
+<section class="video-course-player-section">
+  <div class="row mt-5">
+    <div class="col-md-12">
+      <h2 class="course-title">{{ playList[currentIndex].title }}</h2>
+    </div>
+  </div>
+  <!-- <div class="player-container"> -->
+  <div class="row align-items-center player-container-div">
+    <div class="col-md-4 order-md-2">
+      <!-- <div class="playlist"> -->
+      <div class="playlist-div">
+        <h3>
+          <strong>{{ courseTitle }}</strong>
+        </h3>
+        <div class="playlist-body-div">
+          <ul>
+            <li
+              *ngFor="let video of playList; let i = index"
+              (click)="selectVideo(i)"
+              [ngClass]="{ selected: i == currentIndex }"
+            >
+              {{ video.title }}
+            </li>
+          </ul>
+        </div>
+        <!-- <button (click)="playRandomVideo()">Play Random Video</button> -->
+      </div>
+    </div>
+    <div class="col-md-8 order-md-1">
+      <!-- <div class="video-container"> -->
+      <div class="video-container-div">
+        <video #videoPlayer controls [controlsList]="ctlList">
+          <source [src]="currentVideoUrl" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <!-- <div class="controls">
       <button class="control-button" (click)="playPause()">
         {{ isPlaying ? "Pause" : "Play" }}
       </button>
@@ -22,23 +50,8 @@
       <span class="current-time">{{ formatTime(currentTime) }}</span>
       <span class="duration">{{ formatTime(duration) }}</span>
     </div> -->
-    </div>
-    <div class="playlist">
-      <h3>
-        <strong>{{ courseTitle }}</strong>
-      </h3>
-      <div class="playlist-body">
-        <ul>
-          <li
-            *ngFor="let video of playList; let i = index"
-            (click)="selectVideo(i)"
-            [ngClass]="{ selected: i == currentIndex }"
-          >
-            {{ video.title }}
-          </li>
-        </ul>
       </div>
-      <!-- <button (click)="playRandomVideo()">Play Random Video</button> -->
     </div>
   </div>
-</div>
+</section>
+<!-- </div> -->

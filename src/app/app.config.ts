@@ -51,6 +51,6 @@ export const appConfig: ApplicationConfig = {
     },
     provideAnimationsAsync(),
     AuthService,
-    ScrollService
+    ScrollService,
   ],
 };
