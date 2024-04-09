@@ -12,18 +12,19 @@
 >
   <!-- @for (tile of tiles; track tile) { -->
   <mat-grid-tile [colspan]="1" [rowspan]="1" class="head">
-    <div class="bootstrap-wrapper">
-      <div class="container">
-        <div class="header">
+    <!-- <div class="bootstrap-wrapper" style="margin-right: 0px;">
+      <div class="container" style="padding-right: 0px; "> -->
+        <div class="header" style="padding-left: 80px;">
           <div
             class="left-head"
             style="
-              justify-content: center;
+              /* justify-content: center;
               align-items: center;
               place-items: center;
               vertical-align: middle;
               padding-top: 50px;
-              padding-bottom: 50px;
+              padding-bottom: 50px; */
+              align-self: center;
             "
           >
             <div class="main-header">
@@ -54,7 +55,10 @@
           </div>
           <div
             class="right-head"
-            style="padding-top: 50px; padding-bottom: 50px"
+            style="
+            /* padding-top: 50px; 
+            padding-bottom: 50px */
+            "
           >
             <div style="height: 100%">
               <img
@@ -84,8 +88,8 @@
             </mat-grid-tile>
           </mat-grid-list>
         </div> -->
-      </div>
-    </div>
+      <!-- </div>
+    </div> -->
   </mat-grid-tile>
   <!-- } -->
 </mat-grid-list>
