@@ -30,7 +30,7 @@ export const BLOG_ROUTES: Routes = [
     path: 'blog-view/:id',
     component: BlogViewComponent,
     resolve: {
-      post: postResolver,
+      postWithTags: postResolver,
     },
   },
 ];

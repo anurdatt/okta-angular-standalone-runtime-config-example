@@ -46,14 +46,15 @@
     <span class="post-reading-time" (click)="openPost(post.id)"
       >{{ blogUtil.calculateReadingTime(post.content) }} min read</span
     >
-    <button
+    <!-- <button
       mat-flat-button
       color="accent"
       class="category-button"
       style="height: 25px"
     >
       <small>Programming</small>
-    </button>
+    </button> -->
+    <app-tag-list [tags]="[tags[0]]" [btnHeight]="'25px'"></app-tag-list>
     <!-- <div class="post-action-buttons" style="padding: 5px; width: 100%;justify-content: space-evenly;"> -->
     <div class="post-action-buttons">
       <button

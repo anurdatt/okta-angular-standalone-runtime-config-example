@@ -12,6 +12,7 @@ import { Routes } from '@angular/router';
 import { OktaAuthGuard, OktaCallbackComponent } from '@okta/okta-angular';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
+import { TagsComponent } from './tags/tags.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -43,5 +44,9 @@ export const routes: Routes = [
     path: 'courses',
     loadChildren: () =>
       import('./courses/courses.routes').then((mod) => mod.COURSE_ROUTES),
+  },
+  {
+    path: 'all-topics',
+    component: TagsComponent,
   },
 ];

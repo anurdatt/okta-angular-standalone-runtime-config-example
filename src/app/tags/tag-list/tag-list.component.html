@@ -1,0 +1,22 @@
+<div [ngClass]="{ 'all-categories': !btnHeight }">
+  @for (item of tags; track $index) {
+  <button
+    mat-flat-button
+    color="accent"
+    class="category-button"
+    [style.height]="btnHeight"
+    [ngStyle]="{
+      'border-block-end': btnBorderBottom ? 'revert' : '',
+      'border-block-color': 'red',
+      'border-bottom-width': 'medium'
+    }"
+  >
+    @if (btnHeight) {<small>
+      {{ item.name }}
+    </small>
+    } @else {
+    {{ item.name }}
+    }
+  </button>
+  }
+</div>

@@ -47,30 +47,30 @@
   // height: 300px;
 }
 
-.category-container {
+.tags-container {
   display: flex;
   flex-direction: column;
   width: 30%;
   // justify-content: space-evenly;
 }
 
-.all-categories {
-  display: block;
-}
+// .all-tags {
+//   display: block;
+// }
 
-.category-button {
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-  border-bottom-left-radius: 30%;
-  // background-color: gold;
-  // background-color: map-get($map: $theme , $key: $mat-accent);
-}
+// .tag-button {
+//   border-top-left-radius: 0;
+//   border-top-right-radius: 0;
+//   border-bottom-left-radius: 30%;
+//   // background-color: gold;
+//   // background-color: map-get($map: $theme , $key: $mat-accent);
+// }
 
-.all-categories .category-button {
-  margin-left: 10px;
-  margin-bottom: 10px;
-  // border-radius: 20%;
-}
+// .all-tags .tag-button {
+//   margin-left: 10px;
+//   margin-bottom: 10px;
+//   // border-radius: 20%;
+// }
 
 @media (max-width: 768px) {
   // .post-card {
@@ -86,7 +86,7 @@
   .all-posts {
     width: 100%;
   }
-  .category-container {
+  .tags-container {
     width: 100%;
     // display: flex;
     // flex-direction: row;

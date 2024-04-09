@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Post } from '../post';
-import { Tag } from '../Tag';
+import { Post } from '../model/post';
+import { Tag } from '../model/tag';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BlogListComponent } from '../blog-list/blog-list.component';
 import { CommonModule } from '@angular/common';
@@ -9,6 +9,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../shared/okta/auth.service';
 import { BlogsService } from '../blogs.service';
+import { TagListComponent } from '../../tags/tag-list/tag-list.component';
 
 @Component({
   selector: 'app-blogs-view',
@@ -22,6 +23,7 @@ import { BlogsService } from '../blogs.service';
     MatTooltipModule,
     MatIconModule,
     BlogListComponent,
+    TagListComponent,
   ],
   providers: [BlogsService],
   templateUrl: './blogs-view.component.html',

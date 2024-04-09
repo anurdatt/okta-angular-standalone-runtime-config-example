@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Post } from './post';
+import { Post } from './model/post';
 import { environment } from '../../environments/environment';
+import { PostWithTags } from './model/post-with-tags';
 
 const headers = new HttpHeaders()
   .set('Accept', 'application/json')
@@ -20,10 +21,10 @@ export class BlogsService {
     return this.http.get<Post[]>(url, { headers, params });
   }
 
-  findPostById(id: string): Observable<Post> {
-    const url = `${environment.blogsApiUrl}/api/posts/${id}`;
+  findPostById(id: string): Observable<PostWithTags> {
+    const url = `${environment.blogsApiUrl}/api/posts/${id}/detail`;
     const params = new HttpParams();
-    return this.http.get<Post>(url, { headers, params });
+    return this.http.get<PostWithTags>(url, { headers, params });
   }
 
   deletePostById(id: string): Observable<any> {

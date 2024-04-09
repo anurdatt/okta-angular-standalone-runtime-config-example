@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toHTML, NgxEditorModule } from 'ngx-editor';
-import { Post } from '../post';
+import { Post } from '../model/post';
 import { MatCardModule } from '@angular/material/card';
 import schema from '../blog-edit/ngxeditor-schema';
 import { BlogUtil } from '../util/BlogUtil';
@@ -12,7 +12,7 @@ import javascript from 'highlight.js/lib/languages/javascript';
 hljs.registerLanguage('javascript', javascript);
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Comment } from '../comment';
+import { Comment } from '../model/comment';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -22,6 +22,8 @@ import { AuthService } from '../../shared/okta/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 import { ScrollService } from '../../shared/scroll/scroll.service';
 import { MatTooltip } from '@angular/material/tooltip';
+import { PostWithTags } from '../model/post-with-tags';
+import { TagListComponent } from '../../tags/tag-list/tag-list.component';
 // import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
 
 @Component({
@@ -41,6 +43,7 @@ import { MatTooltip } from '@angular/material/tooltip';
     MatIconModule,
     MatTooltip,
     // ScrollTopButtonComponent,
+    TagListComponent,
   ],
   templateUrl: './blog-view.component.html',
   styleUrl: './blog-view.component.scss',
@@ -49,7 +52,7 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
   isLoadingResults = false;
   feedback: any = {};
 
-  post: Post;
+  postWithTags: PostWithTags;
 
   comments: Comment[];
 
@@ -87,14 +90,16 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async ngOnInit() {
-    this.post = this.route.snapshot.data['post'];
+    this.postWithTags = this.route.snapshot.data['postWithTags'];
     // this.comments = this.loadComments();
     this.comments = [
       { id: 1, author: 'AD', date: 'March 23, 2024', text: 'Dummy Comment 1' },
       { id: 2, author: 'AD', date: 'March 23, 2024', text: 'Dummy Comment 2' },
     ];
     this.safeContent$.next(
-      this.sanitizer.bypassSecurityTrustHtml(this.toHtml(this.post.content))
+      this.sanitizer.bypassSecurityTrustHtml(
+        this.toHtml(this.postWithTags.post.content)
+      )
     );
     // setInterval(() => {
     // console.log('timeout worked..');
@@ -135,7 +140,7 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.authSubscription.unsubscribe();
-    this.scrollSubscription.unsubscribe();
+    this.authSubscription?.unsubscribe();
+    this.scrollSubscription?.unsubscribe();
   }
 }

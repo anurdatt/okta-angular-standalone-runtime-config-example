@@ -1,0 +1,18 @@
+.category-button {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 30%;
+  // background-color: gold;
+  // background-color: map-get($map: $theme , $key: $mat-accent);
+}
+
+.all-categories {
+  display: block;
+}
+
+.all-categories .category-button {
+  margin-left: 10px;
+  margin-bottom: 10px;
+  // margin-right: 10px;
+  // border-radius: 20%;
+}

@@ -1,0 +1,53 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+  <li class="breadcrumb-item active">All-Topics</li>
+</ol>
+
+<!-- <div class="bootstrap-wrapper">
+  <div class="container"> -->
+<div
+  class="topics-container"
+  style="
+    display: -webkit-box;
+    /* display: ruby; */
+    justify-content: space-around;
+    padding: 10px 10px 10px 0px;
+  "
+>
+  <div
+    style="/* width: 25%; */ min-width: fit-content; margin-right: 10px"
+    [ngStyle]="
+       // {
+    //   display:
+    //     scrollingDiv.querySelector('app-tag-list').scrollWidth < 0
+    //       ? 'none'
+    //       : 'block'
+    // }
+    "
+  >
+    <!-- <H3 style="margin: 10px; line-height: 1.2; padding: 0px 10px"
+      >All topics:</H3
+    > -->
+    <app-tag-list
+      [tags]="[{ id: '1', name: 'All topics' }]"
+      [btnBorderBottom]="true"
+      style="margin-right: 5px"
+    ></app-tag-list>
+  </div>
+  <div
+    style="
+      /* padding-right: 10px; */
+      /* width: 75%; */
+      max-width: 65%;
+      white-space: nowrap;
+      overflow-x: scroll;
+    "
+    #scrollingDiv
+  >
+    <!-- <div class="all-topics"> -->
+    <app-tag-list [tags]="tags" style="margin-right: 5px"></app-tag-list>
+    <!-- </div> -->
+  </div>
+</div>
+<!-- </div>
+</div> -->

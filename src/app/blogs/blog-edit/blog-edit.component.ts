@@ -8,7 +8,7 @@ import {
 
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { NgxeditorComponent } from './ngxeditor.component';
-import { Post } from '../post';
+import { Post } from '../model/post';
 import { BlogsService } from '../blogs.service';
 import { Observable, Subscription, of as observableOf } from 'rxjs';
 import { switchMap, catchError, map } from 'rxjs/operators';
@@ -23,6 +23,7 @@ import { CommonModule, Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarHorizontalPosition } from '@angular/material/snack-bar';
 import { MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import { PostWithTags } from '../model/post-with-tags';
 // import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
 
 @Component({
@@ -80,7 +81,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
         map((p) => p['id']),
         switchMap((id) => {
           this.isLoadingResults = true;
-          if (id == 'new') return observableOf(new Post());
+          if (id == 'new') return observableOf(new PostWithTags());
           return this.service.findPostById(id).pipe(
             catchError((err) => {
               console.error(
@@ -92,9 +93,9 @@ export class BlogEditComponent implements OnInit, OnDestroy {
           );
         })
       )
-      .subscribe((post: Post) => {
+      .subscribe((postWithTags: PostWithTags) => {
         this.isLoadingResults = false;
-        if (post == null) {
+        if (postWithTags == null) {
           // this.feedback = {
           //   type: 'warning',
           //   message: 'Error occured in loading!',
@@ -106,7 +107,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
             verticalPosition: this.verticalPosition,
           });
         } else {
-          this.post = post;
+          this.post = postWithTags.post;
           // this.feedback = {};
 
           this._snackbar.open('Load completed successfully!', 'Success', {

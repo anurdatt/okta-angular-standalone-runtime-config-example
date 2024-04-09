@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Post } from '../post';
+import { Post } from '../model/post';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -23,6 +23,8 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
+import { TagListComponent } from '../../tags/tag-list/tag-list.component';
+import { Tag } from '../model/tag';
 
 @Component({
   selector: 'app-blog-list',
@@ -35,6 +37,7 @@ import {
     MatButtonModule,
     // MatTooltipModule,
     MatIconModule,
+    TagListComponent,
   ],
   templateUrl: './blog-list.component.html',
   styleUrl: './blog-list.component.scss',
@@ -46,6 +49,7 @@ export class BlogListComponent implements OnInit, OnDestroy {
   @Input('posts')
   posts: Post[];
 
+  tags: Tag[] = [{ id: '221', name: 'Programming' }];
   deleteSubscription: Subscription;
   isDeletingResults = false;
   feedback: any = {};

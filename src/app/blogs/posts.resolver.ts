@@ -1,7 +1,7 @@
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Post } from './post';
+import { Post } from './model/post';
 import { BlogsService } from './blogs.service';
 
 export function postsResolver(
