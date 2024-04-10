@@ -36,6 +36,7 @@ import {
 import { ENTER, COMMA, T } from '@angular/cdk/keycodes';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { isObject } from '@okta/okta-auth-js';
+import { TagsService } from '../../tags/tags.service';
 // import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
 
 @Component({
@@ -91,7 +92,8 @@ export class BlogEditComponent implements OnInit, OnDestroy {
     private service: BlogsService,
     private authService: AuthService,
     private _snackbar: MatSnackBar,
-    private location: Location
+    private location: Location,
+    private tagsService: TagsService
   ) {
     // super();
     this.filteredTags$ = this.tagCtrl.valueChanges.pipe(
@@ -208,36 +210,53 @@ export class BlogEditComponent implements OnInit, OnDestroy {
 
   fetchAllTags() {
     // TODO: Fetch tags from BE.
-    this.allTags = [
-      {
-        id: 'Technology-15551',
-        name: 'Technology',
-      },
-      {
-        id: 'Science-67698',
-        name: 'Science',
-      },
-      {
-        id: 'Software-76977',
-        name: 'Software',
-      },
-      {
-        id: 'Programming-15791',
-        name: 'Programming',
-      },
-      {
-        id: 'Arts-15443',
-        name: 'Arts',
-      },
-      {
-        id: 'Mythology-45234',
-        name: 'Mythology',
-      },
-      {
-        id: 'Life-23343',
-        name: 'Life',
-      },
-    ];
+
+    this.tagsService.findAll()
+    .pipe(
+      catchError(err => {
+        console.log({err});
+        return observableOf(null)
+      })
+    )
+    .subscribe(tags => {
+      if (tags == null) {
+        console.error('Tags fetch failed..');
+      }
+      else {
+        this.allTags = tags
+      }
+    })
+
+    // this.allTags = [
+    //   {
+    //     id: 'Technology-15551',
+    //     name: 'Technology',
+    //   },
+    //   {
+    //     id: 'Science-67698',
+    //     name: 'Science',
+    //   },
+    //   {
+    //     id: 'Software-76977',
+    //     name: 'Software',
+    //   },
+    //   {
+    //     id: 'Programming-15791',
+    //     name: 'Programming',
+    //   },
+    //   {
+    //     id: 'Arts-15443',
+    //     name: 'Arts',
+    //   },
+    //   {
+    //     id: 'Mythology-45234',
+    //     name: 'Mythology',
+    //   },
+    //   {
+    //     id: 'Life-23343',
+    //     name: 'Life',
+    //   },
+    // ];
   }
 
   ngOnDestroy(): void {
