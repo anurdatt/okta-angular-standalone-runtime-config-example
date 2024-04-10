@@ -36,7 +36,7 @@
       />
     </mat-form-field>
     <mat-form-field>
-      <label for="text" class="field-label">Description</label>
+      <label for="description" class="field-label">Description</label>
       <textarea
         [(ngModel)]="post.description"
         id="description"
@@ -57,7 +57,42 @@
         placeholder="Blog Avatar Image Url"
       />
     </mat-form-field>
-    <app-ngxeditor [content]="post.content" class="blog-post-content"></app-ngxeditor>
+    <app-ngxeditor
+      [content]="post.content"
+      class="blog-post-content"
+    ></app-ngxeditor>
+
+    <mat-form-field class="chip-list">
+      <mat-label>Post Tags</mat-label>
+      <mat-chip-grid #chipGrid aria-label="Tag selection">
+        @for (tag of tags; track tag) {
+        <mat-chip-row (removed)="remove(tag)" [style.backgroundColor]="'gold'">
+          {{ tag.name }}
+          <button matChipRemove [attr.aria-label]="'remove ' + tag.name">
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+        }
+      </mat-chip-grid>
+      <input
+        placeholder="New Tag..."
+        #tagInput
+        [formControl]="tagCtrl"
+        [matChipInputFor]="chipGrid"
+        [matAutocomplete]="auto"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        (matChipInputTokenEnd)="add($event)"
+      />
+      <mat-autocomplete
+        #auto="matAutocomplete"
+        (optionSelected)="selected($event)"
+      >
+        @for (tag of filteredTags$ | async; track tag) {
+        <mat-option [value]="tag">{{ tag.name }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+
     <div class="button-group">
       <button
         mat-raised-button

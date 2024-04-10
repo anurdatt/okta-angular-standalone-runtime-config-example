@@ -4,6 +4,8 @@ import {
   OnInit,
   OnDestroy,
   HostListener,
+  ElementRef,
+  inject,
 } from '@angular/core';
 
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -11,19 +13,29 @@ import { NgxeditorComponent } from './ngxeditor.component';
 import { Post } from '../model/post';
 import { BlogsService } from '../blogs.service';
 import { Observable, Subscription, of as observableOf } from 'rxjs';
-import { switchMap, catchError, map } from 'rxjs/operators';
+import { switchMap, catchError, map, startWith } from 'rxjs/operators';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { FormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../shared/okta/auth.service';
 // import { ScrollTopComponent } from '../../shared/scroll/scroll-top.component';
-import { CommonModule, Location } from '@angular/common';
+import { AsyncPipe, CommonModule, Location } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarHorizontalPosition } from '@angular/material/snack-bar';
 import { MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { PostWithTags } from '../model/post-with-tags';
+import { Tag } from '../model/tag';
+import { MatIconModule } from '@angular/material/icon';
+import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
+import {
+  MatAutocompleteModule,
+  MatAutocompleteSelectedEvent,
+} from '@angular/material/autocomplete';
+import { ENTER, COMMA, T } from '@angular/cdk/keycodes';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { isObject } from '@okta/okta-auth-js';
 // import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
 
 @Component({
@@ -37,7 +49,13 @@ import { PostWithTags } from '../model/post-with-tags';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
+    MatChipsModule,
+    MatIconModule,
+    MatAutocompleteModule,
+    AsyncPipe,
     FormsModule,
+    ReactiveFormsModule,
+
     // ScrollTopButtonComponent,
   ],
   templateUrl: './blog-edit.component.html',
@@ -49,6 +67,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
   editor: NgxeditorComponent;
 
   post: Post;
+  tags: Tag[];
   isLoadingResults = true;
   isSavingResults = false;
   feedback: any = {};
@@ -57,6 +76,14 @@ export class BlogEditComponent implements OnInit, OnDestroy {
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  tagCtrl = new FormControl('');
+  filteredTags$: Observable<Tag[]>;
+  allTags: Tag[];
+
+  @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
+  announcer = inject(LiveAnnouncer);
 
   constructor(
     private route: ActivatedRoute,
@@ -67,13 +94,30 @@ export class BlogEditComponent implements OnInit, OnDestroy {
     private location: Location
   ) {
     // super();
+    this.filteredTags$ = this.tagCtrl.valueChanges.pipe(
+      startWith(null),
+      map((tag: Tag | string | null) => {
+        console.log(
+          `Tag `,
+          { tag },
+          `instanceof Tag = ${tag instanceof Tag}`,
+          `isObject = ${isObject(tag)}`
+        );
+
+        if (tag instanceof Tag || isObject(tag)) {
+          return this.allTags;
+        }
+
+        return tag ? this._filter(tag) : this.allTags; //.splice(0)
+      })
+    );
   }
 
-  @HostListener('window:scroll', ['$event'])
-  OnScroll($event: any) {
-    console.log('Scroll event : ' + JSON.stringify($event));
-    console.log('window scrol top = ' + window.scrollY);
-  }
+  // @HostListener('window:scroll', ['$event'])
+  // OnScroll($event: any) {
+  //   console.log('Scroll event : ' + JSON.stringify($event));
+  //   console.log('window scrol top = ' + window.scrollY);
+  // }
 
   ngOnInit(): void {
     this.findSubscription = this.route.params
@@ -81,7 +125,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
         map((p) => p['id']),
         switchMap((id) => {
           this.isLoadingResults = true;
-          if (id == 'new') return observableOf(new PostWithTags());
+          if (id == 'new') return observableOf({ post: new Post(), tags: [] });
           return this.service.findPostById(id).pipe(
             catchError((err) => {
               console.error(
@@ -108,6 +152,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
           });
         } else {
           this.post = postWithTags.post;
+          this.tags = postWithTags.tags;
           // this.feedback = {};
 
           this._snackbar.open('Load completed successfully!', 'Success', {
@@ -118,6 +163,81 @@ export class BlogEditComponent implements OnInit, OnDestroy {
           });
         }
       });
+
+    this.fetchAllTags();
+  }
+
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our tag
+    if (value) {
+      // TODO: Call BE to save new tag in DB
+
+      this.tags.push({ id: null, name: value });
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    this.tagCtrl.setValue(null);
+  }
+
+  remove(tag: Tag) {
+    const index = this.tags.indexOf(tag);
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+      this.announcer.announce(`Removed ${tag.name}`);
+    }
+  }
+
+  selected(event: MatAutocompleteSelectedEvent): void {
+    this.tags.push(event.option.value);
+    this.tagInput.nativeElement.value = '';
+    this.tagCtrl.setValue(null);
+  }
+
+  private _filter(value: string): Tag[] {
+    console.log({ value });
+    const filterValue = value['toLocaleLowerCase']();
+    console.log({ filterValue });
+    return this.allTags.filter((tag) =>
+      tag.name['toLocaleLowerCase']().includes(filterValue)
+    );
+  }
+
+  fetchAllTags() {
+    // TODO: Fetch tags from BE.
+    this.allTags = [
+      {
+        id: 'Technology-15551',
+        name: 'Technology',
+      },
+      {
+        id: 'Science-67698',
+        name: 'Science',
+      },
+      {
+        id: 'Software-76977',
+        name: 'Software',
+      },
+      {
+        id: 'Programming-15791',
+        name: 'Programming',
+      },
+      {
+        id: 'Arts-15443',
+        name: 'Arts',
+      },
+      {
+        id: 'Mythology-45234',
+        name: 'Mythology',
+      },
+      {
+        id: 'Life-23343',
+        name: 'Life',
+      },
+    ];
   }
 
   ngOnDestroy(): void {

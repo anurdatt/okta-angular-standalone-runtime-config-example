@@ -9,6 +9,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
+  padding-left: 80px;
 }
 
 // .ctr {
@@ -141,4 +142,8 @@ button {
 .tablet-portrait .handset-landscape .sub-heading {
   line-height: 20px;
   font-size: 14px;
+}
+
+.handset-portrait .header {
+  padding: 0 60px;
 }

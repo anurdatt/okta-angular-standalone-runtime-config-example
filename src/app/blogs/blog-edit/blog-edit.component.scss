@@ -23,7 +23,8 @@
   line-height: 1.6;
   font-size: 16px;
   // font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-family: source-serif-pro, Georgia, Cambria, "Times New Roman", Times,
+    serif;
 }
 
 .blog-post-content p {
@@ -33,6 +34,10 @@
 
 .field-label {
   color: indigo;
+}
+
+.chip {
+  background-color: gold;
 }
 
 .button-group {
@@ -68,4 +73,3 @@
 //   border-radius: 5px;
 //   outline: none;
 // }
-
