@@ -25,6 +25,7 @@ import {
 } from '@angular/material/snack-bar';
 import { TagListComponent } from '../../tags/tag-list/tag-list.component';
 import { Tag } from '../model/tag';
+import { PostWithTags } from '../model/post-with-tags';
 
 @Component({
   selector: 'app-blog-list',
@@ -46,10 +47,10 @@ import { Tag } from '../model/tag';
 export class BlogListComponent implements OnInit, OnDestroy {
   blogUtil: BlogUtil = new BlogUtil();
 
-  @Input('posts')
-  posts: Post[];
+  @Input('postWithTagsList')
+  postWithTagsList: PostWithTags[];
 
-  tags: Tag[] = [{ id: '221', name: 'Programming' }];
+  // tags: Tag[] = [{ id: '221', name: 'Programming' }];
   deleteSubscription: Subscription;
   isDeletingResults = false;
   feedback: any = {};

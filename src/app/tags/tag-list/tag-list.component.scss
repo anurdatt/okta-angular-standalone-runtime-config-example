@@ -6,6 +6,12 @@
   // background-color: map-get($map: $theme , $key: $mat-accent);
 }
 
+.button-border-bottom {
+  border-block-end: revert;
+  border-block-color: red;
+  border-bottom-width: medium;
+}
+
 .all-categories {
   display: block;
 }

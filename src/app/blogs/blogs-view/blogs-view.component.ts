@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from '../model/post';
 import { Tag } from '../model/tag';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -10,6 +10,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../shared/okta/auth.service';
 import { BlogsService } from '../blogs.service';
 import { TagListComponent } from '../../tags/tag-list/tag-list.component';
+import { TagsService } from '../../tags/tags.service';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { of as observableOf, Subscription } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { PostWithTags } from '../model/post-with-tags';
 
 @Component({
   selector: 'app-blogs-view',
@@ -29,8 +38,8 @@ import { TagListComponent } from '../../tags/tag-list/tag-list.component';
   templateUrl: './blogs-view.component.html',
   styleUrl: './blogs-view.component.scss',
 })
-export class BlogsViewComponent {
-  posts: Post[];
+export class BlogsViewComponent implements OnInit, OnDestroy {
+  postWithTagsList: PostWithTags[];
   //  = [
   //   {
   //     id: 1,
@@ -68,40 +77,65 @@ export class BlogsViewComponent {
   //   // Add more posts as needed
   // ];
 
-  tags: Tag[] = [
-    {
-      id: 'Technology-15551',
-      name: 'Technology',
-    },
-    {
-      id: 'Science-67698',
-      name: 'Science',
-    },
-    {
-      id: 'Software-76977',
-      name: 'Software',
-    },
-    {
-      id: 'Programming-15791',
-      name: 'Programming',
-    },
-    {
-      id: 'Arts-15443',
-      name: 'Arts',
-    },
-    {
-      id: 'Mythology-45234',
-      name: 'Mythology',
-    },
-    {
-      id: 'Life-23343',
-      name: 'Life',
-    },
-  ];
+  isLoadingResults = true;
+  fetchedTags: Tag[] = [];
+  selectedTagId: string;
+  fetchTagsSubscription: Subscription;
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  constructor(private route: ActivatedRoute, public authService: AuthService) {}
+  constructor(
+    private route: ActivatedRoute,
+    public authService: AuthService,
+    private tagsService: TagsService,
+    private _snackbar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
-    this.posts = this.route.snapshot.data['posts'];
+    this.postWithTagsList = this.route.snapshot.data['postWithTagsList'];
+
+    this.fetchTopTags(7);
+  }
+
+  fetchTopTags(count: number) {
+    this.isLoadingResults = true;
+
+    this.fetchTagsSubscription = this.tagsService
+      .findAll()
+      .pipe(
+        catchError((err) => {
+          console.error(
+            'FindAll tags failed with error : ' + JSON.stringify(err)
+          );
+          return observableOf(null);
+        })
+      )
+      .subscribe((tags: Tag[]) => {
+        this.isLoadingResults = false;
+        if (tags == null) {
+          console.error('Tags fetch failed..');
+
+          // this._snackbar.open('Error occured in loading Tags!', 'Failure', {
+          //   // panelClass: ['alert', 'alert-failure'],
+          //   horizontalPosition: this.horizontalPosition,
+          //   verticalPosition: this.verticalPosition,
+          // });
+        } else {
+          // this.allTags = tags;
+          this.fetchedTags = tags.slice(0, count);
+
+          console.log('Fetched tags = ', JSON.stringify(this.fetchedTags));
+          // this._snackbar.open('Load tags completed successfully!', 'Success', {
+          //   // panelClass: ['alert', 'alert-success'],
+          //   horizontalPosition: this.horizontalPosition,
+          //   verticalPosition: this.verticalPosition,
+          //   duration: 1000,
+          // });
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    this.fetchTagsSubscription?.unsubscribe();
   }
 }

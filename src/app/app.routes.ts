@@ -49,4 +49,8 @@ export const routes: Routes = [
     path: 'all-topics',
     component: TagsComponent,
   },
+  {
+    path: 'tag/:id',
+    component: TagsComponent,
+  },
 ];

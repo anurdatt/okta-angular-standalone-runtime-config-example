@@ -2,11 +2,12 @@ import { Component, Input } from '@angular/core';
 import { Tag } from '../../blogs/model/tag';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-tag-list',
   standalone: true,
-  imports: [CommonModule, MatButtonModule],
+  imports: [CommonModule, MatButtonModule, RouterLink],
   templateUrl: './tag-list.component.html',
   styleUrl: './tag-list.component.scss',
 })
@@ -19,4 +20,22 @@ export class TagListComponent {
 
   @Input('btnBorderBottom')
   btnBorderBottom: boolean;
+
+  @Input('btnBorderBottomId')
+  btnBorderBottomId: string;
+
+  constructor(private router: Router) {}
+  navigateTo(tagId: string) {
+    // setTimeout(() => {
+    // console.log('Navigating to ' + tagId);
+    if (!this.router.url.endsWith(tagId)) {
+      this.router
+        .navigate(['/all-topics'], { skipLocationChange: true })
+        .then(() => {
+          if (tagId == 'all-topics') this.router.navigate(['/all-topics']);
+          else this.router.navigate(['/tag', tagId]);
+        });
+    }
+    // }, 1000);
+  }
 }

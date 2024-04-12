@@ -15,10 +15,10 @@ const headers = new HttpHeaders()
 export class BlogsService {
   constructor(private http: HttpClient) {}
 
-  findAll(): Observable<Post[]> {
+  findAll(): Observable<PostWithTags[]> {
     const url = `${environment.blogsApiUrl}/api/posts`;
     const params = new HttpParams();
-    return this.http.get<Post[]>(url, { headers, params });
+    return this.http.get<PostWithTags[]>(url, { headers, params });
   }
 
   findPostById(id: string): Observable<PostWithTags> {
@@ -33,17 +33,17 @@ export class BlogsService {
     return this.http.delete<any>(url, { headers, params });
   }
 
-  save(entity: Post): Observable<Post> {
+  save(entity: PostWithTags): Observable<PostWithTags> {
     let url = '';
-    if (entity.id) {
-      url = `${environment.blogsApiUrl}/api/posts/${entity.id}`;
-      return this.http.put<Post>(url, entity, {
+    if (entity.post.id) {
+      url = `${environment.blogsApiUrl}/api/posts/${entity.post.id}`;
+      return this.http.put<PostWithTags>(url, entity, {
         headers,
         params: new HttpParams(),
       });
     } else {
       url = `${environment.blogsApiUrl}/api/posts`;
-      return this.http.post<Post>(url, entity, {
+      return this.http.post<PostWithTags>(url, entity, {
         headers,
         params: new HttpParams(),
       });

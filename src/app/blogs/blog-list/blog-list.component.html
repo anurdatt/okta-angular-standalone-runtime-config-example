@@ -11,10 +11,10 @@
   {{ feedback.message }}
 </div>
 }
-<mat-card class="post-card" *ngFor="let post of posts">
-  <mat-card-header class="card-header" (click)="openPost(post.id)">
+<mat-card class="post-card" *ngFor="let postWithTags of postWithTagsList">
+  <mat-card-header class="card-header" (click)="openPost(postWithTags.post.id)">
     <div mat-card-avatar class="post-avatar" mat-card-sm-image>
-      @if (post.author.startsWith("Anuran")) {
+      @if (postWithTags.post.author.startsWith("Anuran")) {
       <img
         src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
       />
@@ -22,29 +22,35 @@
     </div>
 
     <span class="post-date"
-      ><strong>{{ post.author }}</strong></span
+      ><strong>{{ postWithTags.post.author }}</strong></span
     >
     <span><small>-</small></span>
-    <span class="post-date">{{ blogUtil.formatDate(post.date) }}</span>
+    <span class="post-date">{{
+      blogUtil.formatDate(postWithTags.post.date)
+    }}</span>
   </mat-card-header>
-  <mat-card-content class="card-content" (click)="openPost(post.id)">
+  <mat-card-content
+    class="card-content"
+    (click)="openPost(postWithTags.post.id)"
+  >
     <div class="post-message">
-      <mat-card-title>{{ post.title }}</mat-card-title>
+      <mat-card-title>{{ postWithTags.post.title }}</mat-card-title>
       <mat-card-subtitle
-        ><p>{{ post.description }}</p></mat-card-subtitle
+        ><p>{{ postWithTags.post.description }}</p></mat-card-subtitle
       >
     </div>
-    @if (post.avatar_image_url) {
+    @if (postWithTags.post.avatar_image_url) {
     <div class="post-message-avatar">
-      <img mat-card-md-image src="{{ post.avatar_image_url }}" />
+      <img mat-card-md-image src="{{ postWithTags.post.avatar_image_url }}" />
     </div>
     }
   </mat-card-content>
   <mat-card-actions class="post-actions">
     <!-- <button mat-button>Read More</button> -->
 
-    <span class="post-reading-time" (click)="openPost(post.id)"
-      >{{ blogUtil.calculateReadingTime(post.content) }} min read</span
+    <span class="post-reading-time" (click)="openPost(postWithTags.post.id)"
+      >{{ blogUtil.calculateReadingTime(postWithTags.post.content) }} min
+      read</span
     >
     <!-- <button
       mat-flat-button
@@ -54,19 +60,22 @@
     >
       <small>Programming</small>
     </button> -->
-    <app-tag-list [tags]="[tags[0]]" [btnHeight]="'25px'"></app-tag-list>
+    <app-tag-list
+      [tags]="postWithTags.tags.slice(0, 1)"
+      [btnHeight]="'25px'"
+    ></app-tag-list>
     <!-- <div class="post-action-buttons" style="padding: 5px; width: 100%;justify-content: space-evenly;"> -->
     <div class="post-action-buttons">
       <button
         mat-button
-        (click)="likePost(post.id)"
+        (click)="likePost(postWithTags.post.id)"
         style="min-width: fit-content"
       >
         <mat-icon>thumb_up</mat-icon>
       </button>
       <button
         mat-button
-        (click)="bookmarkPost(post.id)"
+        (click)="bookmarkPost(postWithTags.post.id)"
         style="min-width: fit-content"
       >
         <mat-icon>bookmark</mat-icon>
@@ -79,7 +88,7 @@
           (authService.isAuthenticated$ | async) &&
           authService.isAdmin(authService.userGroups$ | async)
         "
-        [routerLink]="['/blogs/blog-edit', post.id]"
+        [routerLink]="['/blogs/blog-edit', postWithTags.post.id]"
         style="min-width: fit-content"
       >
         <!-- <small>EDIT POST</small> -->
@@ -92,7 +101,7 @@
           (authService.isAuthenticated$ | async) &&
           authService.isAdmin(authService.userGroups$ | async)
         "
-        (click)="deletePost(post.id)"
+        (click)="deletePost(postWithTags.post.id)"
         style="min-width: fit-content"
       >
         <!-- <small>DELETE POST</small> -->

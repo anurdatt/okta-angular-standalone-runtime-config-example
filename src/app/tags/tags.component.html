@@ -14,6 +14,16 @@
     padding: 10px 10px 10px 0px;
   "
 >
+  @if (isLoadingResults) {
+  <!-- <div class="example-loading-shade">
+    <mat-spinner></mat-spinner>
+  </div> -->
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <div class="loading-message">Loading...</div>
+  </div>
+  }
+
   <div
     style="/* width: 25%; */ min-width: fit-content; margin-right: 10px"
     [ngStyle]="
@@ -29,8 +39,8 @@
       >All topics:</H3
     > -->
     <app-tag-list
-      [tags]="[{ id: '1', name: 'All topics' }]"
-      [btnBorderBottom]="true"
+      [tags]="[{ id: 'all-topics', name: 'All topics' }]"
+      [btnBorderBottom]="!selectedTagId"
       style="margin-right: 5px"
     ></app-tag-list>
   </div>
@@ -45,7 +55,11 @@
     #scrollingDiv
   >
     <!-- <div class="all-topics"> -->
-    <app-tag-list [tags]="tags" style="margin-right: 5px"></app-tag-list>
+    <app-tag-list
+      [tags]="fetchedTags"
+      [btnBorderBottomId]="selectedTagId"
+      style="margin-right: 5px"
+    ></app-tag-list>
     <!-- </div> -->
   </div>
 </div>

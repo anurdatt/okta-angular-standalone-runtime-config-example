@@ -14,7 +14,7 @@ export const BLOG_ROUTES: Routes = [
     component: BlogsViewComponent,
     pathMatch: 'full',
     resolve: {
-      posts: postsResolver,
+      postWithTagsList: postsResolver,
     },
   },
   // {

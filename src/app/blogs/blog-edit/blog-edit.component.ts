@@ -81,6 +81,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
   separatorKeysCodes: number[] = [ENTER, COMMA];
   tagCtrl = new FormControl('');
   filteredTags$: Observable<Tag[]>;
+  fetchedTags: Tag[];
   allTags: Tag[];
 
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
@@ -163,20 +164,27 @@ export class BlogEditComponent implements OnInit, OnDestroy {
             verticalPosition: this.verticalPosition,
             duration: 1000,
           });
+
+          this.fetchAllTags();
         }
       });
-
-    this.fetchAllTags();
   }
 
-  add(event: MatChipInputEvent): void {
+  async add(event: MatChipInputEvent): Promise<void> {
     const value = (event.value || '').trim();
 
     // Add our tag
-    if (value) {
-      // TODO: Call BE to save new tag in DB
-
-      this.tags.push({ id: null, name: value });
+    if (
+      value &&
+      !this.fetchedTags.find(
+        (t) => t.name.toLocaleLowerCase() == value.toLocaleLowerCase()
+      )
+    ) {
+      const tag = await this.addNewTag({ id: null, name: value });
+      if (tag) {
+        this.tags.push(tag);
+        this.fetchAllTags();
+      }
     }
 
     // Clear the input value
@@ -189,12 +197,15 @@ export class BlogEditComponent implements OnInit, OnDestroy {
     const index = this.tags.indexOf(tag);
     if (index >= 0) {
       this.tags.splice(index, 1);
+      this.syncAllTags();
       this.announcer.announce(`Removed ${tag.name}`);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
+    // this.allTags.splice(this.allTags.indexOf(event.option.value), 1);
     this.tags.push(event.option.value);
+    this.syncAllTags();
     this.tagInput.nativeElement.value = '';
     this.tagCtrl.setValue(null);
   }
@@ -208,24 +219,75 @@ export class BlogEditComponent implements OnInit, OnDestroy {
     );
   }
 
-  fetchAllTags() {
-    // TODO: Fetch tags from BE.
+  syncAllTags() {
+    this.allTags = this.fetchedTags.filter(
+      (tag) => !this.tags.map((t) => t.name).includes(tag.name)
+    );
 
-    this.tagsService.findAll()
-    .pipe(
-      catchError(err => {
-        console.log({err});
-        return observableOf(null)
-      })
-    )
-    .subscribe(tags => {
-      if (tags == null) {
-        console.error('Tags fetch failed..');
-      }
-      else {
-        this.allTags = tags
-      }
-    })
+    this.tagCtrl.setValue('');
+  }
+
+  async addNewTag(tag: Tag): Promise<Tag> {
+    this.isSavingResults = true;
+    let newTag = null;
+    try {
+      newTag = await this.tagsService.newTag(tag);
+      this.isSavingResults = false;
+      this._snackbar.open('Save new tag completed successfully!', 'Success', {
+        // panelClass: ['alert', 'alert-success'],
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+        duration: 1000,
+      });
+    } catch (err) {
+      this.isSavingResults = false;
+      console.error('Post new tag failed with error : ' + JSON.stringify(err));
+      this._snackbar.open('Error occured in saving new Tag!', 'Failure', {
+        // panelClass: ['alert', 'alert-failure'],
+        horizontalPosition: this.horizontalPosition,
+        verticalPosition: this.verticalPosition,
+      });
+    }
+
+    return newTag;
+  }
+
+  fetchAllTags() {
+    this.isLoadingResults = true;
+
+    this.tagsService
+      .findAll()
+      .pipe(
+        catchError((err) => {
+          console.error(
+            'FindAll tags failed with error : ' + JSON.stringify(err)
+          );
+          return observableOf(null);
+        })
+      )
+      .subscribe((tags: Tag[]) => {
+        this.isLoadingResults = false;
+        if (tags == null) {
+          console.error('Tags fetch failed..');
+
+          this._snackbar.open('Error occured in loading Tags!', 'Failure', {
+            // panelClass: ['alert', 'alert-failure'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        } else {
+          // this.allTags = tags;
+          this.fetchedTags = tags;
+          this.syncAllTags();
+
+          this._snackbar.open('Load tags completed successfully!', 'Success', {
+            // panelClass: ['alert', 'alert-success'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 1000,
+          });
+        }
+      });
 
     // this.allTags = [
     //   {
@@ -276,7 +338,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
     console.log(`saving post : ${JSON.stringify(this.post)}`);
     this.isSavingResults = true;
     this.saveSubscription = this.service
-      .save(this.post)
+      .save({ post: this.post, tags: this.tags })
       .pipe(
         catchError((err) => {
           console.log('Save failed with error: ' + JSON.stringify(err));
@@ -296,7 +358,7 @@ export class BlogEditComponent implements OnInit, OnDestroy {
             verticalPosition: this.verticalPosition,
           });
         } else {
-          this.post = p;
+          this.post = p.post;
           // this.feedback = {
           //   type: 'success',
           //   message: 'Save completed successfully!',

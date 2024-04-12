@@ -5,11 +5,12 @@
     color="accent"
     class="category-button"
     [style.height]="btnHeight"
-    [ngStyle]="{
-      'border-block-end': btnBorderBottom ? 'revert' : '',
-      'border-block-color': 'red',
-      'border-bottom-width': 'medium'
+    [ngClass]="{
+      'button-border-bottom': btnBorderBottomId
+        ? btnBorderBottomId == item.id
+        : btnBorderBottom
     }"
+    (click)="navigateTo(item.id)"
   >
     @if (btnHeight) {<small>
       {{ item.name }}
