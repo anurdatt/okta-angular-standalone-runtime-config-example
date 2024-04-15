@@ -44,7 +44,7 @@
               <mat-icon>thumb_up</mat-icon>
             </button>
             <span class="action-count"><small>100</small></span>
-            <button mat-button>
+            <button mat-button (click)="scrollTo('commentz')">
               <mat-icon>comment</mat-icon>
             </button>
             <span class="action-count"><small>15</small></span>
@@ -70,40 +70,79 @@
       ></p> -->
       <p [innerHTML]="safeContent$.asObservable() | async"></p>
     </mat-card-content>
+    @if (postWithTags.tags) {
+    <div class="blog-tags">
+      <app-tag-list [tags]="postWithTags.tags"></app-tag-list>
+    </div>
+    }
+    <mat-card-header class="blog-post-header">
+      <div class="blog-post-actions">
+        <div class="actions-line">
+          <div class="action-line-left">
+            <button mat-button>
+              <mat-icon>thumb_up</mat-icon>
+            </button>
+            <span class="action-count"><small>100</small></span>
+            <button mat-button (click)="scrollTo('commentz')">
+              <mat-icon>comment</mat-icon>
+            </button>
+            <span class="action-count"><small>15</small></span>
+          </div>
+          <div class="action-line-right">
+            <button mat-button>
+              <mat-icon>share</mat-icon>
+            </button>
+            <span class="action-count"><small>50</small></span>
+
+            <button mat-button>
+              <mat-icon>bookmark</mat-icon>
+            </button>
+            <span class="action-count"><small>20</small></span>
+          </div>
+        </div>
+      </div>
+    </mat-card-header>
   </mat-card>
-  } @if (postWithTags.tags) {
-  <app-tag-list [tags]="postWithTags.tags"></app-tag-list>
-  } @if (isLoadingResults) {
-  <div class="example-loading-shade">
-    <mat-spinner></mat-spinner>
-  </div>
-  } @if (feedback) {
-  <div class="alert alert-{{ feedback.type }} m-2">
-    {{ feedback.message }}
-  </div>
   }
 
   <hr style="margin-top: 40px; width: 100%" />
   <!-- Comments Section -->
-  <section class="comments-section" #commentz>
+  <section id="commentz" class="comments-section">
     <h2 style="font-weight: bold">Comments</h2>
+
     <!-- Display comments here -->
-    <mat-list>
-      <mat-list-item
-        *ngFor="let comment of comments"
+    <!-- <mat-list> -->
+    @if (isLoadingResults) {
+    <div class="example-loading-shade">
+      <mat-spinner></mat-spinner>
+    </div>
+    } @if (feedback) {
+    <div class="alert alert-{{ feedback.type }} m-2">
+      {{ feedback.message }}
+    </div>
+    } @if(comments) {
+    <!-- <mat-list-item
+        *ngFor="let nestedComment of comments"
         style="margin-bottom: 10px"
       >
         <mat-card>
           <div mat-line>
             <small
-              ><strong>{{ comment.author }}</strong> on
-              {{ comment.date }}</small
+              ><strong>{{ nestedComment.comment.author }}</strong> on
+              {{ nestedComment.comment.date }}</small
             >
           </div>
-          <div mat-line>{{ comment.text }}</div>
+          <div mat-line>{{ nestedComment.comment.text }}</div>
         </mat-card>
-      </mat-list-item>
-    </mat-list>
+      </mat-list-item> -->
+    <div class="comments">
+      <app-comment
+        *ngFor="let comment of comments"
+        [comment]="comment"
+      ></app-comment>
+    </div>
+    }
+    <!-- </mat-list> -->
 
     <hr />
     <!-- Add comment form -->
@@ -111,7 +150,7 @@
       <h3 style="font-weight: bold">Add a Comment</h3>
       <form>
         <mat-form-field style="width: 100%">
-          <mat-label>Your Name</mat-label>
+          <!-- <mat-label>Your Name</mat-label> -->
           <input
             matInput
             placeholder="Your Name"
@@ -121,11 +160,11 @@
           />
         </mat-form-field>
         <mat-form-field style="width: 100%">
-          <mat-label>Your Comment</mat-label>
+          <!-- <mat-label>Your Comment</mat-label> -->
           <textarea
             matInput
             placeholder="Your Comment"
-            rows="3"
+            rows="2"
             [(ngModel)]="newComment.text"
             name="comment"
             required
