@@ -11,11 +11,23 @@ import {
 } from '@angular/material/snack-bar';
 import { of as observableOf, Subscription } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-tags',
   standalone: true,
-  imports: [RouterLink, CommonModule, TagListComponent],
+  imports: [
+    RouterLink, 
+    CommonModule, 
+    TagListComponent, 
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule, 
+    MatIconModule
+  ],
   templateUrl: './tags.component.html',
   styleUrl: './tags.component.scss',
 })
