@@ -69,8 +69,8 @@ export class AppComponent {
 
   @HostListener('window:scroll', ['$event'])
   OnScroll($event: any) {
-    console.log('Scroll event : ' + JSON.stringify($event));
-    console.log('window scrol top = ' + window.scrollY);
+    // console.log('Scroll event : ' + JSON.stringify($event));
+    // console.log('window scrol top = ' + window.scrollY);
     this.scrollService.scrollPosition$.next(window.scrollY);
   }
 

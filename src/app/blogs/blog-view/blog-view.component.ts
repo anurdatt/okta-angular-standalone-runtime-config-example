@@ -5,10 +5,8 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { toHTML, NgxEditorModule } from 'ngx-editor';
-import { Post } from '../model/post';
 import { MatCardModule } from '@angular/material/card';
 import schema from '../blog-edit/ngxeditor-schema';
 import { BlogUtil } from '../util/BlogUtil';
@@ -16,10 +14,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 hljs.registerLanguage('javascript', javascript);
-import { BehaviorSubject, Subscription, of as obeservableOf } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { BehaviorSubject, Subscription} from 'rxjs';
 import { CommonModule } from '@angular/common';
-import { Comment } from '../../shared/comments/comment';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,14 +27,7 @@ import { ScrollService } from '../../shared/scroll/scroll.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { PostWithTags } from '../model/post-with-tags';
 import { TagListComponent } from '../../tags/tag-list/tag-list.component';
-import { CommentsService } from '../../shared/comments/comments.service';
-import { NestedComment } from '../../shared/comments/nested-comment';
-import {
-  MatSnackBar,
-  MatSnackBarHorizontalPosition,
-  MatSnackBarVerticalPosition,
-} from '@angular/material/snack-bar';
-import { CommentComponent } from '../../shared/comments/comment/comment.component';
+import { CommentsComponent } from '../../shared/comments/comments.component';
 // import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
 
 @Component({
@@ -48,7 +37,6 @@ import { CommentComponent } from '../../shared/comments/comment/comment.componen
     RouterLink,
     CommonModule,
     FormsModule,
-    MatProgressSpinnerModule,
     MatCardModule,
     MatListModule,
     MatInputModule,
@@ -59,29 +47,25 @@ import { CommentComponent } from '../../shared/comments/comment/comment.componen
     MatTooltip,
     // ScrollTopButtonComponent,
     TagListComponent,
-    CommentComponent,
+    CommentsComponent,
   ],
-  providers: [CommentsService],
   templateUrl: './blog-view.component.html',
   styleUrl: './blog-view.component.scss',
 })
 export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
-  isLoadingResults = false;
-  feedback: any = {};
-
+  
   postWithTags: PostWithTags;
-
-  comments: NestedComment[];
 
   blogUtil: BlogUtil = new BlogUtil();
   safeContent$: BehaviorSubject<any> = new BehaviorSubject('');
 
-  authSubscription: Subscription;
   scrollSubscription: Subscription;
-  commentSubscription: Subscription;
+  
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
+  sourceApp="BLOG";
+  isHidden: boolean = true;
+  loadComments: boolean = false;
+  totalComments: number = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -89,8 +73,6 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     private authService: AuthService,
     public scrollService: ScrollService,
     private elementRef: ElementRef,
-    private commentsService: CommentsService,
-    private _snackbar: MatSnackBar
   ) {}
 
   toHtml(jsonString: string) {
@@ -98,73 +80,23 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     return toHTML(jsonDoc, schema);
   }
 
+  commentsLoadedCB(tc: number, sectionId: string) {
+    this.totalComments = tc;
+    
+    this.scrollTo(sectionId);
+  }
   scrollTo(sectionId: string): void {
-    const section = this.elementRef.nativeElement.querySelector(
-      `#${sectionId}`
-    );
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-    this.fetchComments(this.postWithTags.post.id);
-  }
+    this.loadComments = true;
+    this.isHidden = false;
+    setTimeout(() => {
 
-  fetchComments(id: string): void {
-    this.isLoadingResults = true;
-    try {
-      this.commentSubscription = this.commentsService
-        .findAllNested('BLOG', id)
-        .pipe(
-          catchError((err) => {
-            console.error(
-              'findAllNestedComments failed with error : ' + JSON.stringify(err)
-            );
-            return obeservableOf(null);
-          })
-        )
-        .subscribe((nestedComments: NestedComment[]) => {
-          this.isLoadingResults = false;
-
-          if (nestedComments == null) {
-            this._snackbar.open('Error occured in loading!', 'Failure', {
-              // panelClass: ['alert', 'alert-failure'],
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-            });
-          } else {
-            this.comments = nestedComments;
-
-            this._snackbar.open('Load completed successfully!', 'Success', {
-              // panelClass: ['alert', 'alert-success'],
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-              duration: 1000,
-            });
-          }
-        });
-    } catch (err) {
-      this.isLoadingResults = false;
-      console.error({ err });
-      this._snackbar.open('Error occured in loading!', 'Failure', {
-        // panelClass: ['alert', 'alert-failure'],
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-      });
-    }
-  }
-
-  newComment = {
-    author: 'Anonymous User',
-    text: '',
-  };
-
-  submitComment() {
-    // Implement comment submission logic here
-    console.log('Submitting comment:', this.newComment);
-    // Clear form fields after submission
-    this.newComment = {
-      author: '',
-      text: '',
-    };
+      const section = this.elementRef.nativeElement.querySelector(
+        `#${sectionId}`
+      );
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
   }
 
   async ngOnInit() {
@@ -189,18 +121,12 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     // });
     // }, 5000);
 
-    this.authSubscription = this.authService.isAuthenticated$.subscribe(
-      async (authenticated) => {
-        if (authenticated) {
-          this.newComment.author = await this.authService.getUserFullname();
-        }
-      }
-    );
+    
 
     this.scrollSubscription = this.scrollService
       .getScrollPosition()
       .subscribe((p) => {
-        console.log('From BlogView - scroll position = ' + p.toString());
+        // console.log('From BlogView - scroll position = ' + p.toString());
       });
   }
 
@@ -218,8 +144,6 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnDestroy(): void {
-    this.authSubscription?.unsubscribe();
     this.scrollSubscription?.unsubscribe();
-    this.commentSubscription?.unsubscribe();
   }
 }

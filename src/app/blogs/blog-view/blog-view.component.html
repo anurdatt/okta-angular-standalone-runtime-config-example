@@ -103,83 +103,24 @@
       </div>
     </mat-card-header>
   </mat-card>
-  }
+  
 
   <hr style="margin-top: 40px; width: 100%" />
   <!-- Comments Section -->
   <section id="commentz" class="comments-section">
-    <h2 style="font-weight: bold">Comments</h2>
-
-    <!-- Display comments here -->
-    <!-- <mat-list> -->
-    @if (isLoadingResults) {
-    <div class="example-loading-shade">
-      <mat-spinner></mat-spinner>
+    <div style="display: flex; justify-content: space-between;">
+      <h2 style="font-weight: bold; margin-right: 20px;">Comments ({{totalComments}})</h2>
+      @if(isHidden) {
+        <button mat-button color="primary" style="width: fit-content;" 
+        (click)="scrollTo('commentz')">Show Comments</button>
+      } @else {
+        <button mat-button color="primary" 
+        (click)="isHidden=true">Hide Comments</button>
+      }
     </div>
-    } @if (feedback) {
-    <div class="alert alert-{{ feedback.type }} m-2">
-      {{ feedback.message }}
-    </div>
-    } @if(comments) {
-    <!-- <mat-list-item
-        *ngFor="let nestedComment of comments"
-        style="margin-bottom: 10px"
-      >
-        <mat-card>
-          <div mat-line>
-            <small
-              ><strong>{{ nestedComment.comment.author }}</strong> on
-              {{ nestedComment.comment.date }}</small
-            >
-          </div>
-          <div mat-line>{{ nestedComment.comment.text }}</div>
-        </mat-card>
-      </mat-list-item> -->
-    <div class="comments">
-      <app-comment
-        *ngFor="let comment of comments"
-        [comment]="comment"
-      ></app-comment>
-    </div>
-    }
-    <!-- </mat-list> -->
-
-    <hr />
-    <!-- Add comment form -->
-    <div class="add-comment-form">
-      <h3 style="font-weight: bold">Add a Comment</h3>
-      <form>
-        <mat-form-field style="width: 100%">
-          <!-- <mat-label>Your Name</mat-label> -->
-          <input
-            matInput
-            placeholder="Your Name"
-            [(ngModel)]="newComment.author"
-            name="author"
-            required
-          />
-        </mat-form-field>
-        <mat-form-field style="width: 100%">
-          <!-- <mat-label>Your Comment</mat-label> -->
-          <textarea
-            matInput
-            placeholder="Your Comment"
-            rows="2"
-            [(ngModel)]="newComment.text"
-            name="comment"
-            required
-          ></textarea>
-        </mat-form-field>
-        <button
-          class="comment-submit"
-          mat-raised-button
-          color="primary"
-          click="submitComment()"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+    <app-comments *ngIf="loadComments" [sourceApp]="sourceApp"
+    [sourceId]="postWithTags.post.id" [isHidden]="isHidden" [ngClass]="{'hide-comments': isHidden}"
+    (commentsLoaded)="commentsLoadedCB($event, 'commentz')"></app-comments>
   </section>
   <!-- <app-scroll-top-button></app-scroll-top-button> -->
   <button
@@ -194,4 +135,8 @@
   >
     👆
   </button>
+}
+<div style="height: 100px;">
+
+</div>
 </div>
