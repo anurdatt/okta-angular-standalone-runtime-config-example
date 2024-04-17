@@ -103,24 +103,37 @@
       </div>
     </mat-card-header>
   </mat-card>
-  
 
   <hr style="margin-top: 40px; width: 100%" />
   <!-- Comments Section -->
   <section id="commentz" class="comments-section">
-    <div style="display: flex; justify-content: space-between;">
-      <h2 style="font-weight: bold; margin-right: 20px;">Comments ({{totalComments}})</h2>
+    <div style="display: flex; justify-content: space-between">
+      <h2 style="font-weight: bold; margin-right: 20px">
+        Comments ({{ totalComments }})
+      </h2>
       @if(isHidden) {
-        <button mat-button color="primary" style="width: fit-content;" 
-        (click)="scrollTo('commentz')">Show Comments</button>
+      <button
+        mat-button
+        color="primary"
+        style="width: fit-content"
+        (click)="scrollTo('commentz')"
+      >
+        Show Comments
+      </button>
       } @else {
-        <button mat-button color="primary" 
-        (click)="isHidden=true">Hide Comments</button>
+      <button mat-button color="primary" (click)="isHidden = true">
+        Hide Comments
+      </button>
       }
     </div>
-    <app-comments *ngIf="loadComments" [sourceApp]="sourceApp"
-    [sourceId]="postWithTags.post.id" [isHidden]="isHidden" [ngClass]="{'hide-comments': isHidden}"
-    (commentsLoaded)="commentsLoadedCB($event, 'commentz')"></app-comments>
+    <app-comments
+      *ngIf="loadComments"
+      [sourceApp]="sourceApp"
+      [sourceId]="postWithTags.post.id"
+      [isHidden]="isHidden"
+      [ngClass]="{ 'hide-comments': isHidden }"
+      (commentsLoaded)="commentsLoadedCB($event, 'commentz')"
+    ></app-comments>
   </section>
   <!-- <app-scroll-top-button></app-scroll-top-button> -->
   <button
@@ -135,8 +148,6 @@
   >
     👆
   </button>
-}
-<div style="height: 100px;">
-
-</div>
+  }
+  <div style="height: 100px"></div>
 </div>

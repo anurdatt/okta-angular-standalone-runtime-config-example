@@ -1,5 +1,18 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarModule, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarModule,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 import { Subscription, of as observableOf } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { CommentsService } from './comments.service';
@@ -13,6 +26,8 @@ import { AuthService } from '../okta/auth.service';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { Comment } from './comment';
 
 @Component({
   selector: 'app-comments',
@@ -26,25 +41,22 @@ import { MatInputModule } from '@angular/material/input';
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
-    CommentComponent
+    MatCardModule,
+    CommentComponent,
   ],
-  providers: [
-    CommentsService
-  ],
+  providers: [CommentsService],
   templateUrl: './comments.component.html',
-  styleUrl: './comments.component.scss'
+  styleUrl: './comments.component.scss',
 })
 export class CommentsComponent implements OnInit, OnDestroy {
+  @Input('sourceApp') sourceApp: string;
+  @Input('sourceId') sourceId: string;
 
-  @Input("sourceApp") sourceApp: string;
-  @Input("sourceId") sourceId: string;
-
-  @Input("isHidden") isHidden: boolean;
+  @Input('isHidden') isHidden: boolean;
 
   @Output() commentsLoaded = new EventEmitter<number>();
 
   comments: NestedComment[];
-
 
   isLoadingResults = false;
   feedback: any = {};
@@ -55,23 +67,25 @@ export class CommentsComponent implements OnInit, OnDestroy {
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  constructor(private authService: AuthService, 
-    private commentsService: CommentsService, private _snackbar: MatSnackBar) {
-
-  }
+  constructor(
+    private authService: AuthService,
+    private commentsService: CommentsService,
+    private _snackbar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
-    console.log("Comments initiated!");
+    console.log('Comments initiated!');
     this.authSubscription = this.authService.isAuthenticated$.subscribe(
       async (authenticated) => {
         if (authenticated) {
           this.newComment.author = await this.authService.getUserFullname();
+          this.newComment.profile_url =
+            await this.authService.getUserProfileUrl();
         }
       }
     );
     this.loadComments();
   }
-
 
   loadComments() {
     this.isLoadingResults = true;
@@ -119,7 +133,6 @@ export class CommentsComponent implements OnInit, OnDestroy {
     }
   }
 
-
   getTotalComments() {
     return 50;
   }
@@ -127,16 +140,21 @@ export class CommentsComponent implements OnInit, OnDestroy {
   newComment = {
     author: 'Anonymous User',
     text: '',
+    date: '',
+    parentId: null,
+    sourceId: '',
+    sourceApp: '',
+    profile_url: null,
   };
 
   submitComment() {
     // Implement comment submission logic here
     console.log('Submitting comment:', this.newComment);
     // Clear form fields after submission
-    this.newComment = {
-      author: '',
-      text: '',
-    };
+    // this.newComment = {
+    //   author: '',
+    //   text: '',
+    // };
   }
 
   ngOnDestroy(): void {

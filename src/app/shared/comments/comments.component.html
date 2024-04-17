@@ -1,17 +1,15 @@
-
-
-    <!-- Display comments here -->
-    <!-- <mat-list> -->
-    @if (isLoadingResults) {
-    <div class="example-loading-shade">
-      <mat-spinner></mat-spinner>
-    </div>
-    } @if (feedback) {
-    <div class="alert alert-{{ feedback.type }} m-2">
-      {{ feedback.message }}
-    </div>
-    } @if(comments) {
-    <!-- <mat-list-item
+<!-- Display comments here -->
+<!-- <mat-list> -->
+@if (isLoadingResults) {
+<div class="example-loading-shade">
+  <mat-spinner></mat-spinner>
+</div>
+} @if (feedback) {
+<div class="alert alert-{{ feedback.type }} m-2">
+  {{ feedback.message }}
+</div>
+} @if(comments) {
+<!-- <mat-list-item
         *ngFor="let nestedComment of comments"
         style="margin-bottom: 10px"
       >
@@ -25,22 +23,38 @@
           <div mat-line>{{ nestedComment.comment.text }}</div>
         </mat-card>
       </mat-list-item> -->
-    <div class="comments">
-      <app-comment
-        *ngFor="let comment of comments"
-        [comment]="comment"
-      ></app-comment>
-    </div>
-    }
-    <!-- </mat-list> -->
+<div class="comments">
+  <app-comment
+    *ngFor="let comment of comments"
+    [comment]="comment"
+  ></app-comment>
+</div>
+}
+<!-- </mat-list> -->
 
-    <hr />
-    <!-- Add comment form -->
+<hr />
+<!-- Add comment form -->
+<mat-card>
+  <mat-card-header>
+    <div class="comment-post-meta">
+      <div mat-card-avatar class="comment-author-avatar" mat-card-sm-image>
+        @if (newComment.profile_url) {
+        <img [src]="newComment.profile_url" />
+        } @else {
+        <img src="../../../assets/defaulut-avatar.jpg" />
+        }
+      </div>
+      <div class="comment-author-time">
+        <div class="comment-author">{{ newComment.author }}</div>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content style="padding-top: 16px">
     <div class="add-comment-form">
-      <h3 style="font-weight: bold">Add a Comment</h3>
-      <form>
-        <mat-form-field style="width: 100%">
-          <!-- <mat-label>Your Name</mat-label> -->
+      <!-- <h3 style="font-weight: bold">Add a Comment</h3> -->
+      <form style="width: -webkit-fill-available">
+        <!-- <mat-form-field style="width: 100%">
+          <mat-label>Your Name</mat-label>
           <input
             matInput
             placeholder="Your Name"
@@ -48,7 +62,7 @@
             name="author"
             required
           />
-        </mat-form-field>
+        </mat-form-field> -->
         <mat-form-field style="width: 100%">
           <!-- <mat-label>Your Comment</mat-label> -->
           <textarea
@@ -70,3 +84,5 @@
         </button>
       </form>
     </div>
+  </mat-card-content>
+</mat-card>

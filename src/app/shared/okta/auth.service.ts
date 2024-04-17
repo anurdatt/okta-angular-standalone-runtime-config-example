@@ -117,4 +117,8 @@ export class AuthService implements OnDestroy {
   public async getUserFullname(): Promise<string> {
     return (await this.oktaAuth.getUser()).name;
   }
+
+  public async getUserProfileUrl(): Promise<string> {
+    return (await this.oktaAuth.getUser())['profile'].toString();
+  }
 }

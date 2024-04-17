@@ -1,10 +1,18 @@
 <div class="comment-card">
   <div class="comment-header">
+    @if (comment.comment.author.startsWith("Anuran")) {
     <img
       src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
       alt="User Avatar"
       class="avatar"
     />
+    }@else {
+    <img
+      src="../../../../assets/defaulut-avatar.jpg"
+      alt="User Avatar"
+      class="avatar"
+    />
+    }
     <div class="header-text">
       <span class="author">{{ comment.comment.author }}</span>
       <span class="timestamp">{{ comment.comment.date }}</span>
