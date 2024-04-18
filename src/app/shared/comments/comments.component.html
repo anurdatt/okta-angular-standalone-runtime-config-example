@@ -1,3 +1,26 @@
+<!-- Add comment form -->
+<mat-card>
+    <mat-card-header>
+      <div class="comment-post-meta">
+        <div mat-card-avatar class="comment-author-avatar" mat-card-sm-image>
+          @if (newComment.profile_url) {
+          <img [src]="newComment.profile_url" />
+          } @else {
+          <img src="../../../assets/defaulut-avatar.jpg" />
+          }
+        </div>
+        <div class="comment-author-time">
+          <div class="comment-author">{{ newComment.author }}</div>
+        </div>
+      </div>
+    </mat-card-header>
+    <mat-card-content style="padding-top: 16px">
+      <app-comment-form [parentId]="sourceId" [placeHolderText]="'Your Comment on post..'" (result)="addComment($event)"></app-comment-form>
+    </mat-card-content>
+</mat-card>  
+
+  <!-- <hr /> -->
+
 <!-- Display comments here -->
 <!-- <mat-list> -->
 @if (isLoadingResults) {
@@ -23,7 +46,7 @@
           <div mat-line>{{ nestedComment.comment.text }}</div>
         </mat-card>
       </mat-list-item> -->
-<div class="comments">
+<div class="comments" style="margin-top: 20px; margin-bottom: 20px;">
   <app-comment
     *ngFor="let comment of comments"
     [comment]="comment"
@@ -32,9 +55,9 @@
 }
 <!-- </mat-list> -->
 
-<hr />
+<!-- <hr /> -->
 <!-- Add comment form -->
-<mat-card>
+<!-- <mat-card>
   <mat-card-header>
     <div class="comment-post-meta">
       <div mat-card-avatar class="comment-author-avatar" mat-card-sm-image>
@@ -50,39 +73,6 @@
     </div>
   </mat-card-header>
   <mat-card-content style="padding-top: 16px">
-    <div class="add-comment-form">
-      <!-- <h3 style="font-weight: bold">Add a Comment</h3> -->
-      <form style="width: -webkit-fill-available">
-        <!-- <mat-form-field style="width: 100%">
-          <mat-label>Your Name</mat-label>
-          <input
-            matInput
-            placeholder="Your Name"
-            [(ngModel)]="newComment.author"
-            name="author"
-            required
-          />
-        </mat-form-field> -->
-        <mat-form-field style="width: 100%">
-          <!-- <mat-label>Your Comment</mat-label> -->
-          <textarea
-            matInput
-            placeholder="Your Comment"
-            rows="2"
-            [(ngModel)]="newComment.text"
-            name="comment"
-            required
-          ></textarea>
-        </mat-form-field>
-        <button
-          class="comment-submit"
-          mat-raised-button
-          color="primary"
-          click="submitComment()"
-        >
-          Submit
-        </button>
-      </form>
-    </div>
+    <app-comment-form [text]="newComment.text" (result)="addComment($event, sourceId)"></app-comment-form>
   </mat-card-content>
-</mat-card>
+</mat-card> -->
