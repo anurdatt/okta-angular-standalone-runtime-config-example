@@ -12,7 +12,12 @@
         postWithTags.post.title
       }}</mat-card-title>
       <div class="blog-post-meta">
-        <div mat-card-avatar class="post-avatar" mat-card-sm-image>
+        <div
+          mat-card-avatar
+          class="post-avatar"
+          mat-card-sm-image
+          style="border-top-left-radius: 50%; border-top-right-radius: 50%"
+        >
           @if (postWithTags.post.author.startsWith("Anuran")) {
           <img
             src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"

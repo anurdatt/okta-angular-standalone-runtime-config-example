@@ -13,7 +13,12 @@
 }
 <mat-card class="post-card" *ngFor="let postWithTags of postWithTagsList">
   <mat-card-header class="card-header" (click)="openPost(postWithTags.post.id)">
-    <div mat-card-avatar class="post-avatar" mat-card-sm-image>
+    <div
+      mat-card-avatar
+      class="post-avatar"
+      mat-card-sm-image
+      style="border-top-left-radius: 50%; border-top-right-radius: 50%"
+    >
       @if (postWithTags.post.author.startsWith("Anuran")) {
       <img
         src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
@@ -45,7 +50,7 @@
     </div>
     }
   </mat-card-content>
-  <mat-card-actions class="post-actions" style="justify-content: space-between;">
+  <mat-card-actions class="post-actions" style="justify-content: space-between">
     <!-- <button mat-button>Read More</button> -->
 
     <span class="post-reading-time" (click)="openPost(postWithTags.post.id)"
