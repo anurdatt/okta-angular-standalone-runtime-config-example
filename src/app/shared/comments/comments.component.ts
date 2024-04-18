@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   EventEmitter,
   Input,
@@ -18,31 +17,25 @@ import { catchError } from 'rxjs/operators';
 import { CommentsService } from './comments.service';
 import { CommentComponent } from './comment/comment.component';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NestedComment } from './nested-comment';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../okta/auth.service';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { Comment } from './comment';
+import { CommentFormComponent } from './comment-form/comment-form.component';
 
 @Component({
   selector: 'app-comments',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatProgressSpinnerModule,
-    MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
     MatCardModule,
     CommentComponent,
+    CommentFormComponent
   ],
   providers: [CommentsService],
   templateUrl: './comments.component.html',
@@ -137,6 +130,10 @@ export class CommentsComponent implements OnInit, OnDestroy {
     return 50;
   }
 
+  addComment(comment: Comment) {
+    console.log(`Received comment = ${comment}`);
+  }
+
   newComment = {
     author: 'Anonymous User',
     text: '',
@@ -147,16 +144,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     profile_url: null,
   };
 
-  submitComment() {
-    // Implement comment submission logic here
-    console.log('Submitting comment:', this.newComment);
-    // Clear form fields after submission
-    // this.newComment = {
-    //   author: '',
-    //   text: '',
-    // };
-  }
-
+  
   ngOnDestroy(): void {
     this.commentSubscription?.unsubscribe();
     this.authSubscription?.unsubscribe();

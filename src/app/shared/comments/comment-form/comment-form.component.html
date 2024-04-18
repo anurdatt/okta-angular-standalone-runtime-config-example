@@ -1,0 +1,35 @@
+<div class="add-comment-form">
+    <!-- <h3 style="font-weight: bold">Add a Comment</h3> -->
+    <form #cf="ngForm" style="width: -webkit-fill-available">
+      <!-- <mat-form-field style="width: 100%">
+        <mat-label>Your Name</mat-label>
+        <input
+          matInput
+          placeholder="Your Name"
+          [(ngModel)]="newComment.author"
+          name="author"
+          required
+        />
+      </mat-form-field> -->
+      <mat-form-field style="width: 100%">
+        <!-- <mat-label>Your Comment</mat-label> -->
+        <textarea
+          matInput
+          [placeholder]="placeHolderText"
+          rows="2"
+          [(ngModel)]="comment.text"
+          name="comment"
+          required
+        ></textarea>
+      </mat-form-field>
+      <button
+        class="comment-submit"
+        mat-raised-button
+        color="primary"
+        (click)="submitComment()"
+        [disabled]="!cf?.form.valid"
+      >
+        Submit
+      </button>
+    </form>
+  </div>
