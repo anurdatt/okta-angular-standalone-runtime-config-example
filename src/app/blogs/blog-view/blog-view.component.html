@@ -135,8 +135,7 @@
       *ngIf="loadComments"
       [sourceApp]="sourceApp"
       [sourceId]="postWithTags.post.id"
-      [isHidden]="isHidden"
-      [ngClass]="{ 'hide-comments': isHidden }"
+      [ngClass]="{ hidden: isHidden }"
       (commentsLoaded)="commentsLoadedCB($event, 'commentz')"
     ></app-comments>
   </section>

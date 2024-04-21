@@ -1,7 +1,7 @@
 <div class="add-comment-form">
-    <!-- <h3 style="font-weight: bold">Add a Comment</h3> -->
-    <form #cf="ngForm" style="width: -webkit-fill-available">
-      <!-- <mat-form-field style="width: 100%">
+  <!-- <h3 style="font-weight: bold">Add a Comment</h3> -->
+  <form #cf="ngForm" style="width: -webkit-fill-available">
+    <!-- <mat-form-field style="width: 100%">
         <mat-label>Your Name</mat-label>
         <input
           matInput
@@ -11,25 +11,43 @@
           required
         />
       </mat-form-field> -->
-      <mat-form-field style="width: 100%">
-        <!-- <mat-label>Your Comment</mat-label> -->
-        <textarea
-          matInput
-          [placeholder]="placeHolderText"
-          rows="2"
-          [(ngModel)]="comment.text"
-          name="comment"
-          required
-        ></textarea>
-      </mat-form-field>
+    <mat-form-field style="width: 100%">
+      <!-- <mat-label>Your Comment</mat-label> -->
+      <textarea
+        matInput
+        [placeholder]="placeHolderText"
+        rows="2"
+        [(ngModel)]="comment.text"
+        name="comment"
+        required
+        style="
+          color: black;
+          background-color: transparent;
+          font: 400 14px / 20px Roboto, sans-serif;
+          letter-spacing: 0.0178571429em;
+        "
+      ></textarea>
+    </mat-form-field>
+    <div class="add-comment-form-action-buttons">
+      <button
+        class="comment-cancel"
+        mat-button
+        color="primary"
+        type="button"
+        (click)="cancelComment(cf)"
+      >
+        Cancel
+      </button>
       <button
         class="comment-submit"
-        mat-raised-button
+        mat-flat-button
         color="primary"
-        (click)="submitComment()"
+        type="button"
+        (click)="submitComment(cf)"
         [disabled]="!cf?.form.valid"
       >
         Submit
       </button>
-    </form>
-  </div>
+    </div>
+  </form>
+</div>

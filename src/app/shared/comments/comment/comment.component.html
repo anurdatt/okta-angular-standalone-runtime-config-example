@@ -22,14 +22,42 @@
   <div class="comment-content">
     {{ comment.comment.text }}
   </div>
-  
+
   <div class="comment-footer" style="align-items: center">
     <button mat-button color="primary">
       <mat-icon>thumb_up</mat-icon>
       <span><small>100</small></span>
     </button>
 
-    <button mat-flat-button color="primary" class="action-btn">
+    <button
+      mat-button
+      *ngIf="comment.comments.length > 0"
+      color="primary"
+      class="action-btn"
+      (click)="onClickShowHideReplies()"
+    >
+      <!-- <button mat-icon-button color="accent"> -->
+      <!-- <a mat-list-item> -->
+      <mat-icon>comment</mat-icon>
+
+      <!-- </a> -->
+      <!-- </button> -->
+      @if (isChildCommentsHidden) {
+      <span
+        >{{ comment.comments.length + " " }}
+        @if (comment.comments.length > 1) { Replies } @else { Reply }
+      </span>
+      } @else {
+      <span>Hide Replies</span>
+      }
+    </button>
+
+    <button
+      mat-flat-button
+      color="primary"
+      class="action-btn"
+      (click)="onClickReply()"
+    >
       <!-- <button mat-icon-button color="accent"> -->
       <!-- <a mat-list-item> -->
       <mat-icon>reply</mat-icon>
@@ -40,15 +68,30 @@
     </button>
     <!-- <button mat-flat-button color="primary">Share</button> -->
   </div>
-  <mat-card>
-    <mat-card-content style="padding-top: 16px">
-      <app-comment-form [parentId]="comment.comment.id" [placeHolderText]="'Replying to ' + comment.comment.author"></app-comment-form>
-    </mat-card-content>
-  </mat-card>
-  <div class="comment-children">
-    <app-comment
-      *ngFor="let child of comment.comments"
-      [comment]="child"
-    ></app-comment>
+  <div class="comment-sub">
+    <mat-card
+      *ngIf="replying"
+      class="add-comment"
+      [ngClass]="{ hidden: isCommentFormHidden }"
+    >
+      <mat-card-content style="padding-top: 16px; padding-left: 0px">
+        <app-comment-form
+          [parentId]="comment.comment.id"
+          [placeHolderText]="'Replying to ' + comment.comment.author"
+          (result)="transmitCommentStart($event)"
+        ></app-comment-form>
+      </mat-card-content>
+    </mat-card>
+    <div
+      class="comment-children"
+      *ngIf="!isChildCommentsHidden"
+      [ngClass]="{ hidden: isChildCommentsHidden }"
+    >
+      <app-comment
+        *ngFor="let child of comment.comments; trackBy: trackByFn"
+        [comment]="child"
+        (result)="transmitComment($event)"
+      ></app-comment>
+    </div>
   </div>
 </div>

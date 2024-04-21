@@ -14,7 +14,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
 hljs.registerLanguage('javascript', javascript);
-import { BehaviorSubject, Subscription} from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatListModule } from '@angular/material/list';
@@ -53,16 +53,14 @@ import { CommentsComponent } from '../../shared/comments/comments.component';
   styleUrl: './blog-view.component.scss',
 })
 export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
-  
   postWithTags: PostWithTags;
 
   blogUtil: BlogUtil = new BlogUtil();
   safeContent$: BehaviorSubject<any> = new BehaviorSubject('');
 
   scrollSubscription: Subscription;
-  
 
-  sourceApp="BLOG";
+  sourceApp = 'BLOG';
   isHidden: boolean = true;
   loadComments: boolean = false;
   totalComments: number = 0;
@@ -72,7 +70,7 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     public sanitizer: DomSanitizer,
     private authService: AuthService,
     public scrollService: ScrollService,
-    private elementRef: ElementRef,
+    private elementRef: ElementRef
   ) {}
 
   toHtml(jsonString: string) {
@@ -82,14 +80,13 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   commentsLoadedCB(tc: number, sectionId: string) {
     this.totalComments = tc;
-    
-    this.scrollTo(sectionId);
+    this.isHidden = false;
+    // this.scrollTo(sectionId);
   }
   scrollTo(sectionId: string): void {
     this.loadComments = true;
     this.isHidden = false;
     setTimeout(() => {
-
       const section = this.elementRef.nativeElement.querySelector(
         `#${sectionId}`
       );
@@ -120,8 +117,6 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     //   });
     // });
     // }, 5000);
-
-    
 
     this.scrollSubscription = this.scrollService
       .getScrollPosition()

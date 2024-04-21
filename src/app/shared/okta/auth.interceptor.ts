@@ -8,7 +8,9 @@ export const authInterceptor: HttpInterceptorFn = (
   next,
   oktaAuth = inject(OKTA_AUTH)
 ) => {
-  let request = req;
+  let request = req.clone({
+    setHeaders: { Authorization: `Bearer X` },
+  });
   const allowedOrigins = [environment.apiUrl, environment.blogsApiUrl];
   const accessToken = oktaAuth.getAccessToken();
   if (

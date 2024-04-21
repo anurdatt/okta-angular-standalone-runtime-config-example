@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NestedComment } from './nested-comment';
 import { environment } from '../../../environments/environment';
+import { Comment } from './comment';
 
 const headers = new HttpHeaders()
   .set('Accept', 'application/json')
@@ -27,5 +28,43 @@ export class CommentsService {
 
     const params = new HttpParams().set('sourceId', sourceId);
     return this.http.get<NestedComment[]>(url, { headers, params });
+  }
+
+  deleteCommentById(sourceApp: string, id: string): Observable<any> {
+    let url = null;
+    if (sourceApp === 'BLOG') {
+      url = `${environment.blogsApiUrl}/api/comments/${id}`;
+    }
+    if (url == null)
+      throw new Error('Invalid argument passed for sourceApp !!');
+
+    const params = new HttpParams();
+    return this.http.delete<any>(url, { headers, params });
+  }
+
+  save(entity: Comment): Observable<Comment> {
+    let url = null;
+    if (entity.id) {
+      if (entity.sourceApp === 'BLOG') {
+        url = `${environment.blogsApiUrl}/api/comments/${entity.id}`;
+      }
+      if (url == null)
+        throw new Error('Invalid argument passed for sourceApp !!');
+
+      return this.http.put<Comment>(url, entity, {
+        headers,
+        params: new HttpParams(),
+      });
+    } else {
+      if (entity.sourceApp === 'BLOG') {
+        url = `${environment.blogsApiUrl}/api/comments`;
+      }
+      if (url == null)
+        throw new Error('Invalid argument passed for sourceApp !!');
+      return this.http.post<Comment>(url, entity, {
+        headers,
+        params: new HttpParams(),
+      });
+    }
   }
 }

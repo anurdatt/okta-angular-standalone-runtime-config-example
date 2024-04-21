@@ -38,9 +38,9 @@
 // }
 
 .comment-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px 0 0 15px;
+  // border: 1px solid #ddd;
+  // border-radius: 8px;
+  padding: 15px 0 0 0px;
   margin-bottom: 15px;
 }
 
@@ -74,6 +74,7 @@
 
 .comment-content {
   margin-bottom: 10px;
+  font-family: "Roboto", sans-serif;
 }
 
 .comment-footer {
@@ -98,7 +99,21 @@
   height: 100%;
 }
 
+.comment-sub {
+  border-left: 1px solid #ddd;
+  margin-left: 25px;
+}
+
 .comment-children {
-  margin-left: 30px; /* Indent nested comments */
+  margin-left: 25px; /* Indent nested comments */
   // margin-top: 15px;
+}
+
+.add-comment {
+  margin-left: 15px; /* Indent add commment form */
+  margin-bottom: 15px;
+}
+
+.hidden {
+  display: none;
 }

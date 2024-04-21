@@ -1,32 +1,45 @@
 <!-- Add comment form -->
 <mat-card>
-    <mat-card-header>
-      <div class="comment-post-meta">
-        <div mat-card-avatar class="comment-author-avatar" mat-card-sm-image>
-          @if (newComment.profile_url) {
-          <img [src]="newComment.profile_url" />
-          } @else {
-          <img src="../../../assets/defaulut-avatar.jpg" />
-          }
-        </div>
-        <div class="comment-author-time">
-          <div class="comment-author">{{ newComment.author }}</div>
-        </div>
+  <mat-card-header>
+    <div class="comment-post-meta">
+      <div mat-card-avatar class="comment-author-avatar" mat-card-sm-image>
+        @if (newComment.profile_url) {
+        <img [src]="newComment.profile_url" />
+        } @else {
+        <img src="../../../assets/defaulut-avatar.jpg" />
+        }
       </div>
-    </mat-card-header>
-    <mat-card-content style="padding-top: 16px">
-      <app-comment-form [parentId]="sourceId" [placeHolderText]="'Your Comment on post..'" (result)="addComment($event)"></app-comment-form>
-    </mat-card-content>
-</mat-card>  
+      <div class="comment-author-time">
+        <div class="comment-author">{{ newComment.author }}</div>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content style="padding-top: 0px; padding-left: 0px">
+    <app-comment-form
+      [parentId]="null"
+      [placeHolderText]="'Your Comment on post..'"
+      (result)="addComment($event)"
+    ></app-comment-form>
+  </mat-card-content>
+</mat-card>
 
-  <!-- <hr /> -->
+<!-- <hr /> -->
 
 <!-- Display comments here -->
 <!-- <mat-list> -->
-@if (isLoadingResults) {
-<div class="example-loading-shade">
+@if (isLoadingResults || isSavingResults) {
+<!-- <div class="example-loading-shade">
   <mat-spinner></mat-spinner>
+</div> -->
+<div class="loading-spinner">
+  <div class="spinner"></div>
+  @if (isSavingResults) {
+  <div class="loading-message">Saving...</div>
+  } @else {
+  <div class="loading-message">Loading...</div>
+  }
 </div>
+
 } @if (feedback) {
 <div class="alert alert-{{ feedback.type }} m-2">
   {{ feedback.message }}
@@ -46,10 +59,11 @@
           <div mat-line>{{ nestedComment.comment.text }}</div>
         </mat-card>
       </mat-list-item> -->
-<div class="comments" style="margin-top: 20px; margin-bottom: 20px;">
+<div class="comments" style="margin-top: 20px; margin-bottom: 20px">
   <app-comment
-    *ngFor="let comment of comments"
+    *ngFor="let comment of comments; trackBy: trackByFn"
     [comment]="comment"
+    (result)="addComment($event)"
   ></app-comment>
 </div>
 }

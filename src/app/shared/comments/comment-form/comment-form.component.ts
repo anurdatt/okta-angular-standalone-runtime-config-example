@@ -8,14 +8,9 @@ import { Comment } from '../comment';
 @Component({
   selector: 'app-comment-form',
   standalone: true,
-  imports: [
-    FormsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-  ],
+  imports: [FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './comment-form.component.html',
-  styleUrl: './comment-form.component.scss'
+  styleUrl: './comment-form.component.scss',
 })
 export class CommentFormComponent {
   @Input('parentId') parentId: string;
@@ -25,16 +20,22 @@ export class CommentFormComponent {
 
   comment: Comment = new Comment();
 
-  submitComment() {
+  submitComment(cf) {
     // Implement comment submission logic here
-    this.comment.parentId=this.parentId;
+    this.comment.parentId = this.parentId;
     console.log('Submitting comment: ', this.comment);
+
     this.result.emit(this.comment);
     // Clear form fields after submission
-    // this.newComment = {
-    //   author: '',
-    //   text: '',
-    // };
+    cf.resetForm();
   }
 
+  cancelComment(cf) {
+    // Implement comment submission logic here
+    console.log('Canceling comment: ', this.parentId);
+
+    this.result.emit(null);
+    // Clear form fields after submission
+    cf.resetForm();
+  }
 }

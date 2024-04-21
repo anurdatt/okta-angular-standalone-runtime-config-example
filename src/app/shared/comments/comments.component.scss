@@ -32,7 +32,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background-color: #ccc;
+  border: solid 1px;
+  // background-color: #ccc;
   margin-bottom: 0;
   overflow: hidden; /* Ensure the image stays within the rounded border */
 }
@@ -49,3 +50,6 @@
   margin-left: 10px;
 }
 
+.comment-author {
+  font-weight: bold;
+}

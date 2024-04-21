@@ -1,34 +1,45 @@
 /* Styling for MatFormField */
 .mat-form-field {
-    width: 100%;
-  }
-  
-  /* Styling for form inputs */
-  input[type="text"],
-  textarea {
-    width: 100%;
-    // padding: 0 8px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-    // margin-bottom: 10px;
-  }
-  
-  /* Styling for submit button */
-  // button[type="submit"] {
-  .comment-submit {
-    width: 100%;
-    // margin-bottom: 10px;
-  }
-  
-  .add-comment-form {
-    // margin-top: 40px;
-    display: flex;
-    flex-direction: column;
-    // border-style: double;
-    background-color: beige;
-    align-items: center;
-    // width: fit-content;
-    // margin-bottom: 10px;
-  }
-  
+  width: 100%;
+}
+
+/* Styling for form inputs */
+input[type="text"],
+textarea {
+  width: 100%;
+  // padding: 0 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  // margin-bottom: 10px;
+}
+
+.add-comment-form-action-buttons {
+  width: fit-content;
+  float: right;
+  justify-content: flex-end;
+}
+/* Styling for submit button */
+// button[type="submit"] {
+.comment-submit {
+  margin-left: 10px;
+}
+
+.add-comment-form {
+  // margin-top: 40px;
+  display: flex;
+  flex-direction: column;
+  // border-style: double;
+  // background-color: beige;
+  align-items: center;
+  // width: fit-content;
+  // margin-bottom: 10px;
+}
+
+// .mat-mdc-text-field-wrapper,
+// .mdc-text-field,
+// .ng-tns-c2608167813-2,
+// .mdc-text-field--filled,
+// .mdc-text-field--no-label {
+//   background-color: transparent;
+// }
