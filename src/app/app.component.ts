@@ -1,5 +1,11 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, HostListener, inject } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
 import {
   NavigationCancel,
   NavigationEnd,
@@ -11,7 +17,7 @@ import {
 } from '@angular/router';
 import { OktaAuthStateService, OKTA_AUTH } from '@okta/okta-angular';
 import { AuthState } from '@okta/okta-auth-js';
-import { filter, map } from 'rxjs';
+import { Subscription, filter, map } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -20,6 +26,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { TrackScrollDirective } from './shared/scroll/track-scroll.directive';
 import { ScrollService } from './shared/scroll/scroll.service';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-root',
@@ -41,11 +48,14 @@ import { ScrollService } from './shared/scroll/scroll.service';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
   private oktaStateService = inject(OktaAuthStateService);
   private oktaAuth = inject(OKTA_AUTH);
 
-  menuColor = 'red';
+  routerEventSubscription: Subscription;
+  breakpointSubscription: Subscription;
+
+  handsetPortrait = false;
   public isAuthenticated$ = this.oktaStateService.authState$.pipe(
     filter((s: AuthState) => !!s),
     map((s: AuthState) => s.isAuthenticated ?? false)
@@ -53,8 +63,12 @@ export class AppComponent {
 
   loading: boolean = false;
 
-  constructor(private router: Router, private scrollService: ScrollService) {
-    this.router.events.subscribe((event) => {
+  constructor(
+    private router: Router,
+    private scrollService: ScrollService,
+    private responsive: BreakpointObserver
+  ) {
+    this.routerEventSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.loading = true;
       } else if (
@@ -72,6 +86,22 @@ export class AppComponent {
     // console.log('Scroll event : ' + JSON.stringify($event));
     // console.log('window scrol top = ' + window.scrollY);
     this.scrollService.scrollPosition$.next(window.scrollY);
+  }
+
+  ngOnInit(): void {
+    this.breakpointSubscription = this.responsive
+      .observe(Breakpoints.HandsetPortrait)
+      .subscribe((result) => {
+        this.handsetPortrait = false;
+        if (result.matches) {
+          this.handsetPortrait = true;
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.routerEventSubscription?.unsubscribe();
+    this.breakpointSubscription?.unsubscribe();
   }
 
   public async signIn(): Promise<void> {

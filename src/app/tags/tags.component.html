@@ -8,10 +8,12 @@
 <div
   class="topics-container"
   style="
-    display: -webkit-box;
-    /* display: ruby; */
+    /* display: -webkit-box; */
+    display: flex;
     justify-content: space-around;
-    padding: 10px 10px 10px 0px;
+    padding: 10px;
+    flex-direction: column;
+    align-items: center;
   "
 >
   @if (isLoadingResults) {
@@ -25,7 +27,7 @@
   }
 
   <div
-    style="/* width: 25%; */ min-width: fit-content; margin-right: 10px"
+    style="width: fit-content; min-width: fit-content; margin-bottom: 10px"
     [ngStyle]="
        // {
     //   display:
@@ -41,14 +43,13 @@
     <app-tag-list
       [tags]="[{ id: 'all-topics', name: 'All topics' }]"
       [btnBorderBottom]="!selectedTagId"
-      style="margin-right: 5px"
     ></app-tag-list>
   </div>
   <div
     style="
       /* padding-right: 10px; */
-      /* width: 75%; */
-      max-width: 65%;
+      width: -webkit-fill-available;
+      /* max-width: 65%; */
       white-space: nowrap;
       overflow-x: scroll;
     "
@@ -58,27 +59,39 @@
     <app-tag-list
       [tags]="fetchedTags"
       [btnBorderBottomId]="selectedTagId"
-      style="margin-right: 5px"
     ></app-tag-list>
     <!-- </div> -->
   </div>
 </div>
-<hr>
+<hr />
 <div class="bootstrap-wrapper">
   <div class="container">
-    <div class="all-topics-container" style="align-items: center; padding: 20px; width: 100%;display: flex ;flex-direction: column;">
-      <h1 style="line-height: 3.4;"><strong>Explore topics</strong> </h1>
-      
+    <div
+      class="all-topics-container"
+      style="
+        align-items: center;
+        padding: 20px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+      "
+    >
+      <h1 style="line-height: 3.4"><strong>Explore topics</strong></h1>
+
       <!-- <div class="example-form-field-wrapper"> -->
-        <mat-form-field class="example-form-field">
-          <mat-label></mat-label>
-          <input matInput type="text" placeholder="Search" class="example-input">
-          <button mat-button matSuffix>
-            <mat-icon>search</mat-icon>
-          </button>
-        </mat-form-field>
+      <mat-form-field class="example-form-field">
+        <mat-label></mat-label>
+        <input
+          matInput
+          type="text"
+          placeholder="Search"
+          class="example-input"
+        />
+        <button mat-button matSuffix>
+          <mat-icon>search</mat-icon>
+        </button>
+      </mat-form-field>
       <!-- </div> -->
-      
     </div>
   </div>
 </div>
