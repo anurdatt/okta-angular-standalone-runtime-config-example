@@ -54,8 +54,24 @@ main {
 //   box-shadow: 0 2px 5px #0000004d;
 // }
 
+.sidenav {
+  background-color: gold;
+  margin-top: -8px;
+  margin-bottom: -8px;
+  z-index: 99;
+}
+
 mat-toolbar a {
   color: gold;
+}
+
+.toolbar-button {
+  margin: 0 10px 0 0;
+  padding: 10px;
+}
+
+.left-toolbar {
+  padding: 0 15px;
 }
 
 .header {
@@ -67,12 +83,18 @@ mat-toolbar a {
   // left: 0;
   // right: 0;
   width: 100%;
-  z-index: 99;
+  z-index: 999;
+  box-shadow: 0 2px 5px #0000004d;
 }
-.right-of-toolbar {
+.right-toolbar {
   display: flex;
   justify-content: flex-end;
   width: 100%;
+}
+
+.active {
+  background-color: #4d037a; /* Change to desired active state background color */
+  // color: #fff; /* Change to desired active state text color */
 }
 
 .menu-panel {

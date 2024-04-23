@@ -18,7 +18,7 @@
 <router-outlet></router-outlet> -->
 
 <mat-sidenav-container fullscreen style="height: min-content; top: 64px">
-  <mat-sidenav #sidenav style="background-color: gold">
+  <mat-sidenav #sidenav class="sidenav">
     <mat-nav-list (click)="sidenav.close()">
       <a mat-list-item routerLink="courses">
         <mat-icon>library_books</mat-icon>
@@ -67,18 +67,36 @@
       >LNG</a
     >
 
-    <div>
-      <a mat-button *ngIf="!handsetPortrait" routerLink="courses">
+    <div class="left-toolbar">
+      <a
+        mat-button
+        *ngIf="!handsetPortrait"
+        routerLink="courses"
+        routerLinkActive="active"
+        class="toolbar-button"
+      >
         <mat-icon>library_books</mat-icon>
         <span>Courses</span>
       </a>
 
-      <a mat-button *ngIf="!handsetPortrait" routerLink="blogs">
+      <a
+        mat-button
+        *ngIf="!handsetPortrait"
+        routerLink="blogs"
+        routerLinkActive="active"
+        class="toolbar-button"
+      >
         <mat-icon>newspaper</mat-icon>
         <span>Blogs</span>
       </a>
 
-      <a mat-button *ngIf="!handsetPortrait" [matMenuTriggerFor]="dropdown">
+      <a
+        mat-button
+        *ngIf="!handsetPortrait"
+        [matMenuTriggerFor]="dropdown"
+        routerLinkActive="active"
+        class="toolbar-button"
+      >
         <mat-icon>topic</mat-icon>
         <span>Topics</span>
       </a>
@@ -93,17 +111,29 @@
         <button mat-menu-item routerLink="about">About</button> -->
         </div>
       </mat-menu>
-      <a mat-button *ngIf="!handsetPortrait" routerLink="notes">
+      <a
+        mat-button
+        *ngIf="!handsetPortrait"
+        routerLink="notes"
+        routerLinkActive="active"
+        class="toolbar-button"
+      >
         <mat-icon>event_note</mat-icon>
         <span>Notes</span>
       </a>
 
-      <a mat-button *ngIf="!handsetPortrait" routerLink="about">
+      <a
+        mat-button
+        *ngIf="!handsetPortrait"
+        routerLink="about"
+        routerLinkActive="active"
+        class="toolbar-button"
+      >
         <mat-icon>question_answer</mat-icon>
         <span>About</span>
       </a>
     </div>
-    <div class="right-of-toolbar">
+    <div class="right-toolbar">
       <!-- <a mat-button routerLink="about"
         ><mat-icon>question_answer</mat-icon>About</a
       > -->

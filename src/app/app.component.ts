@@ -13,6 +13,7 @@ import {
   NavigationStart,
   Router,
   RouterLink,
+  RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
 import { OktaAuthStateService, OKTA_AUTH } from '@okta/okta-angular';
@@ -35,6 +36,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
     AsyncPipe,
     RouterOutlet,
     RouterLink,
+    RouterLinkActive,
     CommonModule,
     // AuthModule,
     MatMenuModule,
@@ -90,7 +92,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.breakpointSubscription = this.responsive
-      .observe(Breakpoints.HandsetPortrait)
+      .observe([
+        Breakpoints.TabletPortrait,
+        Breakpoints.HandsetLandscape,
+        Breakpoints.HandsetPortrait,
+      ])
       .subscribe((result) => {
         this.handsetPortrait = false;
         if (result.matches) {

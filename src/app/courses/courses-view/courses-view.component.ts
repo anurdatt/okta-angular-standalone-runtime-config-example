@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { CustomUserClaim } from '@okta/okta-auth-js';
 import { AuthService } from '../../shared/okta/auth.service';
 import { RouterLink } from '@angular/router';
+import { ScrollService } from '../../shared/scroll/scroll.service';
 
 @Component({
   selector: 'app-courses-view',
@@ -39,7 +40,8 @@ export class CoursesViewComponent implements OnInit {
 
   constructor(
     public authService: AuthService,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    private scrollService: ScrollService
   ) {
     this.isAuthenticated$ = authService.isAuthenticated$;
     this.userGroups$ = authService.userGroups$;
@@ -59,5 +61,6 @@ export class CoursesViewComponent implements OnInit {
         courses.filter((course) => course.category === 'ADVANCED')
       )
     );
+    this.scrollService.scrollToTop(0, 'auto');
   }
 }
