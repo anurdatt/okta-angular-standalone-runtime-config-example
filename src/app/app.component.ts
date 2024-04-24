@@ -64,6 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
   );
 
   loading: boolean = false;
+  isSubMenuOpen = false;
 
   constructor(
     private router: Router,
