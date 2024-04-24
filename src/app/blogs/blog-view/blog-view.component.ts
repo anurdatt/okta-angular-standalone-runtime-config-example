@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { toHTML, NgxEditorModule } from 'ngx-editor';
 import { MatCardModule } from '@angular/material/card';
 import schema from '../blog-edit/ngxeditor-schema';
@@ -70,7 +70,8 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     public sanitizer: DomSanitizer,
     private authService: AuthService,
     public scrollService: ScrollService,
-    private elementRef: ElementRef
+    private elementRef: ElementRef,
+    private router: Router
   ) {}
 
   toHtml(jsonString: string) {
@@ -98,6 +99,13 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
 
   async ngOnInit() {
     this.postWithTags = this.route.snapshot.data['postWithTags'];
+    if (this.postWithTags == null || this.postWithTags.post == null) {
+      console.error("No Data found!");
+      setTimeout(() => {
+        this.router.navigate(['/notfound']);
+      }, 100);
+      return;
+    }
     // this.comments = this.loadComments();
     // this.comments = [
     //   { id: 1, author: 'AD', date: 'March 23, 2024', text: 'Dummy Comment 1' },

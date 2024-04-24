@@ -13,6 +13,8 @@ import { OktaAuthGuard, OktaCallbackComponent } from '@okta/okta-angular';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { TagsComponent } from './tags/tags.component';
+import { NotfoundComponent } from './notfound/notfound.component';
+import { UnauthorizeComponent } from './unauthorize/unauthorize.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -53,4 +55,13 @@ export const routes: Routes = [
     path: 'tag/:id',
     component: TagsComponent,
   },
+  {
+    path: 'notfound', component: NotfoundComponent
+  },
+  {
+    path: 'unauthorize', component: UnauthorizeComponent
+  },
+  {
+    path: '**', redirectTo: 'notfound'
+  }
 ];
