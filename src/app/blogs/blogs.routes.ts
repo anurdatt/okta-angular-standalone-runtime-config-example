@@ -6,6 +6,7 @@ import { BlogViewComponent } from './blog-view/blog-view.component';
 import { postResolver } from './post.resolver';
 import { postsResolver } from './posts.resolver';
 import { BlogsViewComponent } from './blogs-view/blogs-view.component';
+import { AuthAdminGuard } from '../shared/okta/auth-admin.guard';
 
 export const BLOG_ROUTES: Routes = [
   // { path: '', redirectTo: 'blog-list', pathMatch: 'full' },
@@ -23,7 +24,7 @@ export const BLOG_ROUTES: Routes = [
   // },
   {
     path: 'blog-edit/:id',
-    canActivate: [OktaAuthGuard],
+    canMatch: [AuthAdminGuard], //[OktaAuthGuard],
     component: BlogEditComponent,
   },
   {

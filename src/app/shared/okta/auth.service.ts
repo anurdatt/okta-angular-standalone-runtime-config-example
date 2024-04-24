@@ -10,7 +10,7 @@ import { switchMap, filter, tap } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService implements OnDestroy {
-  adminSearchString: string = 'SuperUser';
+  public static adminSearchString: string = 'SuperUser';
 
   private isAuthenticatedSubject: BehaviorSubject<boolean> =
     new BehaviorSubject<boolean>(false);
@@ -99,10 +99,10 @@ export class AuthService implements OnDestroy {
   isAdmin(groups): boolean {
     // console.log({ groups });
     if (Array.isArray(groups)) {
-      return groups.includes(this.adminSearchString);
+      return groups.includes(AuthService.adminSearchString);
     } else {
       // Handle the case where it's a single value, not an array
-      return groups === this.adminSearchString;
+      return groups === AuthService.adminSearchString;
     }
   }
 
