@@ -12,6 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { CommentFormComponent } from '../comment-form/comment-form.component';
 import { Comment } from '../comment';
+import { MatMenuModule } from '@angular/material/menu';
+import { AuthService } from '../../okta/auth.service';
 
 @Component({
   selector: 'app-comment',
@@ -19,6 +21,7 @@ import { Comment } from '../comment';
   imports: [
     CommonModule,
     MatButtonModule,
+    MatMenuModule,
     MatIconModule,
     MatCardModule,
     CommentFormComponent,
@@ -33,9 +36,24 @@ export class CommentComponent {
 
   @Output('result') result: any = new EventEmitter<Comment>();
 
+  @Output('deleteComment') deleteComment: any = new EventEmitter<Comment>();
+
   replying: boolean = false;
+  editting: boolean = false;
   isCommentFormHidden: boolean = false;
   isChildCommentsHidden: boolean = true;
+
+  @Input('currentUser') currentUser: string | undefined;
+  @Input('isAdmin') isAdmin: boolean | undefined;
+
+  constructor(private authService: AuthService) {
+    // authService.isAuthenticated$.subscribe(async (isAuthed) => {
+    //   if (isAuthed) this.currentUser = await authService.getUserFullname();
+    //   authService.userGroups$.subscribe(
+    //     (groups) => (this.isAdmin = authService.isAdmin(groups))
+    //   );
+    // });
+  }
 
   onClickReply() {
     if (!this.replying) this.isCommentFormHidden = false;
@@ -47,6 +65,21 @@ export class CommentComponent {
     );
   }
 
+  isChangeAllowed(): boolean {
+    console.log('isChangeAllowed - ' + this.currentUser);
+    return (
+      this.currentUser != undefined &&
+      (this.currentUser == this.comment.comment.author || this.isAdmin)
+    );
+  }
+  onClickDelete() {
+    console.log('Selecting delete comment: ', this.comment);
+    this.deleteComment.emit(this.comment);
+  }
+  onClickEdit() {
+    this.editting = true;
+  }
+
   onClickShowHideReplies() {
     this.isChildCommentsHidden = !this.isChildCommentsHidden;
   }
@@ -56,9 +89,20 @@ export class CommentComponent {
     this.result.emit(comment);
   }
 
+  transmitDeleteComment(comment: Comment) {
+    console.log(`Transmitting delete comment - ${comment}`);
+    this.deleteComment.emit(comment);
+  }
+
   transmitCommentStart(comment: Comment) {
     console.log(`Transmitting comment start - ${comment}`);
-    this.replying = false;
+    if (this.replying) {
+      this.replying = false;
+    }
+    if (this.editting) {
+      this.editting = false;
+    }
+
     if (comment != null) this.result.emit(comment);
   }
 

@@ -13,16 +13,27 @@ import { Comment } from '../comment';
   styleUrl: './comment-form.component.scss',
 })
 export class CommentFormComponent {
-  @Input('parentId') parentId: string;
-  @Input('placeHolderText') placeHolderText: string;
+  @Input('parentId') parentId: string | undefined;
+  @Input('placeHolderText') placeHolderText: string | undefined;
 
   @Output() result: EventEmitter<Comment> = new EventEmitter<Comment>();
 
-  comment: Comment = new Comment();
+  @Input('comment')
+  comment: Comment | undefined;
+
+  commentText: string | undefined;
+  ngOnInit() {
+    if (this.comment == undefined) this.comment = new Comment();
+    if (this.parentId != undefined) this.comment.parentId = this.parentId;
+    this.commentText = this.comment.text;
+  }
 
   submitComment(cf) {
     // Implement comment submission logic here
-    this.comment.parentId = this.parentId;
+
+    Object.assign(this.comment, {
+      text: this.commentText,
+    });
     console.log('Submitting comment: ', this.comment);
 
     this.result.emit(this.comment);

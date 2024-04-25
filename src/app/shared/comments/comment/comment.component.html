@@ -1,80 +1,121 @@
 <div class="comment-card">
-  <div class="comment-header">
-    @if (comment.comment.author.startsWith("Anuran")) {
-    <img
-      src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
-      alt="User Avatar"
-      class="avatar"
-    />
-    }@else {
-    <img
-      src="../../../../assets/defaulut-avatar.jpg"
-      alt="User Avatar"
-      class="avatar"
-      style="width: -webkit-space-available"
-    />
-    }
-    <div class="header-text">
-      <span class="author">{{ comment.comment.author }}</span>
-      <span class="timestamp">{{ comment.comment.date }}</span>
+  <div class="comment-main" *ngIf="!editting">
+    <div class="comment-header">
+      <div class="comment-meta">
+        @if (comment.comment.author.startsWith("Anuran")) {
+        <img
+          src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
+          alt="User Avatar"
+          class="avatar"
+        />
+        }@else {
+        <img
+          src="../../../../assets/defaulut-avatar.jpg"
+          alt="User Avatar"
+          class="avatar"
+          style="width: -webkit-space-available"
+        />
+        }
+        <div class="header-text">
+          <span class="author">{{ comment.comment.author }}</span>
+          <span class="timestamp">{{ comment.comment.date }}</span>
+        </div>
+      </div>
+      <div class="comment-action">
+        <a mat-button [matMenuTriggerFor]="dropdown" style="align-self: end">
+          <!-- <mat-icon>more</mat-icon> -->
+          <span style="font-weight: bolder; font-size: x-large">...</span>
+        </a>
+
+        <mat-menu #dropdown>
+          <div class="menu-panel">
+            <button
+              mat-menu-item
+              (click)="onClickDelete()"
+              class="menu-button"
+              *ngIf="currentUser != comment.comment.author"
+            >
+              <span><small>Report this Comment</small></span>
+            </button>
+            <div *ngIf="isChangeAllowed()">
+              <button mat-menu-item (click)="onClickEdit()">
+                <span><small>Edit this comment</small></span>
+              </button>
+              <button mat-menu-item (click)="onClickDelete()">
+                <span><small>Delete</small></span>
+              </button>
+            </div>
+
+            <!-- <button mat-menu-item routerLink="blogs">Blogs</button>
+
+        <button mat-menu-item routerLink="notes">Notes</button>
+        <button mat-menu-item routerLink="about">About</button> -->
+          </div>
+        </mat-menu>
+      </div>
+    </div>
+    <div class="comment-content">
+      {{ comment.comment.text }}
+    </div>
+
+    <div class="comment-footer" style="align-items: center">
+      <button mat-button>
+        <mat-icon>thumb_up</mat-icon>
+        <span><small>100</small></span>
+      </button>
+
+      <button
+        mat-button
+        *ngIf="comment.comments.length > 0"
+        class="action-btn"
+        (click)="onClickShowHideReplies()"
+      >
+        <!-- <button mat-icon-button color="accent"> -->
+        <!-- <a mat-list-item> -->
+        <mat-icon>comment</mat-icon>
+
+        <!-- </a> -->
+        <!-- </button> -->
+        @if (isChildCommentsHidden) {
+        <span
+          >{{ comment.comments.length + " " }}
+          @if (comment.comments.length > 1) { Replies } @else { Reply }
+        </span>
+        } @else {
+        <span>Hide Replies</span>
+        }
+      </button>
+
+      <button mat-flat-button class="action-btn" (click)="onClickReply()">
+        <!-- <button mat-icon-button color="accent"> -->
+        <!-- <a mat-list-item> -->
+        <mat-icon>reply</mat-icon>
+
+        <!-- </a> -->
+        <!-- </button> -->
+        <span>Reply</span>
+      </button>
+      <!-- <button mat-flat-button color="primary">Share</button> -->
     </div>
   </div>
-  <div class="comment-content">
-    {{ comment.comment.text }}
+  <div class="comment-main" *ngIf="editting">
+    <mat-card class="edit-comment">
+      <mat-card-content style="padding-top: 0px; padding-left: 0px">
+        <app-comment-form
+          [comment]="comment.comment"
+          (result)="transmitCommentStart($event)"
+        ></app-comment-form>
+      </mat-card-content>
+    </mat-card>
   </div>
 
-  <div class="comment-footer" style="align-items: center">
-    <button mat-button color="primary">
-      <mat-icon>thumb_up</mat-icon>
-      <span><small>100</small></span>
-    </button>
-
-    <button
-      mat-button
-      *ngIf="comment.comments.length > 0"
-      color="primary"
-      class="action-btn"
-      (click)="onClickShowHideReplies()"
-    >
-      <!-- <button mat-icon-button color="accent"> -->
-      <!-- <a mat-list-item> -->
-      <mat-icon>comment</mat-icon>
-
-      <!-- </a> -->
-      <!-- </button> -->
-      @if (isChildCommentsHidden) {
-      <span
-        >{{ comment.comments.length + " " }}
-        @if (comment.comments.length > 1) { Replies } @else { Reply }
-      </span>
-      } @else {
-      <span>Hide Replies</span>
-      }
-    </button>
-
-    <button
-      mat-flat-button
-      color="primary"
-      class="action-btn"
-      (click)="onClickReply()"
-    >
-      <!-- <button mat-icon-button color="accent"> -->
-      <!-- <a mat-list-item> -->
-      <mat-icon>reply</mat-icon>
-
-      <!-- </a> -->
-      <!-- </button> -->
-      <span>Reply</span>
-    </button>
-    <!-- <button mat-flat-button color="primary">Share</button> -->
-  </div>
   <div class="comment-sub">
     <mat-card
       *ngIf="replying"
       class="add-comment"
       [ngClass]="{ hidden: isCommentFormHidden }"
     >
-      <mat-card-content style="padding-top: 16px; padding-left: 0px">
+      <mat-card-content style="padding-top: 0px; padding-left: 0px">
         <app-comment-form
           [parentId]="comment.comment.id"
           [placeHolderText]="'Replying to ' + comment.comment.author"
@@ -90,7 +131,10 @@
       <app-comment
         *ngFor="let child of comment.comments; trackBy: trackByFn"
         [comment]="child"
+        [currentUser]="currentUser"
+        [isAdmin]="isAdmin"
         (result)="transmitComment($event)"
+        (deleteComment)="transmitDeleteComment($event)"
       ></app-comment>
     </div>
   </div>

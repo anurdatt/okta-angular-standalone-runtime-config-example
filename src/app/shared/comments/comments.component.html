@@ -63,7 +63,10 @@
   <app-comment
     *ngFor="let comment of comments; trackBy: trackByFn"
     [comment]="comment"
+    [currentUser]="getCurrentUser()"
+    [isAdmin]="authService.isAdmin(authService.userGroups$ | async)"
     (result)="addComment($event)"
+    (deleteComment)="deleteComment($event)"
   ></app-comment>
 </div>
 }

@@ -63,7 +63,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   constructor(
-    private authService: AuthService,
+    public authService: AuthService,
     private commentsService: CommentsService,
     private _snackbar: MatSnackBar
   ) {}
@@ -79,6 +79,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
         }
       }
     );
+
     this.loadComments();
   }
 
@@ -135,6 +136,10 @@ export class CommentsComponent implements OnInit, OnDestroy {
       count += this.getTotalComments(comments[i].comments);
     }
     return count;
+  }
+
+  deleteComment(comment: Comment) {
+    console.log('Received delete comment = ', comment);
   }
 
   addComment(comment: Comment) {
@@ -198,6 +203,13 @@ export class CommentsComponent implements OnInit, OnDestroy {
     author: 'Anonymous User',
     profile_url: null,
   };
+
+  getCurrentUser() {
+    console.log('getCurrentUser - ' + this.newComment.author);
+    return this.newComment.author == 'Anonymous User'
+      ? undefined
+      : this.newComment.author;
+  }
 
   ngOnDestroy(): void {
     this.commentSubscription?.unsubscribe();

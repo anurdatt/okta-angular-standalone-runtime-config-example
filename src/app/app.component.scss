@@ -71,14 +71,14 @@ main {
   // margin-bottom: -8px;
   // padding-top: -8px;
   // padding-bottom: -8px;
-  padding: 20px;
+  padding: 20px 10px;
   border-radius: 5px;
   z-index: 99;
   position: fixed;
   top: 74px;
   left: 10px;
-  // bottom: 0;
-  height: 500px;
+  // bottom: 100px;
+  height: fit-content; //500px;
   width: 200px; /* Adjust width as needed */
   // z-index: 1000; /* Adjust z-index as needed */
 }

@@ -15,9 +15,9 @@
       <!-- <mat-label>Your Comment</mat-label> -->
       <textarea
         matInput
-        [placeholder]="placeHolderText"
+        [placeholder]="placeHolderText || 'Enter your comment..'"
         rows="2"
-        [(ngModel)]="comment.text"
+        [(ngModel)]="commentText"
         name="comment"
         required
         style="
@@ -32,7 +32,6 @@
       <button
         class="comment-cancel"
         mat-button
-        color="primary"
         type="button"
         (click)="cancelComment(cf)"
       >
@@ -41,7 +40,6 @@
       <button
         class="comment-submit"
         mat-flat-button
-        color="primary"
         type="button"
         (click)="submitComment(cf)"
         [disabled]="!cf?.form.valid"
