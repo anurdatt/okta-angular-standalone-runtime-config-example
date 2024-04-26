@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   Output,
+  OnInit,
 } from '@angular/core';
 import { NestedComment } from '../nested-comment';
 import { CommonModule } from '@angular/common';
@@ -13,7 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 import { CommentFormComponent } from '../comment-form/comment-form.component';
 import { Comment } from '../comment';
 import { MatMenuModule } from '@angular/material/menu';
-import { AuthService } from '../../okta/auth.service';
+import { CommonUtil } from '../../CommonUtil';
 
 @Component({
   selector: 'app-comment',
@@ -30,9 +31,11 @@ import { AuthService } from '../../okta/auth.service';
   styleUrl: './comment.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush, // Change detection strategy
 })
-export class CommentComponent {
+export class CommentComponent implements OnInit {
   @Input('comment')
   comment: NestedComment;
+  @Input('currentUser') currentUser: string | undefined;
+  @Input('isAdmin') isAdmin: boolean | undefined;
 
   @Output('result') result: any = new EventEmitter<Comment>();
 
@@ -43,16 +46,22 @@ export class CommentComponent {
   isCommentFormHidden: boolean = false;
   isChildCommentsHidden: boolean = true;
 
-  @Input('currentUser') currentUser: string | undefined;
-  @Input('isAdmin') isAdmin: boolean | undefined;
+  commonUtil: CommonUtil = new CommonUtil();
 
-  constructor(private authService: AuthService) {
+  relativeDate: string;
+
+  constructor() {
     // authService.isAuthenticated$.subscribe(async (isAuthed) => {
     //   if (isAuthed) this.currentUser = await authService.getUserFullname();
     //   authService.userGroups$.subscribe(
     //     (groups) => (this.isAdmin = authService.isAdmin(groups))
     //   );
     // });
+  }
+  ngOnInit(): void {
+    this.relativeDate = this.commonUtil.formatRelativeDate(
+      new Date(this.comment.comment.date)
+    );
   }
 
   onClickReply() {
@@ -66,7 +75,7 @@ export class CommentComponent {
   }
 
   isChangeAllowed(): boolean {
-    console.log('isChangeAllowed - ' + this.currentUser);
+    // console.log('isChangeAllowed - ' + this.currentUser);
     return (
       this.currentUser != undefined &&
       (this.currentUser == this.comment.comment.author || this.isAdmin)
@@ -74,7 +83,7 @@ export class CommentComponent {
   }
   onClickDelete() {
     console.log('Selecting delete comment: ', this.comment);
-    this.deleteComment.emit(this.comment);
+    this.deleteComment.emit(this.comment.comment);
   }
   onClickEdit() {
     this.editting = true;

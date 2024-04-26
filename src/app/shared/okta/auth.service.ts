@@ -1,4 +1,5 @@
 import { Injectable, Inject, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 import { OKTA_AUTH, OktaAuthStateService } from '@okta/okta-angular';
 import OktaAuth, {
   AuthState,
@@ -28,7 +29,8 @@ export class AuthService implements OnDestroy {
 
   constructor(
     @Inject(OKTA_AUTH) private oktaAuth: OktaAuth,
-    private oktaAuthStateService: OktaAuthStateService
+    private oktaAuthStateService: OktaAuthStateService,
+    private router: Router
   ) {
     // Update the state when authentication changes
     this.authenticatedSubscription =
@@ -107,7 +109,17 @@ export class AuthService implements OnDestroy {
   }
 
   public async signIn(): Promise<void> {
-    await this.oktaAuth.signInWithRedirect();
+    // await this.oktaAuth.signInWithRedirect();
+
+    // Store the current route in session storage
+    // sessionStorage.setItem('returnUrl', this.router.url);
+
+    // Redirect to Okta login page with state parameter
+    // const state = { targetUrl: this.router.url };
+    await this.oktaAuth.signInWithRedirect({
+      originalUri: this.router.url, //'/login',
+      // redirectUri: this.router.url,
+    });
   }
 
   public async signOut(): Promise<void> {

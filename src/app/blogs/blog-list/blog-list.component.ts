@@ -17,6 +17,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../shared/okta/auth.service';
 import { BlogsService } from '../blogs.service';
 import { BlogUtil } from '../util/BlogUtil';
+import { CommonUtil } from '../../shared/CommonUtil';
 import { Subscription, catchError, of as observableOf } from 'rxjs';
 import {
   MatSnackBar,
@@ -46,6 +47,7 @@ import { PostWithTags } from '../model/post-with-tags';
 })
 export class BlogListComponent implements OnInit, OnDestroy {
   blogUtil: BlogUtil = new BlogUtil();
+  commonUtil: CommonUtil = new CommonUtil();
 
   @Input('postWithTagsList')
   postWithTagsList: PostWithTags[];

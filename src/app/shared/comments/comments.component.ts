@@ -24,6 +24,7 @@ import { AuthService } from '../okta/auth.service';
 import { MatCardModule } from '@angular/material/card';
 import { Comment } from './comment';
 import { CommentFormComponent } from './comment-form/comment-form.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-comments',
@@ -34,6 +35,7 @@ import { CommentFormComponent } from './comment-form/comment-form.component';
     MatIconModule,
     MatSnackBarModule,
     MatCardModule,
+    MatButtonModule,
     CommentComponent,
     CommentFormComponent,
   ],
@@ -53,10 +55,12 @@ export class CommentsComponent implements OnInit, OnDestroy {
 
   isLoadingResults = false;
   isSavingResults = false;
+  isDeletingResults = false;
   feedback: any = {};
 
   commentSubscription: Subscription;
   saveCommentSubscription: Subscription;
+  deleteCommentSubscription: Subscription;
   authSubscription: Subscription;
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
@@ -81,6 +85,10 @@ export class CommentsComponent implements OnInit, OnDestroy {
     );
 
     this.loadComments();
+  }
+
+  async login() {
+    await this.authService.signIn();
   }
 
   loadComments() {
@@ -140,6 +148,48 @@ export class CommentsComponent implements OnInit, OnDestroy {
 
   deleteComment(comment: Comment) {
     console.log('Received delete comment = ', comment);
+
+    if (comment == null) return;
+
+    console.log(`deleting comment : ${JSON.stringify(comment)}`);
+    this.isDeletingResults = true;
+    this.deleteCommentSubscription = this.commentsService
+      .deleteCommentById(this.sourceApp, comment.id)
+      .pipe(
+        catchError((err) => {
+          console.log('Delete failed with error: ' + JSON.stringify(err));
+          return observableOf({ err });
+        })
+      )
+      .subscribe((c) => {
+        this.isDeletingResults = false;
+        if (c != null && c['hasOwnProperty']('err')) {
+          // this.feedback = {
+          //   type: 'failure',
+          //   message: 'Error occured in saving!',
+          // };
+          this._snackbar.open('Error occured in deleting!', 'Failure', {
+            // panelClass: ['alert', 'alert-failure'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        } else {
+          // this.feedback = {
+          //   type: 'success',
+          //   message: 'Save completed successfully!',
+          // };
+          this._snackbar.open('Delete completed successfully!', 'Success', {
+            // panelClass: ['alert', 'alert-success'],
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+            duration: 1000,
+          });
+          setTimeout(() => {
+            this.feedback = {};
+            this.loadComments();
+          }, 1000);
+        }
+      });
   }
 
   addComment(comment: Comment) {
@@ -185,7 +235,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
             // panelClass: ['alert', 'alert-success'],
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
-            // duration: 1000,
+            duration: 1000,
           });
           setTimeout(() => {
             this.feedback = {};
@@ -205,7 +255,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
   };
 
   getCurrentUser() {
-    console.log('getCurrentUser - ' + this.newComment.author);
+    // console.log('getCurrentUser - ' + this.newComment.author);
     return this.newComment.author == 'Anonymous User'
       ? undefined
       : this.newComment.author;

@@ -28,6 +28,7 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { PostWithTags } from '../model/post-with-tags';
 import { TagListComponent } from '../../tags/tag-list/tag-list.component';
 import { CommentsComponent } from '../../shared/comments/comments.component';
+import { CommonUtil } from '../../shared/CommonUtil';
 // import { ScrollTopButtonComponent } from '../../shared/scroll/scroll-top-button.component';
 
 @Component({
@@ -56,6 +57,8 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
   postWithTags: PostWithTags;
 
   blogUtil: BlogUtil = new BlogUtil();
+  commonUtil: CommonUtil = new CommonUtil();
+
   safeContent$: BehaviorSubject<any> = new BehaviorSubject('');
 
   scrollSubscription: Subscription;
@@ -100,7 +103,7 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
   async ngOnInit() {
     this.postWithTags = this.route.snapshot.data['postWithTags'];
     if (this.postWithTags == null || this.postWithTags.post == null) {
-      console.error("No Data found!");
+      console.error('No Data found!');
       setTimeout(() => {
         this.router.navigate(['/notfound']);
       }, 100);

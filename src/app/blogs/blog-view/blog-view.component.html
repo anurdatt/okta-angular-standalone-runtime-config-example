@@ -35,7 +35,7 @@
             >
             <span><small>-</small></span>
             <span class="post-date">{{
-              blogUtil.formatDate(postWithTags.post.date)
+              commonUtil.formatDate(postWithTags.post.date)
             }}</span>
           </mat-card-subtitle>
         </div>
@@ -47,23 +47,22 @@
           <div class="action-line-left">
             <button mat-button>
               <mat-icon>thumb_up</mat-icon>
+              <span><small>100</small></span>
             </button>
-            <span class="action-count"><small>100</small></span>
             <button mat-button (click)="scrollTo('commentz')">
               <mat-icon>comment</mat-icon>
+              <span><small>15</small></span>
             </button>
-            <span class="action-count"><small>15</small></span>
           </div>
           <div class="action-line-right">
             <button mat-button>
               <mat-icon>share</mat-icon>
+              <span><small>50</small></span>
             </button>
-            <span class="action-count"><small>50</small></span>
-
             <button mat-button>
               <mat-icon>bookmark</mat-icon>
+              <span><small>20</small></span>
             </button>
-            <span class="action-count"><small>20</small></span>
           </div>
         </div>
         <div class="actions-fade-line"></div>
@@ -86,23 +85,22 @@
           <div class="action-line-left">
             <button mat-button>
               <mat-icon>thumb_up</mat-icon>
+              <span><small>100</small></span>
             </button>
-            <span class="action-count"><small>100</small></span>
             <button mat-button (click)="scrollTo('commentz')">
               <mat-icon>comment</mat-icon>
+              <span><small>15</small></span>
             </button>
-            <span class="action-count"><small>15</small></span>
           </div>
           <div class="action-line-right">
             <button mat-button>
               <mat-icon>share</mat-icon>
+              <span><small>50</small></span>
             </button>
-            <span class="action-count"><small>50</small></span>
-
             <button mat-button>
               <mat-icon>bookmark</mat-icon>
+              <span><small>20</small></span>
             </button>
-            <span class="action-count"><small>20</small></span>
           </div>
         </div>
       </div>
@@ -112,21 +110,22 @@
   <hr style="margin-top: 40px; width: 100%" />
   <!-- Comments Section -->
   <section id="commentz" class="comments-section">
-    <div style="display: flex; justify-content: space-between">
+    <div
+      style="display: flex; justify-content: space-between; margin-right: 16px"
+    >
       <h2 style="font-weight: bold; margin-right: 20px">
         Comments ({{ totalComments }})
       </h2>
       @if(isHidden) {
       <button
         mat-button
-        color="primary"
         style="width: fit-content"
         (click)="scrollTo('commentz')"
       >
         Show Comments
       </button>
       } @else {
-      <button mat-button color="primary" (click)="isHidden = true">
+      <button mat-button style="width: fit-content" (click)="isHidden = true">
         Hide Comments
       </button>
       }

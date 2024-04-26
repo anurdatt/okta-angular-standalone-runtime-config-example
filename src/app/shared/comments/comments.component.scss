@@ -18,6 +18,12 @@
 //     padding: 10px 0;
 //   }
 
+.comment-post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .comment-post-meta {
   display: flex;
   flex-direction: row;

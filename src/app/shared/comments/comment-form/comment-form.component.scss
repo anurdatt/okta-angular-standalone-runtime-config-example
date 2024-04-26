@@ -23,6 +23,11 @@ textarea {
 // button[type="submit"] {
 .comment-submit {
   margin-left: 10px;
+  background-color: green;
+  color: white;
+}
+.comment-submit:disabled {
+  background-color: rgba(79, 155, 79, 0.498);
 }
 
 .add-comment-form {

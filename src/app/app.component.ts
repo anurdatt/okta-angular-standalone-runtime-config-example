@@ -112,7 +112,10 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   public async signIn(): Promise<void> {
-    await this.oktaAuth.signInWithRedirect();
+    await this.oktaAuth.signInWithRedirect({
+      originalUri: this.router.url, //'/login',
+      // redirectUri: this.router.url,
+    });
   }
 
   public async signOut(): Promise<void> {
