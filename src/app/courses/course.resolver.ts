@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { inject } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable, catchError, of as observableOf} from 'rxjs';
 import { Course } from './model/course';
 import { CoursesService } from './courses.service';
 
@@ -9,11 +9,12 @@ export function courseResolver(
   state: RouterStateSnapshot
 ): Observable<Course> {
   const service: CoursesService = inject(CoursesService);
-  let course: Observable<Course> = of(null);
-  try {
-    service.findCourseById(route.params['id']); 
-  } catch(e) {
-    console.error({e});
-  }
-  return course;
+
+  return service.findCourseById(route.params['id']).pipe(
+    catchError((err) => {
+      console.error('In Course resolver - catchError, err = ')
+      console.error({err});
+      return observableOf(null);
+    })
+  );
 }

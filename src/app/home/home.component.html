@@ -5,16 +5,16 @@
     >View Notes</a
   >
 </p> -->
-<mat-grid-list
+<!-- <mat-grid-list
   [cols]="headCols"
   [rowHeight]="headHeight"
   [ngClass]="{ 'handset-portrait': handsetPortrait }"
 >
-  <!-- @for (tile of tiles; track tile) { -->
-  <mat-grid-tile [colspan]="1" [rowspan]="1" class="head">
-    <!-- <div class="bootstrap-wrapper" style="margin-right: 0px;">
-      <div class="container" style="padding-right: 0px; "> -->
-    <div class="header">
+  <mat-grid-tile [colspan]="1" [rowspan]="1" class="head"> -->
+    <div class="head" [ngClass]="{ 'handset-portrait': handsetPortrait }">
+      <div class="container">
+
+    <div class="header" style="align-items: center;">
       <div
         class="left-head"
         style="
@@ -24,7 +24,7 @@
               vertical-align: middle;
               padding-top: 50px;
               padding-bottom: 50px; */
-          align-self: center;
+          
         "
       >
         <div class="main-header">
@@ -86,9 +86,8 @@
             </mat-grid-tile>
           </mat-grid-list>
         </div> -->
-    <!-- </div>
-    </div> -->
-  </mat-grid-tile>
-  <!-- } -->
-</mat-grid-list>
+    </div>
+    </div>
+  <!-- </mat-grid-tile>
+</mat-grid-list> -->
 <app-courses-view [title]="coursesTitle"></app-courses-view>

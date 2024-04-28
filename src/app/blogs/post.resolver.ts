@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of as observableOf } from 'rxjs';
 import { Post } from './model/post';
 import { BlogsService } from './blogs.service';
 import { PostWithTags } from './model/post-with-tags';
@@ -10,5 +10,11 @@ export function postResolver(
   state: RouterStateSnapshot
 ): Observable<PostWithTags> {
   const service: BlogsService = inject(BlogsService);
-  return service.findPostById(route.params['id']);
+  return service.findPostById(route.params['id']).pipe(
+    catchError((err) => {
+      console.error('In Post resolver - catchError, err = ')
+      console.error({err});
+      return observableOf(null);
+    })
+  )
 }
