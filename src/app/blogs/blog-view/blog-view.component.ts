@@ -105,7 +105,7 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.postWithTags == null || this.postWithTags.post == null) {
       console.error('No Data found!');
       setTimeout(() => {
-        this.router.navigate(['/notfound']);
+        this.router.navigate(['/notfound'], { skipLocationChange: true });
       }, 100);
       return;
     }

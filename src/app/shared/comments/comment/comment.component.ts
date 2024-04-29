@@ -89,6 +89,8 @@ export class CommentComponent implements OnInit {
     this.editting = true;
   }
 
+  onClickReport() {}
+
   onClickShowHideReplies() {
     this.isChildCommentsHidden = !this.isChildCommentsHidden;
   }

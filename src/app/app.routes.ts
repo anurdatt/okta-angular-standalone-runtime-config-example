@@ -56,12 +56,15 @@ export const routes: Routes = [
     component: TagsComponent,
   },
   {
-    path: 'notfound', component: NotfoundComponent
+    path: 'notfound',
+    component: NotfoundComponent,
   },
   {
-    path: 'unauthorize', component: UnauthorizeComponent
+    path: 'unauthorize',
+    component: UnauthorizeComponent,
   },
   {
-    path: '**', redirectTo: 'notfound'
-  }
+    path: '**',
+    component: NotfoundComponent, //redirectTo: 'notfound'
+  },
 ];

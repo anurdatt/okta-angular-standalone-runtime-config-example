@@ -53,9 +53,9 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.course = this.route.snapshot.data['course'];
     if (this.course == null) {
-      console.error("No Data found!");
+      console.error('No Data found!');
       setTimeout(() => {
-        this.router.navigate(['/notfound']);
+        this.router.navigate(['/notfound'], { skipLocationChange: true });
       }, 100);
       return;
     }
