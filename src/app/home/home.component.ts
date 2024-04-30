@@ -45,7 +45,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.isAuthenticated$ = authService.isAuthenticated$;
   }
   ngOnDestroy(): void {
-    this.breakpointSubscription.unsubscribe();
+    this.breakpointSubscription?.unsubscribe();
   }
   ngOnInit(): void {
     this.breakpointSubscription = this.responsive

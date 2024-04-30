@@ -11,8 +11,8 @@
     /* display: -webkit-box; */
     display: flex;
     justify-content: space-around;
-    padding: 10px;
-    flex-direction: column;
+    padding: 15px 20px;
+    flex-direction: row;
     align-items: center;
   "
 >
@@ -26,43 +26,47 @@
   </div>
   }
 
-  <div
-    style="width: fit-content; min-width: fit-content; margin-bottom: 10px"
+  
+  <div style="display: flex; margin-bottom: 10px; margin-top: -40px; padding: 0 15px; position: absolute; z-index: 20; width: -webkit-fill-available;">
+    <a mat-mini-fab color="primary" (click)="scroll(-100)" *ngIf="tagListDivScrollLeftAllowed" style="position: absolute; left: 15px;"><</a>
+    <a mat-mini-fab color="primary" (click)="scroll(100)" *ngIf="tagListDivScrollRightAllowed" style="position: absolute; right: 15px;">></a>
+  </div>
+  <!-- <div
+    style="width: fit-content; min-width: fit-content; margin-bottom: 15px; position: absolute;"
     [ngStyle]="
-       // {
-    //   display:
-    //     scrollingDiv.querySelector('app-tag-list').scrollWidth < 0
-    //       ? 'none'
-    //       : 'block'
-    // }
+       {
+      display: (scrollingDivX > 20 ? 'none': 'block')
+    }
     "
   >
-    <!-- <H3 style="margin: 10px; line-height: 1.2; padding: 0px 10px"
-      >All topics:</H3
-    > -->
     <app-tag-list
       [tags]="[{ id: 'all-topics', name: 'All topics' }]"
       [btnBorderBottom]="!selectedTagId"
     ></app-tag-list>
-  </div>
+  </div> -->
   <div
     style="
       /* padding-right: 10px; */
+      /* padding-left: 125px; */
       width: -webkit-fill-available;
       /* max-width: 65%; */
       white-space: nowrap;
       overflow-x: scroll;
+      scrollbar-width: none;
     "
-    #scrollingDiv
+    id="scrollingDiv"
   >
     <!-- <div class="all-topics"> -->
     <app-tag-list
-      [tags]="fetchedTags"
+      [tags]="[{ id: 'all-topics', name: 'All topics' }].concat(fetchedTags)"
       [btnBorderBottomId]="selectedTagId"
+      [btnBorderBottom]="true"
     ></app-tag-list>
     <!-- </div> -->
   </div>
 </div>
+
+<!-- <div style="margin-top: 20px;">{{tagListDivScrollLeft}}</div> -->
 <hr />
 <div class="bootstrap-wrapper">
   <div class="container">

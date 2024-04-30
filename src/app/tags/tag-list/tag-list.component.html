@@ -8,7 +8,7 @@
     [ngClass]="{
       'button-border-bottom': btnBorderBottomId
         ? btnBorderBottomId == item.id
-        : btnBorderBottom
+        : btnBorderBottom ? tags[0].id == item.id : false
     }"
     (click)="navigateTo(item.id)"
   >

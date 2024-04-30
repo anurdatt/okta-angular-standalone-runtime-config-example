@@ -70,19 +70,47 @@ export class TagsComponent implements OnInit, OnDestroy {
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
+  tagListDivScrollLeft=0;
+  tagListDivOffsetWidth=0;
+  tagListDivScrollWidth=0;
+  tagListDivScrollLeftAllowed=false;
+  tagListDivScrollRightAllowed=true;
+  
+
   constructor(
     private route: ActivatedRoute,
     private tagsService: TagsService,
     private _snackbar: MatSnackBar
   ) {}
 
+  cb = (e:Event) => {
+    // console.log(e.target['scrollLeft'], e.target['scrollTop'], e.target['scrollWidth'], e.target['clientWidth'], e.target['offsetWidth']);
+    this.tagListDivScrollLeft = e.target['scrollLeft'];
+    this.tagListDivScrollWidth = e.target['scrollWidth'];
+    this.tagListDivOffsetWidth = e.target['offsetWidth'];
+    this.tagListDivScrollLeftAllowed = this.tagListDivScrollLeft > 0;
+    this.tagListDivScrollRightAllowed = this.tagListDivScrollLeft + this.tagListDivOffsetWidth  < this.tagListDivScrollWidth;
+  }
+
+  scroll(by: number) {
+    const el = document.getElementById('scrollingDiv');
+    el.scrollLeft += by;
+    // el.scrollBy({left: el.scrollLeft + by});
+  }
+
   ngOnInit() {
+    console.log('In ngOninit()');
     const tagId = this.route.snapshot.params['id']; //'Software-1712809638524';
     if (!tagId) this.fetchAllTags();
     else {
       this.selectedTagId = tagId;
       this.fetchTagsRelatedTo(tagId);
     }
+    // setInterval(() => this.count += 10, 1000);
+    const el = document.getElementById('scrollingDiv')
+    console.log({el});
+    el.addEventListener('scroll', this.cb);
+    // el.addEventListener('click', (e)=> alert(`You clicked at x = ${e.clientX}`));
   }
 
   fetchTagsRelatedTo(tagId: string) {
@@ -123,11 +151,29 @@ export class TagsComponent implements OnInit, OnDestroy {
           //   verticalPosition: this.verticalPosition,
           //   duration: 1000,
           // });
+
+          if (this.selectedTagId != undefined) {
+            const selectedTagIndex = this.fetchedTags.findIndex((tag) => tag.id === this.selectedTagId);
+            if (selectedTagIndex >= 0)
+            this.fetchedTags = this.fetchedTags.splice(selectedTagIndex, 1).concat(this.fetchedTags);
+          }
         }
       });
   }
 
   ngOnDestroy() {
+    console.log('In ngOnDestroy');
+    const el = document.getElementById('scrollingDiv')
+    console.log({el});
+    el.removeEventListener('scroll', this.cb);
+
     this.fetchTagsSubscription?.unsubscribe();
   }
+
+  // ngAfterViewInit(): void {
+  //   // const el = document.getElementById('scrollingDiv')
+  //   // console.log({el});
+  //   // el.addEventListener('scroll', this.cb, true);
+    
+  // }
 }

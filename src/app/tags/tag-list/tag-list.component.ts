@@ -27,13 +27,15 @@ export class TagListComponent {
   constructor(private router: Router) {}
   navigateTo(tagId: string) {
     // setTimeout(() => {
-    // console.log('Navigating to ' + tagId);
+    console.log('Navigating to ' + tagId);
     if (!this.router.url.endsWith(tagId)) {
       this.router
-        .navigate(['/all-topics'], { skipLocationChange: true })
+        .navigate(['/home'], { skipLocationChange: true })
         .then(() => {
+          setTimeout(() => {
           if (tagId == 'all-topics') this.router.navigate(['/all-topics']);
           else this.router.navigate(['/tag', tagId]);
+          }, 10);
         });
     }
     // }, 1000);
