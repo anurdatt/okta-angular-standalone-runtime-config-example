@@ -3,11 +3,12 @@ import { Tag } from '../../blogs/model/tag';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-tag-list',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, RouterLink],
+  imports: [CommonModule, MatButtonModule, MatIconModule, RouterLink],
   templateUrl: './tag-list.component.html',
   styleUrl: './tag-list.component.scss',
 })

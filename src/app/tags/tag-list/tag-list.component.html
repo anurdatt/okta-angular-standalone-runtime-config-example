@@ -18,6 +18,14 @@
     } @else {
     {{ item.name }}
     }
+
+    @if(btnBorderBottom && tags[0].id == item.id) {
+
+      <mat-icon class="material-icons" [ngClass]="{'material-icons-outlined': btnBorderBottomId}">
+        topics
+      </mat-icon>
+    }
+
   </button>
   }
 </div>
