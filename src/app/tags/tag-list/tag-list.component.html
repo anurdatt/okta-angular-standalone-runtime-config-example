@@ -1,6 +1,7 @@
 <div [ngClass]="{ 'all-categories': !btnHeight }">
   @for (item of tags; track $index) {
   <button
+    [id]="item.id"
     mat-flat-button
     color="accent"
     class="category-button"
@@ -8,7 +9,9 @@
     [ngClass]="{
       'button-border-bottom': btnBorderBottomId
         ? btnBorderBottomId == item.id
-        : btnBorderBottom ? tags[0].id == item.id : false
+        : btnBorderBottom
+        ? tags[0].id == item.id
+        : false
     }"
     (click)="navigateTo(item.id)"
   >
@@ -17,15 +20,15 @@
     </small>
     } @else {
     {{ item.name }}
+    } @if(btnBorderBottom && tags[0].id == item.id) {
+
+    <mat-icon
+      class="material-icons"
+      [ngClass]="{ 'material-icons-outlined': btnBorderBottomId }"
+    >
+      topics
+    </mat-icon>
     }
-
-    @if(btnBorderBottom && tags[0].id == item.id) {
-
-      <mat-icon class="material-icons" [ngClass]="{'material-icons-outlined': btnBorderBottomId}">
-        topics
-      </mat-icon>
-    }
-
   </button>
   }
 </div>

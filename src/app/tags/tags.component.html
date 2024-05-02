@@ -81,7 +81,9 @@
   >
     <!-- <div class="all-topics"> -->
     <app-tag-list
-      [tags]="[{ id: 'all-topics', name: 'All topics' }].concat(fetchedTags)"
+      [tags]="
+        [{ id: 'all-topics', name: 'All topics' }].concat(fetchedTags$ | async)
+      "
       [btnBorderBottomId]="selectedTagId"
       [btnBorderBottom]="true"
     ></app-tag-list>

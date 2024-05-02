@@ -3,10 +3,9 @@ import { Tag } from '../blogs/model/tag';
 import { TagListComponent } from './tag-list/tag-list.component';
 import {
   ActivatedRoute,
-  ActivatedRouteSnapshot,
   NavigationEnd,
+  // NavigationStart,
   Router,
-  RouterLink,
   RouterModule,
 } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -23,6 +22,7 @@ import {
   map,
   mergeMap,
   distinctUntilChanged,
+  BehaviorSubject,
 } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -79,10 +79,13 @@ export class TagsComponent implements OnInit, OnDestroy {
   // ];
 
   isLoadingResults = true;
-  fetchedTags: Tag[] = [];
+  fetchedTags$: BehaviorSubject<Tag[]> | undefined = new BehaviorSubject([]);
+
   selectedTagId: string = null;
   fetchTagsSubscription: Subscription;
+  // navStartEventSubscription: Subscription;
   navEventSubscription: Subscription;
+  fetchedTagsSubscription: Subscription;
 
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
@@ -117,8 +120,33 @@ export class TagsComponent implements OnInit, OnDestroy {
     // el.scrollBy({left: el.scrollLeft + by});
   }
 
+  scrollToLeft(left: number): void {
+    const el = document.getElementById('scrollingDiv');
+    el.scrollLeft = left;
+  }
+
+  scrollTo(tagId: string): void {
+    setTimeout(() => {
+      const el = document.getElementById('scrollingDiv');
+      const section = el.querySelector(`#${tagId}`);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 10);
+  }
+
   ngOnInit() {
     console.log('In ngOninit()');
+
+    // this.navStartEventSubscription = this.router.events
+    //   .pipe(
+    //     filter((event) => event instanceof NavigationStart),
+    //     distinctUntilChanged()
+    //   )
+    //   .subscribe((e) => {
+    //     console.log({ e });
+    //     this.fetchedTags$.next([]);
+    //   });
 
     // Subscribe to router events to detect navigation changes
     this.navEventSubscription = this.router.events
@@ -144,9 +172,13 @@ export class TagsComponent implements OnInit, OnDestroy {
         // const id = params.get('id');
         console.log('Merge Route ID:', id);
         // Process route parameters as needed
+        this.fetchedTagsSubscription?.unsubscribe();
         if (!id) {
           this.selectedTagId = null;
           this.fetchAllTags(false);
+          this.fetchedTagsSubscription = this.fetchedTags$
+            .asObservable()
+            .subscribe((tags) => this.scrollToLeft(0)); //this.scrollTo('all-tags'));
         } else {
           if (!this.selectedTagId) {
             this.selectedTagId = id;
@@ -154,6 +186,9 @@ export class TagsComponent implements OnInit, OnDestroy {
           } else {
             this.selectedTagId = id;
           }
+          this.fetchedTagsSubscription = this.fetchedTags$
+            .asObservable()
+            .subscribe(() => this.scrollTo(id));
         }
       });
 
@@ -198,7 +233,17 @@ export class TagsComponent implements OnInit, OnDestroy {
     const el = document.getElementById('scrollingDiv');
     console.log({ el });
     el.addEventListener('scroll', this.cb);
-    // el.addEventListener('click', (e)=> alert(`You clicked at x = ${e.clientX}`));
+    // el.addEventListener('click', (e) =>
+    //   alert(`You clicked at x = ${e.clientX}`)
+    // );
+    // el.addEventListener(
+    //   'resize',
+    //   (e) => {
+    //     console.log('You resized');
+    //     alert(`You resized`);
+    //   },
+    //   true
+    // );
   }
 
   fetchTagsRelatedTo(tagId: string, bringToFront: boolean) {
@@ -231,7 +276,6 @@ export class TagsComponent implements OnInit, OnDestroy {
           // });
         } else {
           // this.allTags = tags;
-          this.fetchedTags = tags;
 
           // this._snackbar.open('Load tags completed successfully!', 'Success', {
           //   // panelClass: ['alert', 'alert-success'],
@@ -241,13 +285,15 @@ export class TagsComponent implements OnInit, OnDestroy {
           // });
 
           if (bringToFront && this.selectedTagId != null) {
-            const selectedTagIndex = this.fetchedTags.findIndex(
+            const selectedTagIndex = tags.findIndex(
               (tag) => tag.id === this.selectedTagId
             );
             if (selectedTagIndex >= 0)
-              this.fetchedTags = this.fetchedTags
-                .splice(selectedTagIndex, 1)
-                .concat(this.fetchedTags);
+              this.fetchedTags$.next(
+                tags.splice(selectedTagIndex, 1).concat(tags)
+              );
+          } else {
+            this.fetchedTags$.next(tags);
           }
         }
       });
@@ -260,8 +306,9 @@ export class TagsComponent implements OnInit, OnDestroy {
     el.removeEventListener('scroll', this.cb);
 
     this.fetchTagsSubscription?.unsubscribe();
-
+    // this.navStartEventSubscription?.unsubscribe();
     this.navEventSubscription?.unsubscribe();
+    this.fetchedTagsSubscription?.unsubscribe();
   }
 
   // ngAfterViewInit(): void {
