@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Tag } from '../../blogs/model/tag';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { NavigationExtras, Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -26,19 +26,25 @@ export class TagListComponent {
   btnBorderBottomId: string;
 
   constructor(private router: Router) {}
-  navigateTo(tagId: string) {
+  navigateTo(tag: Tag) {
     // setTimeout(() => {
-    console.log('Navigating to ' + tagId);
+    console.log('Navigating to ' + tag.id);
     // if (!this.router.url.endsWith(tagId)) {
-    if (tagId == 'all-topics') {
+    if (tag.id == 'all-topics') {
       // this.router.navigate(['/home'], { skipLocationChange: true }).then(() => {
       setTimeout(() => {
         this.router.navigate(['/tags']);
       }, 10);
       // });
     } else {
+      const queryParams: NavigationExtras = {
+        queryParams: {
+          name: tag.name,
+        },
+      };
+
       setTimeout(() => {
-        this.router.navigate(['/tags', tagId]);
+        this.router.navigate(['/tags', tag.id], queryParams);
       }, 10);
     }
     // }

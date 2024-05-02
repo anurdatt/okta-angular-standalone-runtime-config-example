@@ -3,30 +3,30 @@
   <li class="breadcrumb-item active">All-Topics</li>
 </ol>
 
-<!-- <div class="bootstrap-wrapper">
-  <div class="container"> -->
-<div
-  class="topics-container"
-  style="
-    /* display: -webkit-box; */
-    display: flex;
-    justify-content: space-around;
-    padding: 15px;
-    flex-direction: row;
-    align-items: center;
-  "
->
-  @if (isLoadingResults) {
-  <!-- <div class="example-loading-shade">
+<div class="bootstrap-wrapper">
+  <div class="container">
+    <div
+      class="topics-container"
+      style="
+        /* display: -webkit-box; */
+        display: flex;
+        justify-content: space-around;
+        /* padding: 15px; */
+        flex-direction: row;
+        align-items: center;
+      "
+    >
+      @if (isLoadingResults) {
+      <!-- <div class="example-loading-shade">
     <mat-spinner></mat-spinner>
   </div> -->
-  <div class="loading-spinner">
-    <div class="spinner"></div>
-    <div class="loading-message">Loading...</div>
-  </div>
-  }
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+        <div class="loading-message">Loading...</div>
+      </div>
+      }
 
-  <div
+      <!-- <div
     style="
       display: flex;
       margin-bottom: 10px;
@@ -36,25 +36,18 @@
       z-index: 20;
       width: -webkit-fill-available;
     "
-  >
-    <a
-      mat-mini-fab
-      color="primary"
-      (click)="scroll(-100)"
-      *ngIf="tagListDivScrollLeftAllowed"
-      style="position: absolute; left: 15px"
-      ><</a
-    >
-    <a
-      mat-mini-fab
-      color="primary"
-      (click)="scroll(100)"
-      *ngIf="tagListDivScrollRightAllowed"
-      style="position: absolute; right: 15px"
-      >></a
-    >
-  </div>
-  <!-- <div
+  > -->
+      <a
+        mat-mini-fab
+        color="primary"
+        (click)="scroll(-100)"
+        *ngIf="tagListDivScrollLeftAllowed"
+        style="/* position: absolute;  */ /* left: 15px */ margin-bottom: 10px"
+        ><</a
+      >
+
+      <!-- </div> -->
+      <!-- <div
     style="width: fit-content; min-width: fit-content; margin-bottom: 15px; position: absolute;"
     [ngStyle]="
        {
@@ -67,32 +60,42 @@
       [btnBorderBottom]="!selectedTagId"
     ></app-tag-list>
   </div> -->
-  <div
-    style="
-      /* padding-right: 10px; */
-      /* padding-left: 125px; */
-      width: -webkit-fill-available;
-      /* max-width: 65%; */
-      white-space: nowrap;
-      overflow-x: scroll;
-      scrollbar-width: none;
-    "
-    id="scrollingDiv"
-  >
-    <!-- <div class="all-topics"> -->
-    <app-tag-list
-      [tags]="
-        [{ id: 'all-topics', name: 'All topics' }].concat(fetchedTags$ | async)
-      "
-      [btnBorderBottomId]="selectedTagId"
-      [btnBorderBottom]="true"
-    ></app-tag-list>
-    <!-- </div> -->
+      <div
+        style="
+          /* padding-right: 10px; */
+          /* padding-left: 125px; */
+          width: -webkit-fill-available;
+          /* max-width: 65%; */
+          white-space: nowrap;
+          overflow-x: scroll;
+          scrollbar-width: none;
+        "
+        id="scrollingDiv"
+      >
+        <!-- <div class="all-topics"> -->
+        <app-tag-list
+          [tags]="
+            [{ id: 'all-topics', name: 'All topics' }].concat(
+              fetchedTags$ | async
+            )
+          "
+          [btnBorderBottomId]="selectedTagId"
+          [btnBorderBottom]="true"
+        ></app-tag-list>
+        <!-- </div> -->
+      </div>
+      <a
+        mat-mini-fab
+        color="primary"
+        (click)="scroll(100)"
+        *ngIf="tagListDivScrollRightAllowed"
+        style="/* position: absolute; 
+      right: 15px */ margin-bottom: 10px"
+        >></a
+      >
+    </div>
+    <!-- <hr /> -->
+    <router-outlet></router-outlet>
+    <!-- <div style="margin-top: 20px;">{{tagListDivScrollLeft}}</div> -->
   </div>
 </div>
-<!-- <hr /> -->
-<router-outlet></router-outlet>
-<!-- <div style="margin-top: 20px;">{{tagListDivScrollLeft}}</div> -->
-
-<!-- </div>
-</div> -->

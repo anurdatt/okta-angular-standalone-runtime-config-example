@@ -122,7 +122,7 @@ export class TagsComponent implements OnInit, OnDestroy {
 
   scrollToLeft(left: number): void {
     const el = document.getElementById('scrollingDiv');
-    el.scrollLeft = left;
+    el.scrollTo({ left: left, behavior: 'smooth' });
   }
 
   scrollTo(tagId: string): void {
