@@ -26,10 +26,33 @@
   </div>
   }
 
-  
-  <div style="display: flex; margin-bottom: 10px; margin-top: -30px; padding: 0 15px; position: absolute; z-index: 20; width: -webkit-fill-available;">
-    <a mat-mini-fab color="primary" (click)="scroll(-100)" *ngIf="tagListDivScrollLeftAllowed" style="position: absolute; left: 15px;"><</a>
-    <a mat-mini-fab color="primary" (click)="scroll(100)" *ngIf="tagListDivScrollRightAllowed" style="position: absolute; right: 15px;">></a>
+  <div
+    style="
+      display: flex;
+      margin-bottom: 10px;
+      margin-top: -40px;
+      padding: 0 15px;
+      position: absolute;
+      z-index: 20;
+      width: -webkit-fill-available;
+    "
+  >
+    <a
+      mat-mini-fab
+      color="primary"
+      (click)="scroll(-100)"
+      *ngIf="tagListDivScrollLeftAllowed"
+      style="position: absolute; left: 15px"
+      ><</a
+    >
+    <a
+      mat-mini-fab
+      color="primary"
+      (click)="scroll(100)"
+      *ngIf="tagListDivScrollRightAllowed"
+      style="position: absolute; right: 15px"
+      >></a
+    >
   </div>
   <!-- <div
     style="width: fit-content; min-width: fit-content; margin-bottom: 15px; position: absolute;"
@@ -65,39 +88,9 @@
     <!-- </div> -->
   </div>
 </div>
-
+<!-- <hr /> -->
+<router-outlet></router-outlet>
 <!-- <div style="margin-top: 20px;">{{tagListDivScrollLeft}}</div> -->
-<hr />
-<div class="bootstrap-wrapper">
-  <div class="container">
-    <div
-      class="all-topics-container"
-      style="
-        align-items: center;
-        padding: 20px;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-      "
-    >
-      <h1 style="line-height: 3.4"><strong>Explore topics</strong></h1>
 
-      <!-- <div class="example-form-field-wrapper"> -->
-      <mat-form-field class="example-form-field">
-        <mat-label></mat-label>
-        <input
-          matInput
-          type="text"
-          placeholder="Search"
-          class="example-input"
-        />
-        <button mat-button matSuffix>
-          <mat-icon>search</mat-icon>
-        </button>
-      </mat-form-field>
-      <!-- </div> -->
-    </div>
-  </div>
-</div>
 <!-- </div>
 </div> -->

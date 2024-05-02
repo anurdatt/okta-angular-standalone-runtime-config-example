@@ -1,7 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Tag } from '../blogs/model/tag';
 import { TagListComponent } from './tag-list/tag-list.component';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  NavigationEnd,
+  Router,
+  RouterLink,
+  RouterModule,
+} from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { TagsService } from './tags.service';
 import {
@@ -9,24 +16,32 @@ import {
   MatSnackBarHorizontalPosition,
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
-import { of as observableOf, Subscription } from 'rxjs';
+import {
+  of as observableOf,
+  Subscription,
+  filter,
+  map,
+  mergeMap,
+  distinctUntilChanged,
+} from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { TagViewComponent } from './tag-view/tag-view.component';
 
 @Component({
   selector: 'app-tags',
   standalone: true,
   imports: [
-    RouterLink, 
-    CommonModule, 
-    TagListComponent, 
+    RouterModule,
+    CommonModule,
+    TagListComponent,
     MatFormFieldModule,
     MatInputModule,
-    MatButtonModule, 
-    MatIconModule
+    MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './tags.component.html',
   styleUrl: './tags.component.scss',
@@ -65,32 +80,36 @@ export class TagsComponent implements OnInit, OnDestroy {
 
   isLoadingResults = true;
   fetchedTags: Tag[] = [];
-  selectedTagId: string;
+  selectedTagId: string = null;
   fetchTagsSubscription: Subscription;
+  navEventSubscription: Subscription;
+
   horizontalPosition: MatSnackBarHorizontalPosition = 'center';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
 
-  tagListDivScrollLeft=0;
-  tagListDivOffsetWidth=0;
-  tagListDivScrollWidth=0;
-  tagListDivScrollLeftAllowed=false;
-  tagListDivScrollRightAllowed=true;
-  
+  tagListDivScrollLeft = 0;
+  tagListDivOffsetWidth = 0;
+  tagListDivScrollWidth = 0;
+  tagListDivScrollLeftAllowed = false;
+  tagListDivScrollRightAllowed = true;
 
   constructor(
     private route: ActivatedRoute,
     private tagsService: TagsService,
-    private _snackbar: MatSnackBar
+    private _snackbar: MatSnackBar,
+    private router: Router
   ) {}
 
-  cb = (e:Event) => {
+  cb = (e: Event) => {
     // console.log(e.target['scrollLeft'], e.target['scrollTop'], e.target['scrollWidth'], e.target['clientWidth'], e.target['offsetWidth']);
     this.tagListDivScrollLeft = e.target['scrollLeft'];
     this.tagListDivScrollWidth = e.target['scrollWidth'];
     this.tagListDivOffsetWidth = e.target['offsetWidth'];
     this.tagListDivScrollLeftAllowed = this.tagListDivScrollLeft > 0;
-    this.tagListDivScrollRightAllowed = this.tagListDivScrollLeft + this.tagListDivOffsetWidth  < this.tagListDivScrollWidth;
-  }
+    this.tagListDivScrollRightAllowed =
+      this.tagListDivScrollLeft + this.tagListDivOffsetWidth <
+      this.tagListDivScrollWidth;
+  };
 
   scroll(by: number) {
     const el = document.getElementById('scrollingDiv');
@@ -100,25 +119,94 @@ export class TagsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('In ngOninit()');
-    const tagId = this.route.snapshot.params['id']; //'Software-1712809638524';
-    if (!tagId) this.fetchAllTags();
-    else {
-      this.selectedTagId = tagId;
-      this.fetchTagsRelatedTo(tagId);
+
+    // Subscribe to router events to detect navigation changes
+    this.navEventSubscription = this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        // distinctUntilChanged(),
+        map(() => this.route.firstChild),
+        // map((route) => {
+        //   console.log({ route });
+        //   while (route.firstChild) {
+        //     route = route.firstChild;
+        //     console.log({ route });
+        //   }
+        //   return route;
+        // }),
+        mergeMap((route) => route.paramMap),
+        map((params) => params.get('id')),
+        distinctUntilChanged() // Filter out consecutive duplicate values
+      )
+      .subscribe((id) => {
+        //(params) => {
+        // Access route parameters here
+        // const id = params.get('id');
+        console.log('Merge Route ID:', id);
+        // Process route parameters as needed
+        if (!id) {
+          this.selectedTagId = null;
+          this.fetchAllTags(false);
+        } else {
+          if (!this.selectedTagId) {
+            this.selectedTagId = id;
+            this.fetchTagsRelatedTo(id, true);
+          } else {
+            this.selectedTagId = id;
+          }
+        }
+      });
+
+    // Subscribe to route params observable of the parent route
+    // this.route.params.subscribe((params) => {
+    //   const id = params['id'];
+    //   console.log('Route ID:', id);
+    // });
+
+    console.log('ActivatedRoute Snapshot:', this.route.snapshot);
+
+    if (!this.selectedTagId) {
+      const tagId = this.route.snapshot.firstChild?.params['id'];
+      if (!tagId) {
+        this.selectedTagId = null;
+        this.fetchAllTags(false);
+      } else {
+        this.selectedTagId = tagId;
+        this.fetchTagsRelatedTo(tagId, true);
+      }
     }
+
+    // if (
+    //   this.route.firstChild?.component ==
+    //   this.route.routeConfig.children[1].component
+    // ) {
+    //   // Subscribe to route params observable to get access to the child route params
+    //   this.route.firstChild?.paramMap.subscribe((params) => {
+    //     const tagId = params.get('id');
+    //     console.log('Child Route ID:', tagId);
+    //     // if (!tagId) this.fetchAllTags();
+    //     // else {
+    //     this.selectedTagId = tagId;
+    //     this.fetchTagsRelatedTo(tagId);
+    //     // }
+    //   });
+    // } else {
+    //   this.fetchAllTags();
+    // }
+
     // setInterval(() => this.count += 10, 1000);
-    const el = document.getElementById('scrollingDiv')
-    console.log({el});
+    const el = document.getElementById('scrollingDiv');
+    console.log({ el });
     el.addEventListener('scroll', this.cb);
     // el.addEventListener('click', (e)=> alert(`You clicked at x = ${e.clientX}`));
   }
 
-  fetchTagsRelatedTo(tagId: string) {
+  fetchTagsRelatedTo(tagId: string, bringToFront: boolean) {
     //TODO: recommended fetch using specific tagid.
-    this.fetchAllTags(); //For now simply all tags.
+    this.fetchAllTags(bringToFront); //For now simply all tags.
   }
 
-  fetchAllTags() {
+  fetchAllTags(bringToFront: boolean) {
     this.isLoadingResults = true;
 
     this.fetchTagsSubscription = this.tagsService
@@ -152,10 +240,14 @@ export class TagsComponent implements OnInit, OnDestroy {
           //   duration: 1000,
           // });
 
-          if (this.selectedTagId != undefined) {
-            const selectedTagIndex = this.fetchedTags.findIndex((tag) => tag.id === this.selectedTagId);
+          if (bringToFront && this.selectedTagId != null) {
+            const selectedTagIndex = this.fetchedTags.findIndex(
+              (tag) => tag.id === this.selectedTagId
+            );
             if (selectedTagIndex >= 0)
-            this.fetchedTags = this.fetchedTags.splice(selectedTagIndex, 1).concat(this.fetchedTags);
+              this.fetchedTags = this.fetchedTags
+                .splice(selectedTagIndex, 1)
+                .concat(this.fetchedTags);
           }
         }
       });
@@ -163,17 +255,19 @@ export class TagsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('In ngOnDestroy');
-    const el = document.getElementById('scrollingDiv')
-    console.log({el});
+    const el = document.getElementById('scrollingDiv');
+    console.log({ el });
     el.removeEventListener('scroll', this.cb);
 
     this.fetchTagsSubscription?.unsubscribe();
+
+    this.navEventSubscription?.unsubscribe();
   }
 
   // ngAfterViewInit(): void {
   //   // const el = document.getElementById('scrollingDiv')
   //   // console.log({el});
   //   // el.addEventListener('scroll', this.cb, true);
-    
+
   // }
 }

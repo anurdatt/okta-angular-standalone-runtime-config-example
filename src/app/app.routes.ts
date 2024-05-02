@@ -56,6 +56,11 @@ export const routes: Routes = [
     component: TagsComponent,
   },
   {
+    path: 'tags',
+    loadChildren: () =>
+      import('./tags/tags.routes').then((mod) => mod.TAG_ROUTES),
+  },
+  {
     path: 'notfound',
     component: NotfoundComponent,
   },
