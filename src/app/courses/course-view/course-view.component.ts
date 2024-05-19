@@ -16,6 +16,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-course-view',
@@ -96,14 +97,19 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   navigateWithQueryParams() {
     const queryParams: NavigationExtras = {
       queryParams: {
-        vid: this.course.url,
-        lessons: JSON.stringify(
+        courseUrl: `${environment.mediaApiUrl}?${this.course.url}`,
+        courseAuthor: this.course.author,
+        lessonVideos: JSON.stringify(
           this.lessons.map((l) => {
             console.log(JSON.stringify(l) + '\n');
-            return { id: l.id, description: l.description };
+            return {
+              id: l.id,
+              description: l.description,
+              fileSize: l.fileSize,
+            };
           })
         ),
-        name: this.course.description,
+        courseDescription: this.course.description,
       },
     };
 

@@ -7,12 +7,25 @@ import {
   ViewChild,
   OnInit,
   AfterViewInit,
+  OnDestroy,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { Video } from '../model/video';
+import { BlobMediaService } from '../blob-media.service';
+import {
+  Subscription,
+  BehaviorSubject,
+  catchError,
+  of as observableOf,
+} from 'rxjs';
 
 interface VideoUrl {
+  id: number;
   title: string;
-  url: string;
+  videoUrl: string;
+  fileSize: number;
+  blobUrl: string;
 }
 
 @Component({
@@ -21,23 +34,38 @@ interface VideoUrl {
   styleUrls: ['./video-course-player.component.css'],
   standalone: true,
   imports: [CommonModule],
+  providers: [BlobMediaService],
 })
-export class VideoCoursePlayerComponent implements OnInit, AfterViewInit {
+export class VideoCoursePlayerComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @Input() courseTitle: string;
-  @Input() playlist: Video[]; //string[];
-  @Input() url: string;
+  @Input() lessonVideos: Video[]; //string[];
+  @Input() courseUrl: string;
 
   @ViewChild('videoPlayer') videoPlayer: ElementRef<HTMLVideoElement>;
+  @ViewChild('spinner') spinner: ElementRef<HTMLDivElement>;
 
-  ctlList = ''; //'nodownload nofullscreen';
+  @Output('activeLessonVideo') activeLessonVideo: EventEmitter<Video> =
+    new EventEmitter<Video>();
+
+  ctlList = 'nodownload'; //'nofullscreen';
   playList: VideoUrl[] = [];
   currentIndex = 0;
   isPlaying = false;
   currentTime = 0;
   duration = 0;
 
+  $currentVideoBlobUrl: BehaviorSubject<string> = new BehaviorSubject('');
+  blobMediaGetSubscription: Subscription = null;
+
+  constructor(private blobMediaService: BlobMediaService) {}
+
   get currentVideoUrl(): string {
-    return this.playList[this.currentIndex].url;
+    return this.playList[this.currentIndex].videoUrl;
+  }
+  get currentVideoUrlInfo(): VideoUrl {
+    return this.playList[this.currentIndex];
   }
 
   playPause() {
@@ -58,18 +86,95 @@ export class VideoCoursePlayerComponent implements OnInit, AfterViewInit {
   }
 
   nextVideo() {
-    if (this.currentIndex < this.playlist.length - 1) {
+    if (this.currentIndex < this.playList.length - 1) {
       this.currentIndex++;
       this.playVideoAtIndex();
     }
   }
 
   playVideoAtIndex() {
+    this.blobMediaGetSubscription?.unsubscribe();
+    this.scrollTo(this.currentIndex);
     const video = this.videoPlayer.nativeElement;
     video.currentTime = 0; // Reset video time
-    video.src = this.currentVideoUrl;
-    video.play();
-    this.isPlaying = true;
+    // video.src = this.currentVideoUrl;
+    video.src = null;
+    const vinfo: VideoUrl = this.currentVideoUrlInfo;
+    const lv: Video = this.lessonVideos.find((lv) => lv.id == vinfo.id);
+    this.activeLessonVideo.emit(lv);
+
+    if (vinfo.blobUrl) {
+      video.src = vinfo.blobUrl;
+      this.$currentVideoBlobUrl.next(vinfo.blobUrl);
+      // video.play();
+      // this.isPlaying = true;
+    } else {
+      console.log('Trigerring VideoWaiting');
+      this.triggerVideoWaitingEvent(); // Trigger the waiting event when starting to download
+      this.blobMediaGetSubscription = this.blobMediaService
+        .getBlobUrl(vinfo.videoUrl, vinfo.fileSize)
+        .pipe(
+          catchError((err) => {
+            console.error(
+              'get blob url failed with error: ' + JSON.stringify(err)
+            );
+            return observableOf(null);
+          })
+        )
+        .subscribe((url: string) => {
+          if (url) {
+            video.src = url;
+            vinfo.blobUrl = url;
+            this.$currentVideoBlobUrl.next(url);
+            // console.log('Trigerring VideoCanPlay');
+            // this.triggerVideoCanPlayEvent(); // Trigger the canplay event after download complete to stop spinner
+            // video.play();
+            // this.isPlaying = true;
+          } else {
+            alert('get blob url failed for url : ' + vinfo.videoUrl);
+            console.log('Trigerring VideoCanPlay');
+            this.triggerVideoCanPlayEvent(); // Trigger the canplay event after failed downoad to stop spinner.
+          }
+        });
+    }
+    // video.play();
+    // this.isPlaying = true;
+  }
+
+  private setupVideoEvents() {
+    const video = this.videoPlayer.nativeElement;
+    video.addEventListener('timeupdate', () => {
+      this.currentTime = video.currentTime;
+      this.duration = video.duration;
+    });
+    video.addEventListener('waiting', this.onVideoWaiting.bind(this));
+    video.addEventListener('playing', this.onVideoPlaying.bind(this));
+    video.addEventListener('canplay', this.onVideoCanPlay.bind(this));
+  }
+
+  private onVideoWaiting() {
+    console.log('Video is buffering...');
+    this.spinner.nativeElement.style.display = 'block';
+  }
+
+  private onVideoPlaying() {
+    console.log('Video is playing.');
+    this.spinner.nativeElement.style.display = 'none';
+  }
+
+  private onVideoCanPlay() {
+    console.log('Video can play.');
+    this.spinner.nativeElement.style.display = 'none';
+  }
+
+  private triggerVideoWaitingEvent() {
+    const event = new Event('waiting');
+    this.videoPlayer.nativeElement.dispatchEvent(event);
+  }
+
+  private triggerVideoCanPlayEvent() {
+    const event = new Event('canplay');
+    this.videoPlayer.nativeElement.dispatchEvent(event);
   }
 
   selectVideo(index: number) {
@@ -80,6 +185,18 @@ export class VideoCoursePlayerComponent implements OnInit, AfterViewInit {
     // // this.playPause(); // Auto play the selected video
     this.currentIndex = index;
     this.playVideoAtIndex();
+  }
+
+  scrollTo(index: number): void {
+    console.log('In scrolTo - index = ' + index);
+    setTimeout(() => {
+      const el = document.getElementById('playListScroll');
+      const section = el.querySelector(`#v${index}`);
+      console.log('section = ' + section);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, 10);
   }
 
   seek(event: any) {
@@ -99,32 +216,30 @@ export class VideoCoursePlayerComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     // Initialize playlist (You can fetch this data from an API or a service)
-    // this.playList = [
-    //   {
-    //     title: 'Video 1',
-    //     url: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_2mb.mp4',
-    //   },
-    //   {
-    //     title: 'Video 2',
-    //     url: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_5mb.mp4',
-    //   },
-    //   {
-    //     title: 'Video 3',
-    //     url: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_10mb.mp4',
-    //   },
-    // ];
+
     this.playList = //this.playList.concat(
-      this.playlist.map((l) => {
-        return { title: l.description, url: `${this.url}/${l.id}.mp4` };
+      this.lessonVideos.map((lv) => {
+        return {
+          id: lv.id,
+          title: lv.description,
+          videoUrl: `${this.courseUrl}/${lv.id}.mp4`,
+          fileSize: lv.fileSize,
+          blobUrl: null,
+        };
       });
     //);
+
+    // this.playVideoAtIndex();
   }
 
   ngAfterViewInit() {
-    const video = this.videoPlayer.nativeElement;
-    video.addEventListener('timeupdate', () => {
-      this.currentTime = video.currentTime;
-      this.duration = video.duration;
-    });
+    this.setupVideoEvents();
+
+    console.log('curent index ', this.currentIndex);
+    this.playVideoAtIndex();
+  }
+
+  ngOnDestroy() {
+    this.blobMediaGetSubscription?.unsubscribe();
   }
 }

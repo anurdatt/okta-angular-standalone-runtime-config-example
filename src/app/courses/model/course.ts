@@ -7,4 +7,5 @@ export interface Course {
   category: string;
   lessonsCount: number;
   url: string;
+  author: string;
 }

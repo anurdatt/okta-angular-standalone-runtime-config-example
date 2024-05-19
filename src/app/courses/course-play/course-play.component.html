@@ -4,12 +4,36 @@
   <li class="breadcrumb-item active">Course-Play</li>
 </ol>
 
+<!-- <div class="bootstrap-wrapper">
+  <div class="container"> -->
+<app-video-course-player
+  [courseUrl]="courseUrl"
+  [lessonVideos]="lessonVideos"
+  [courseTitle]="courseDescription"
+  (activeLessonVideo)="processActiveLesson($event)"
+></app-video-course-player>
+
 <div class="bootstrap-wrapper">
   <div class="container">
-    <app-video-course-player
-      [url]="vid"
-      [playlist]="lessonVideos"
-      [courseTitle]="name"
-    ></app-video-course-player>
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="lesson-title">{{ activeLessonVideo.description }}</h2>
+      </div>
+    </div>
+    <div class="row lesson-course-properties">
+      <div class="col-md-8 lesson-comments">
+        <div class="lesson-properties">
+          <h4>Author like share</h4>
+        </div>
+        <div class="comments">
+          <h4>Comments`</h4>
+        </div>
+      </div>
+      <div class="col-md-4 course-properties">
+        <div class="related-course">
+          <h4>Related course</h4>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

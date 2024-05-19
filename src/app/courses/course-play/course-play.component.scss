@@ -1,0 +1,43 @@
+.lesson-title {
+  font-size: 22px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.lesson-course-properties {
+  display: flex;
+  flex-direction: row;
+}
+
+.lesson-comments {
+  display: flex;
+  flex-direction: column;
+  // border: 1px dotted;
+}
+
+.lesson-properties {
+  display: flex;
+  flex-direction: row;
+  border: 1px dotted;
+  height: 80px;
+}
+
+.comments {
+  display: flex;
+  flex-direction: column;
+  border: 1px dotted;
+  height: 100px;
+}
+
+.course-properties {
+  display: flex;
+  flex-direction: column;
+  // border: 1px dotted;
+}
+
+.related-course {
+  display: flex;
+  flex-direction: column;
+  border: 1px dotted;
+  height: 180px;
+}

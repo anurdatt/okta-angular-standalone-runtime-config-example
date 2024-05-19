@@ -5,7 +5,8 @@
     "duration": "4:17",
     "seqNo": 1,
     "courseId": 11,
-    "longDescription": "A quick introduction to the Angular Material library."
+    "longDescription": "A quick introduction to the Angular Material library.",
+    "fileSize": 1055736
   },
   {
     "id": 121,
@@ -13,7 +14,8 @@
     "duration": "6:37",
     "seqNo": 2,
     "courseId": 11,
-    "longDescription": "Guided tour of navigation elements and container."
+    "longDescription": "Guided tour of navigation elements and container.",
+    "fileSize": 21069678
   },
   {
     "id": 122,
@@ -21,7 +23,8 @@
     "duration": "8:03",
     "seqNo": 3,
     "courseId": 11,
-    "longDescription": "Angular Material Data Tables in detail."
+    "longDescription": "Angular Material Data Tables in detail.",
+    "fileSize": 0
   },
   {
     "id": 123,
@@ -29,7 +32,8 @@
     "duration": "11:46",
     "seqNo": 4,
     "courseId": 11,
-    "longDescription": "Modal elements and how to use them."
+    "longDescription": "Modal elements and how to use them.",
+    "fileSize": 0
   },
   {
     "id": 124,
@@ -37,7 +41,8 @@
     "duration": "7:17",
     "seqNo": 5,
     "courseId": 11,
-    "longDescription": "All sorts of commonly needed form controls."
+    "longDescription": "All sorts of commonly needed form controls.",
+    "fileSize": 0
   },
   {
     "id": 125,
@@ -45,7 +50,8 @@
     "duration": "8:16",
     "seqNo": 6,
     "courseId": 11,
-    "longDescription": "How to use drag and drop."
+    "longDescription": "How to use drag and drop.",
+    "fileSize": 0
   },
   {
     "id": 126,
@@ -53,7 +59,8 @@
     "duration": "7:28",
     "seqNo": 7,
     "courseId": 11,
-    "longDescription": "Everything about making our screens responsive."
+    "longDescription": "Everything about making our screens responsive.",
+    "fileSize": 0
   },
   {
     "id": 127,
@@ -61,7 +68,8 @@
     "duration": "11:09",
     "seqNo": 8,
     "courseId": 11,
-    "longDescription": "All about the Angular Material Tree component."
+    "longDescription": "All about the Angular Material Tree component.",
+    "fileSize": 0
   },
   {
     "id": 128,
@@ -69,7 +77,8 @@
     "duration": "3:44",
     "seqNo": 9,
     "courseId": 11,
-    "longDescription": "How to use virtual scrolling to handle large amounts of data."
+    "longDescription": "How to use virtual scrolling to handle large amounts of data.",
+    "fileSize": 0
   },
   {
     "id": 129,
@@ -77,7 +86,8 @@
     "duration": "8:55",
     "seqNo": 10,
     "courseId": 11,
-    "longDescription": "How to build your own custom Angular Material theme."
+    "longDescription": "How to build your own custom Angular Material theme.",
+    "fileSize": 0
   },
   {
     "id": 130,
@@ -85,6 +95,7 @@
     "duration": "12:37",
     "seqNo": 11,
     "courseId": 11,
-    "longDescription": ""
+    "longDescription": "",
+    "fileSize": 0
   }
 ]

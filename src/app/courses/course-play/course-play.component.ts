@@ -13,9 +13,11 @@ import { Video } from '../model/video';
   styleUrl: './course-play.component.scss',
 })
 export class CoursePlayComponent implements OnInit, OnDestroy {
-  vid: string;
-  name: string;
+  courseUrl: string;
+  courseAuthor: string;
+  courseDescription: string;
   lessonVideos: Video[];
+  activeLessonVideo: Video;
 
   paramSubscription: Subscription;
   constructor(private route: ActivatedRoute) {}
@@ -27,12 +29,21 @@ export class CoursePlayComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // console.log(this.route.params['vid']);
     this.paramSubscription = this.route.queryParams.subscribe((p) => {
-      console.log(p['vid']);
-      this.vid = p['vid'];
-      console.log(p['lessons']);
-      if (p['lessons'] != null) this.lessonVideos = JSON.parse(p['lessons']);
-      console.log(p['name']);
-      this.name = p['name'];
+      console.log(p['courseUrl']);
+      this.courseUrl = p['courseUrl'];
+      console.log(p['courseAuthor']);
+      this.courseAuthor = p['courseAuthor'];
+      console.log(p['lessonVideos']);
+      if (p['lessonVideos'] != null) {
+        this.lessonVideos = JSON.parse(p['lessonVideos']);
+        this.activeLessonVideo = this.lessonVideos[0];
+      }
+      console.log(p['courseDescription']);
+      this.courseDescription = p['courseDescription'];
     });
+  }
+
+  processActiveLesson(lessonVideo: Video) {
+    this.activeLessonVideo = lessonVideo;
   }
 }
