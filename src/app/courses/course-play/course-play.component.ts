@@ -4,11 +4,21 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { VideoCoursePlayerComponent } from './video-course-player.component';
 import { Video } from '../model/video';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-course-play',
   standalone: true,
-  imports: [RouterModule, CommonModule, VideoCoursePlayerComponent],
+  imports: [
+    RouterModule,
+    CommonModule,
+    VideoCoursePlayerComponent,
+    MatCardModule,
+    MatIconModule,
+    MatButtonModule,
+  ],
   templateUrl: './course-play.component.html',
   styleUrl: './course-play.component.scss',
 })

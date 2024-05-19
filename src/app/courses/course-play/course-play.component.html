@@ -23,7 +23,71 @@
     <div class="row lesson-course-properties">
       <div class="col-md-8 lesson-comments">
         <div class="lesson-properties">
-          <h4>Author like share</h4>
+          <!-- <h4>Author like share</h4> -->
+          <mat-card class="lesson-card">
+            <mat-card-header class="lesson-card-header">
+              <div class="lesson-meta-actions">
+                <div class="lesson-meta">
+                  <div
+                    mat-card-avatar
+                    class="course-author-avatar"
+                    mat-card-sm-image
+                    style="
+                      border-top-left-radius: 50%;
+                      border-top-right-radius: 50%;
+                    "
+                  >
+                    @if (courseAuthor?.startsWith("Anuran")) {
+                    <img
+                      src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
+                    />
+                    }
+                  </div>
+                  <div class="course-author-time">
+                    <div class="course-author">
+                      {{ courseAuthor }}
+                    </div>
+                    <!-- <mat-card-subtitle class="course-time">
+                      <span class="course-date">{{
+                        commonUtil.formatDate(postWithTags.post.date)
+                      }}</span>
+                    </mat-card-subtitle> -->
+                  </div>
+                </div>
+                <div class="lesson-actions">
+                  <!-- Display actions here -->
+                  <div class="actions-fade-line"></div>
+                  <div class="actions-line">
+                    <!-- <div class="action-line-left"> -->
+                    <button mat-button>
+                      <mat-icon class="material-icons-outlined"
+                        >thumb_up</mat-icon
+                      >
+                      <span><small>100</small></span>
+                    </button>
+                    <!-- <button mat-button (click)="scrollTo('commentz')">
+                        <mat-icon>comment</mat-icon>
+                        <span><small>15</small></span>
+                      </button> -->
+                    <!-- </div> -->
+                    <!-- <div class="action-line-right"> -->
+                    <button mat-button>
+                      <mat-icon class="material-icons">share</mat-icon>
+                      <span><small>50</small></span>
+                    </button>
+                    <button mat-button>
+                      <mat-icon class="material-icons-outlined"
+                        >bookmark_add</mat-icon
+                      >
+                      <span><small>20</small></span>
+                    </button>
+                    <!-- </div> -->
+                  </div>
+                  <div class="actions-fade-line"></div>
+                </div>
+              </div>
+            </mat-card-header>
+          </mat-card>
         </div>
         <div class="comments">
           <h4>Comments`</h4>
