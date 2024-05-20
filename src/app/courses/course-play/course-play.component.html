@@ -90,7 +90,46 @@
           </mat-card>
         </div>
         <div class="comments">
-          <h4>Comments`</h4>
+          <!-- <h4>Comments`</h4> -->
+          <!-- <hr style="margin-top: 40px; width: 100%" /> -->
+          <!-- Comments Section -->
+          <section id="commentz" class="comments-section">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                margin-right: 16px;
+              "
+            >
+              <h2 style="font-weight: bold; margin-right: 20px">
+                Comments ({{ totalComments }})
+              </h2>
+              @if(isHidden) {
+              <button
+                mat-button
+                style="width: fit-content"
+                (click)="scrollTo('commentz')"
+              >
+                Show Comments
+              </button>
+              } @else {
+              <button
+                mat-button
+                style="width: fit-content"
+                (click)="isHidden = true"
+              >
+                Hide Comments
+              </button>
+              }
+            </div>
+            <app-comments
+              *ngIf="loadComments"
+              [sourceApp]="sourceApp"
+              [sourceId]="activeLessonVideo.id"
+              [ngClass]="{ hidden: isHidden }"
+              (commentsLoaded)="commentsLoadedCB($event, 'commentz')"
+            ></app-comments>
+          </section>
         </div>
       </div>
       <div class="col-md-4 course-properties">

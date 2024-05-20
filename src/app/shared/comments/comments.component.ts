@@ -45,7 +45,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class CommentsComponent implements OnInit, OnDestroy {
   @Input('sourceApp') sourceApp: string;
-  @Input('sourceId') sourceId: string;
+  @Input('sourceId') sourceId: string | number;
 
   // @Input('isHidden') isHidden: boolean;
 
@@ -108,20 +108,28 @@ export class CommentsComponent implements OnInit, OnDestroy {
           this.isLoadingResults = false;
 
           if (nestedComments == null) {
-            this._snackbar.open('Error occured in loading!', 'Failure', {
-              // panelClass: ['alert', 'alert-failure'],
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-            });
+            this._snackbar.open(
+              'Error occured in loading comments!',
+              'Failure',
+              {
+                // panelClass: ['alert', 'alert-failure'],
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+              }
+            );
           } else {
             this.comments = nestedComments;
 
-            this._snackbar.open('Load completed successfully!', 'Success', {
-              // panelClass: ['alert', 'alert-success'],
-              horizontalPosition: this.horizontalPosition,
-              verticalPosition: this.verticalPosition,
-              duration: 1000,
-            });
+            this._snackbar.open(
+              'Comments Load completed successfully!',
+              'Success',
+              {
+                // panelClass: ['alert', 'alert-success'],
+                horizontalPosition: this.horizontalPosition,
+                verticalPosition: this.verticalPosition,
+                duration: 1000,
+              }
+            );
 
             this.commentsLoaded.emit(this.getTotalComments(this.comments));
           }
@@ -129,7 +137,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
     } catch (err) {
       this.isLoadingResults = false;
       console.error({ err });
-      this._snackbar.open('Error occured in loading!', 'Failure', {
+      this._snackbar.open('Error occured in loading comments!', 'Failure', {
         // panelClass: ['alert', 'alert-failure'],
         horizontalPosition: this.horizontalPosition,
         verticalPosition: this.verticalPosition,
@@ -168,22 +176,30 @@ export class CommentsComponent implements OnInit, OnDestroy {
           //   type: 'failure',
           //   message: 'Error occured in saving!',
           // };
-          this._snackbar.open('Error occured in deleting!', 'Failure', {
-            // panelClass: ['alert', 'alert-failure'],
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-          });
+          this._snackbar.open(
+            'Error occured in deleting comments!',
+            'Failure',
+            {
+              // panelClass: ['alert', 'alert-failure'],
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+            }
+          );
         } else {
           // this.feedback = {
           //   type: 'success',
           //   message: 'Save completed successfully!',
           // };
-          this._snackbar.open('Delete completed successfully!', 'Success', {
-            // panelClass: ['alert', 'alert-success'],
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            duration: 1000,
-          });
+          this._snackbar.open(
+            'Comment Delete completed successfully!',
+            'Success',
+            {
+              // panelClass: ['alert', 'alert-success'],
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 1000,
+            }
+          );
           setTimeout(() => {
             this.feedback = {};
             this.loadComments();
@@ -220,7 +236,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
           //   type: 'failure',
           //   message: 'Error occured in saving!',
           // };
-          this._snackbar.open('Error occured in saving!', 'Failure', {
+          this._snackbar.open('Error occured in saving comment!', 'Failure', {
             // panelClass: ['alert', 'alert-failure'],
             horizontalPosition: this.horizontalPosition,
             verticalPosition: this.verticalPosition,
@@ -231,12 +247,16 @@ export class CommentsComponent implements OnInit, OnDestroy {
           //   type: 'success',
           //   message: 'Save completed successfully!',
           // };
-          this._snackbar.open('Save completed successfully!', 'Success', {
-            // panelClass: ['alert', 'alert-success'],
-            horizontalPosition: this.horizontalPosition,
-            verticalPosition: this.verticalPosition,
-            duration: 1000,
-          });
+          this._snackbar.open(
+            'Comment Save completed successfully!',
+            'Success',
+            {
+              // panelClass: ['alert', 'alert-success'],
+              horizontalPosition: this.horizontalPosition,
+              verticalPosition: this.verticalPosition,
+              duration: 1000,
+            }
+          );
           setTimeout(() => {
             this.feedback = {};
             this.loadComments();

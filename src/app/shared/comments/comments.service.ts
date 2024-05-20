@@ -17,11 +17,13 @@ export class CommentsService {
 
   findAllNested(
     sourceApp: string,
-    sourceId: string
+    sourceId: string | number
   ): Observable<NestedComment[]> {
     let url = null;
     if (sourceApp === 'BLOG') {
       url = `${environment.blogsApiUrl}/api/nested-comments`;
+    } else if (sourceApp === 'COURSES') {
+      url = `${environment.coursesApiUrl}/api/nested-comments`;
     }
     if (url == null)
       throw new Error('Invalid argument passed for sourceApp !!');
@@ -34,6 +36,8 @@ export class CommentsService {
     let url = null;
     if (sourceApp === 'BLOG') {
       url = `${environment.blogsApiUrl}/api/comments/${id}`;
+    } else if (sourceApp === 'COURSES') {
+      url = `${environment.coursesApiUrl}/api/comments/${id}`;
     }
     if (url == null)
       throw new Error('Invalid argument passed for sourceApp !!');
@@ -47,6 +51,8 @@ export class CommentsService {
     if (entity.id) {
       if (entity.sourceApp === 'BLOG') {
         url = `${environment.blogsApiUrl}/api/comments/${entity.id}`;
+      } else if (entity.sourceApp === 'COURSES') {
+        url = `${environment.coursesApiUrl}/api/comments/${entity.id}`;
       }
       if (url == null)
         throw new Error('Invalid argument passed for sourceApp !!');
@@ -58,6 +64,8 @@ export class CommentsService {
     } else {
       if (entity.sourceApp === 'BLOG') {
         url = `${environment.blogsApiUrl}/api/comments`;
+      } else if (entity.sourceApp === 'COURSES') {
+        url = `${environment.coursesApiUrl}/api/comments`;
       }
       if (url == null)
         throw new Error('Invalid argument passed for sourceApp !!');

@@ -1,6 +1,6 @@
 export class Comment {
   id?: string;
-  sourceId: string;
+  sourceId: string | number;
   sourceApp: string;
   author: string;
   text: string;
