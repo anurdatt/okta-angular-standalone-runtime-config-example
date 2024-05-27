@@ -196,8 +196,9 @@ export class BlobMediaService {
           concatMap((requests) => forkJoin(requests)),
           catchError((error) => {
             console.error('Error downloading blobs:', error);
-            observer.error('Error downloading blobs');
-            return from([]); // Return an empty observable to complete the sequence
+            // observer.error('Error downloading blobs');
+            // return from([]); // Return an empty observable to complete the sequence
+            return of(null);
           })
         )
         .subscribe({
@@ -208,10 +209,9 @@ export class BlobMediaService {
               return;
             }
             console.log(
-              'Inside BlobMediaService - 5 - chunks.length = ' +
-                chunks.length +
-                ', chunks[0].size = ' +
-                chunks[0].size
+              'Inside BlobMediaService - 5 - chunks.length = ' + chunks.length //+
+              // ', chunks[0].size = ' +
+              // chunks[0].size
             );
             chunks.forEach((chunkArray) =>
               this.videoChunks.push(...chunkArray)

@@ -1,0 +1,148 @@
+<ol class="breadcrumb">
+  <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+  <li class="breadcrumb-item"><a routerLink="../../">Courses</a></li>
+  <li class="breadcrumb-item"><a routerLink="../">Course-View</a></li>
+  <li class="breadcrumb-item active">Course-Play</li>
+</ol>
+<div class="spinner-container" *ngIf="loading">
+  <mat-spinner></mat-spinner>
+</div>
+@if (courseUrl && activeLesson) {
+<!-- <div class="bootstrap-wrapper">
+  <div class="container"> -->
+<app-url-video-course-player
+  *ngIf="lessons"
+  [courseUrl]="courseUrl"
+  [lessons]="lessons"
+  [courseTitle]="course.description"
+  (activeLesson)="processActiveLesson($event)"
+></app-url-video-course-player>
+
+<div class="bootstrap-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h2 class="lesson-title">{{ activeLesson?.description }}</h2>
+      </div>
+    </div>
+    <div class="row lesson-course-properties">
+      <div class="col-md-8 lesson-comments">
+        <div class="lesson-properties">
+          <!-- <h4>Author like share</h4> -->
+          <mat-card class="lesson-card">
+            <mat-card-header class="lesson-card-header">
+              <div class="lesson-meta-actions">
+                <div class="lesson-meta">
+                  <div
+                    mat-card-avatar
+                    class="course-author-avatar"
+                    mat-card-sm-image
+                    style="
+                      border-top-left-radius: 50%;
+                      border-top-right-radius: 50%;
+                    "
+                  >
+                    @if (course.author?.startsWith("Anuran")) {
+                    <img
+                      src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
+                    />
+                    }
+                  </div>
+                  <div class="course-author-time">
+                    <div class="course-author">
+                      {{ course.author }}
+                    </div>
+                    <!-- <mat-card-subtitle class="course-time">
+                      <span class="course-date">{{
+                        commonUtil.formatDate(postWithTags.post.date)
+                      }}</span>
+                    </mat-card-subtitle> -->
+                  </div>
+                </div>
+                <div class="lesson-actions">
+                  <!-- Display actions here -->
+                  <div class="actions-fade-line"></div>
+                  <div class="actions-line">
+                    <!-- <div class="action-line-left"> -->
+                    <button mat-button>
+                      <mat-icon class="material-icons-outlined"
+                        >thumb_up</mat-icon
+                      >
+                      <span><small>100</small></span>
+                    </button>
+                    <!-- <button mat-button (click)="scrollTo('commentz')">
+                        <mat-icon>comment</mat-icon>
+                        <span><small>15</small></span>
+                      </button> -->
+                    <!-- </div> -->
+                    <!-- <div class="action-line-right"> -->
+                    <button mat-button>
+                      <mat-icon class="material-icons">share</mat-icon>
+                      <span><small>50</small></span>
+                    </button>
+                    <button mat-button>
+                      <mat-icon class="material-icons-outlined"
+                        >bookmark_add</mat-icon
+                      >
+                      <span><small>20</small></span>
+                    </button>
+                    <!-- </div> -->
+                  </div>
+                  <div class="actions-fade-line"></div>
+                </div>
+              </div>
+            </mat-card-header>
+          </mat-card>
+        </div>
+        <div class="comments">
+          <!-- <h4>Comments`</h4> -->
+          <!-- <hr style="margin-top: 40px; width: 100%" /> -->
+          <!-- Comments Section -->
+          <section id="commentz" class="comments-section">
+            <div
+              style="
+                display: flex;
+                justify-content: space-between;
+                margin-right: 16px;
+              "
+            >
+              <h2 style="font-weight: bold; margin-right: 20px">
+                Comments ({{ totalComments }})
+              </h2>
+              @if(isHidden) {
+              <button
+                mat-button
+                style="width: fit-content"
+                (click)="scrollTo('commentz')"
+              >
+                Show Comments
+              </button>
+              } @else {
+              <button
+                mat-button
+                style="width: fit-content"
+                (click)="isHidden = true"
+              >
+                Hide Comments
+              </button>
+              }
+            </div>
+            <app-comments
+              *ngIf="loadComments"
+              [sourceApp]="sourceApp"
+              [sourceId]="activeLesson.id"
+              [ngClass]="{ hidden: isHidden }"
+              (commentsLoaded)="commentsLoadedCB($event, 'commentz')"
+            ></app-comments>
+          </section>
+        </div>
+      </div>
+      <div class="col-md-4 course-properties">
+        <div class="related-course">
+          <h4>Related course</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+}

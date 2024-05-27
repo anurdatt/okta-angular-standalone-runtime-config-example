@@ -72,8 +72,8 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   loadLessonsPage() {
     this.loading = true;
 
-    this.lessonSubscription = this.service
-      .findlessons(this.course.id)
+    this.lessonSubscription = this.service // .findlessons(this.course.id)
+      .findlessonsByUrl(this.course.url)
       .pipe(
         tap((lessons) => (this.lessons = lessons)),
         catchError((err) => {
@@ -113,6 +113,6 @@ export class CourseViewComponent implements OnInit, OnDestroy {
       },
     };
 
-    this.router.navigate(['../../../courses', 'course-play'], queryParams);
+    this.router.navigate(['../courses', this.course.url, 'lessons']);
   }
 }

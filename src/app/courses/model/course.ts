@@ -6,6 +6,7 @@ export interface Course {
   longDescription: string;
   category: string;
   lessonsCount: number;
+  baseUrl: string;
   url: string;
   author: string;
 }

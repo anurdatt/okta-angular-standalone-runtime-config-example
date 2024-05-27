@@ -10,4 +10,5 @@ export const environment = {
     'https://tsw1pqoa9d.execute-api.us-east-1.amazonaws.com/Stage/media',
   mediaHttpApiUrl:
     'https://n8ke2vxks2.execute-api.us-east-1.amazonaws.com/media',
+  coursesBucketName: 'lng-courses',
 };

@@ -11,43 +11,43 @@ import {
   Output,
   EventEmitter,
 } from '@angular/core';
-import { Video } from '../model/video';
-import { BlobMediaService } from '../blob-media.service';
 import {
   Subscription,
   BehaviorSubject,
   catchError,
   of as observableOf,
 } from 'rxjs';
+import { Lesson } from '../model/lesson';
+import { CoursesService } from '../courses.service';
+import { environment } from '../../../environments/environment';
 
 interface VideoUrl {
   id: number;
   title: string;
-  videoUrl: string;
-  fileSize: number;
-  blobUrl: string;
+  videoPathUrl: string;
+  signedUrl: string;
 }
 
 @Component({
-  selector: 'app-video-course-player',
-  templateUrl: './video-course-player.component.html',
-  styleUrls: ['./video-course-player.component.css'],
+  selector: 'app-url-video-course-player',
+  templateUrl: './url-video-course-player.component.html',
+  styleUrls: ['./url-video-course-player.component.css'],
   standalone: true,
   imports: [CommonModule],
-  providers: [BlobMediaService],
+  providers: [CoursesService],
 })
-export class VideoCoursePlayerComponent
+export class UrlVideoCoursePlayerComponent
   implements OnInit, AfterViewInit, OnDestroy
 {
   @Input() courseTitle: string;
-  @Input() lessonVideos: Video[]; //string[];
+  @Input() lessons: Lesson[]; //string[];
   @Input() courseUrl: string;
 
   @ViewChild('videoPlayer') videoPlayer: ElementRef<HTMLVideoElement>;
   @ViewChild('spinner') spinner: ElementRef<HTMLDivElement>;
 
-  @Output('activeLessonVideo') activeLessonVideo: EventEmitter<Video> =
-    new EventEmitter<Video>();
+  @Output('activeLesson') activeLesson: EventEmitter<Lesson> =
+    new EventEmitter<Lesson>();
 
   ctlList = 'nodownload'; //'nofullscreen';
   playList: VideoUrl[] = [];
@@ -56,13 +56,13 @@ export class VideoCoursePlayerComponent
   currentTime = 0;
   duration = 0;
 
-  $currentVideoBlobUrl: BehaviorSubject<string> = new BehaviorSubject('');
-  blobMediaGetSubscription: Subscription = null;
+  $currentVideoSignedUrl: BehaviorSubject<string> = new BehaviorSubject('');
+  signedUrlGetSubscription: Subscription = null;
 
-  constructor(private blobMediaService: BlobMediaService) {}
+  constructor(private coursesService: CoursesService) {}
 
   get currentVideoUrl(): string {
-    return this.playList[this.currentIndex].videoUrl;
+    return this.playList[this.currentIndex].videoPathUrl;
   }
   get currentVideoUrlInfo(): VideoUrl {
     return this.playList[this.currentIndex];
@@ -79,7 +79,7 @@ export class VideoCoursePlayerComponent
   }
 
   previousVideo() {
-    if (this.currentIndex > 0 && !this.blobMediaGetSubscription) {
+    if (this.currentIndex > 0 && !this.signedUrlGetSubscription) {
       this.currentIndex--;
       this.playVideoAtIndex();
     }
@@ -88,7 +88,7 @@ export class VideoCoursePlayerComponent
   nextVideo() {
     if (
       this.currentIndex < this.playList.length - 1 &&
-      !this.blobMediaGetSubscription
+      !this.signedUrlGetSubscription
     ) {
       this.currentIndex++;
       this.playVideoAtIndex();
@@ -103,44 +103,45 @@ export class VideoCoursePlayerComponent
     // video.src = this.currentVideoUrl;
     video.src = null;
     const vinfo: VideoUrl = this.currentVideoUrlInfo;
-    const lv: Video = this.lessonVideos.find((lv) => lv.id == vinfo.id);
-    this.activeLessonVideo.emit(lv);
+    const l: Lesson = this.lessons.find((l) => l.id == vinfo.id);
+    this.activeLesson.emit(l);
 
-    if (vinfo.blobUrl) {
-      video.src = vinfo.blobUrl;
-      this.$currentVideoBlobUrl.next(vinfo.blobUrl);
+    if (vinfo.signedUrl) {
+      video.src = vinfo.signedUrl;
+      this.$currentVideoSignedUrl.next(vinfo.signedUrl);
       // video.play();
       // this.isPlaying = true;
     } else {
       console.log('Trigerring VideoWaiting');
       this.triggerVideoWaitingEvent(); // Trigger the waiting event when starting to download
-      this.blobMediaGetSubscription = this.blobMediaService
-        .getBlobUrl(vinfo.videoUrl, vinfo.fileSize)
+      this.signedUrlGetSubscription = this.coursesService
+        .getSignedUrl(vinfo.videoPathUrl, environment.coursesBucketName)
         .pipe(
           catchError((err) => {
             console.error(
-              'get blob url failed with error: ' + JSON.stringify(err)
+              'get signed url failed with error: ' + JSON.stringify(err)
             );
             return observableOf(null);
           })
         )
         .subscribe((url: string) => {
+          console.log(url);
           if (url) {
             video.src = url;
-            vinfo.blobUrl = url;
-            this.$currentVideoBlobUrl.next(url);
+            vinfo.signedUrl = url;
+            this.$currentVideoSignedUrl.next(url);
             // console.log('Trigerring VideoCanPlay');
             // this.triggerVideoCanPlayEvent(); // Trigger the canplay event after download complete to stop spinner
             // video.play();
             // this.isPlaying = true;
           } else {
-            alert('get blob url failed for url : ' + vinfo.videoUrl);
+            alert('get signed url failed for url : ' + vinfo.videoPathUrl);
             console.log('Trigerring VideoCanPlay');
             this.triggerVideoCanPlayEvent(); // Trigger the canplay event after failed downoad to stop spinner.
           }
 
-          this.blobMediaGetSubscription?.unsubscribe();
-          this.blobMediaGetSubscription = null;
+          this.signedUrlGetSubscription?.unsubscribe();
+          this.signedUrlGetSubscription = null;
         });
     }
     // video.play();
@@ -189,7 +190,7 @@ export class VideoCoursePlayerComponent
     // video.src = videoUrl;
     // video.play();
     // // this.playPause(); // Auto play the selected video
-    if (!this.blobMediaGetSubscription) {
+    if (!this.signedUrlGetSubscription) {
       this.currentIndex = index;
       this.playVideoAtIndex();
     }
@@ -226,13 +227,12 @@ export class VideoCoursePlayerComponent
     // Initialize playlist (You can fetch this data from an API or a service)
 
     this.playList = //this.playList.concat(
-      this.lessonVideos.map((lv) => {
+      this.lessons.map((l) => {
         return {
-          id: lv.id,
-          title: lv.description,
-          videoUrl: `${this.courseUrl}/${lv.id}.mp4`,
-          fileSize: lv.fileSize,
-          blobUrl: null,
+          id: l.id,
+          title: l.description,
+          videoPathUrl: `${this.courseUrl}/${l.videoUrl}`,
+          signedUrl: null,
         };
       });
     //);
@@ -248,6 +248,6 @@ export class VideoCoursePlayerComponent
   }
 
   ngOnDestroy() {
-    this.blobMediaGetSubscription?.unsubscribe();
+    this.signedUrlGetSubscription?.unsubscribe();
   }
 }

@@ -1,0 +1,13 @@
+{
+  "id": 11,
+  "description": "Angular Material Course",
+  "longDescription": "Build Applications with the official Angular UI Widget Library",
+  "iconUrl": "https://s3-us-west-1.amazonaws.com/angular-university/course-images/angular-material-course-1.jpg",
+  "category": "BEGINNER",
+  "seqNo": 0,
+  "baseUrl": "11",
+  "url": "angular-material-course",
+  "price": 50,
+  "lessonsCount": 11,
+  "author": "Anuran Datta"
+}

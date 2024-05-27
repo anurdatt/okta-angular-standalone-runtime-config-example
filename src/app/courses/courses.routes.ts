@@ -4,6 +4,9 @@ import { OktaAuthGuard } from '@okta/okta-angular';
 import { courseResolver } from './course.resolver';
 import { CoursePlayComponent } from './course-play/course-play.component';
 import { CoursesViewComponent } from './courses-view/courses-view.component';
+import { UrlCoursePlayComponent } from './url-course-play/url-course-play.component';
+import { urlCourseResolver } from './url-course.resolver';
+import { UrlVideoCoursePlayerComponent } from './url-course-play/url-video-course-player.component';
 
 export const COURSE_ROUTES: Routes = [
   // { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -19,5 +22,23 @@ export const COURSE_ROUTES: Routes = [
   {
     path: 'course-play',
     component: CoursePlayComponent,
+  },
+  {
+    path: ':url',
+    component: CourseViewComponent,
+    resolve: {
+      course: urlCourseResolver,
+    },
+  },
+  {
+    path: ':url/lessons',
+    component: UrlCoursePlayComponent,
+    resolve: {
+      course: urlCourseResolver,
+    },
+    // children: [
+    //   { path: '', pathMatch: 'full', component: UrlVideoCoursePlayerComponent },
+    //   { path: ':id', component: UrlVideoCoursePlayerComponent },
+    // ],
   },
 ];
