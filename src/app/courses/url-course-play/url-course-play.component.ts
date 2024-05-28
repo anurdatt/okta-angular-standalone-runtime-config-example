@@ -35,7 +35,7 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
   // courseAuthor: string;
   // courseDescription: string;
   // lessonVideos: Video[];
-  activeLesson: Lesson;
+  // activeLesson: Lesson;
 
   // paramSubscription: Subscription;
 
@@ -48,6 +48,9 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
   isHidden: boolean = false;
   loadComments: boolean = true;
   totalComments: number = 0;
+
+  currentIndex: number = 0;
+  lessonId: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -76,6 +79,22 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
     //   this.courseDescription = p['courseDescription'];
     // });
 
+    // this.route.firstChild.params.subscribe((params) => {
+    //   if (params['id']) this.lessonId = params['id'];
+    // });
+    if (
+      this.route.firstChild &&
+      this.route.firstChild.snapshot.paramMap.get('id')
+    ) {
+      try {
+        this.lessonId = parseInt(
+          this.route.firstChild.snapshot.paramMap.get('id')
+        );
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
     this.course = this.route.snapshot.data['course'];
     if (this.course == null) {
       console.error('No Data found!');
@@ -98,7 +117,11 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
       .pipe(
         tap((lessons) => {
           this.lessons = lessons;
-          this.activeLesson = this.lessons[0];
+          if (!this.lessonId) this.selectVideo(0);
+          else
+            this.selectVideo(
+              this.lessons.findIndex((l) => l.id == this.lessonId)
+            );
         }),
         catchError((err) => {
           console.log('Error loading lessons', err);
@@ -111,7 +134,7 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
   }
 
   processActiveLesson(lesson: Lesson) {
-    this.activeLesson = lesson;
+    // this.activeLesson = lesson;
   }
 
   commentsLoadedCB(tc: number, sectionId: string) {
@@ -130,5 +153,52 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 100);
+  }
+
+  selectVideo(index: number) {
+    // const video = this.videoPlayer.nativeElement;
+    // const videoUrl = this.playList[index].url;
+    // video.src = videoUrl;
+    // video.play();
+    // // this.playPause(); // Auto play the selected video
+    console.log('In selectVideo', index);
+    this.currentIndex = index;
+    this.navigateTo(index);
+  }
+
+  previousVideo() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+      this.navigateTo(this.currentIndex);
+    }
+  }
+
+  nextVideo() {
+    if (this.currentIndex < this.lessons.length - 1) {
+      this.currentIndex++;
+      this.navigateTo(this.currentIndex);
+    }
+  }
+
+  navigateTo(index: number) {
+    this.scrollPlaylistTo(index);
+    this.router.navigate([
+      '../courses',
+      this.course.url,
+      'lessons',
+      this.lessons[index].id,
+    ]);
+  }
+
+  scrollPlaylistTo(index: number): void {
+    console.log('In scrolTo - index = ' + index);
+    setTimeout(() => {
+      const el = document.getElementById('playListScroll');
+      const section = el.querySelector(`#v${index}`);
+      console.log('section = ' + section);
+      if (section) {
+        section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, 10);
   }
 }

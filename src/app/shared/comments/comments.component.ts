@@ -108,15 +108,16 @@ export class CommentsComponent implements OnInit, OnDestroy {
           this.isLoadingResults = false;
 
           if (nestedComments == null) {
-            this._snackbar.open(
-              'Error occured in loading comments!',
-              'Failure',
-              {
-                // panelClass: ['alert', 'alert-failure'],
-                horizontalPosition: this.horizontalPosition,
-                verticalPosition: this.verticalPosition,
-              }
-            );
+            //TODO: Uncomment below temp comments
+            // this._snackbar.open(
+            //   'Error occured in loading comments!',
+            //   'Failure',
+            //   {
+            //     // panelClass: ['alert', 'alert-failure'],
+            //     horizontalPosition: this.horizontalPosition,
+            //     verticalPosition: this.verticalPosition,
+            //   }
+            // );
           } else {
             this.comments = nestedComments;
 
@@ -137,11 +138,12 @@ export class CommentsComponent implements OnInit, OnDestroy {
     } catch (err) {
       this.isLoadingResults = false;
       console.error({ err });
-      this._snackbar.open('Error occured in loading comments!', 'Failure', {
-        // panelClass: ['alert', 'alert-failure'],
-        horizontalPosition: this.horizontalPosition,
-        verticalPosition: this.verticalPosition,
-      });
+      //TODO: Uncomment below temp comments
+      // this._snackbar.open('Error occured in loading comments!', 'Failure', {
+      //   // panelClass: ['alert', 'alert-failure'],
+      //   horizontalPosition: this.horizontalPosition,
+      //   verticalPosition: this.verticalPosition,
+      // });
     }
   }
 

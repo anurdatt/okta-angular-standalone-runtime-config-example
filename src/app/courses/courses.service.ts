@@ -8,6 +8,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Course } from './model/course';
 import { environment } from '../../environments/environment';
+import { Lesson } from './model/lesson';
 
 const headers = new HttpHeaders()
   .set('Accept', '*/*')
@@ -44,6 +45,12 @@ export class CoursesService {
   findlessonsByUrl(courseUrl: string): Observable<any> {
     return new HttpClient(this.httpBackend).get(
       `/api/courses/${courseUrl}/lessons.json`
+    );
+  }
+
+  findLessonById(id: number): Observable<Lesson> {
+    return new HttpClient(this.httpBackend).get<Lesson>(
+      `/api/lessons/${id}.json`
     );
   }
 

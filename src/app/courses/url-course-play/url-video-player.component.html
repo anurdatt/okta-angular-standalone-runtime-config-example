@@ -1,0 +1,20 @@
+<div class="video-container">
+  <video
+    #target
+    class="video-js vjs-default-skin"
+    controls
+    controlsList="nodownload"
+    enableDocumentPictureInPicture="true"
+    preload="auto"
+  >
+    <!-- <source class="source" [src]="videoUrl" type="video/mp4" /> -->
+  </video>
+  <div #customContextMenu class="custom-context-menu">
+    <ul>
+      <li (click)="handleOption('play')">Play</li>
+      <li (click)="handleOption('pause')">Pause</li>
+      <!-- Add more options as needed -->
+    </ul>
+  </div>
+  <!-- <div class="overlay" (contextmenu)="disableContextMenu($event)"></div> -->
+</div>

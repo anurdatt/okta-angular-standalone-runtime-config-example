@@ -7,6 +7,8 @@ import { CoursesViewComponent } from './courses-view/courses-view.component';
 import { UrlCoursePlayComponent } from './url-course-play/url-course-play.component';
 import { urlCourseResolver } from './url-course.resolver';
 import { UrlVideoCoursePlayerComponent } from './url-course-play/url-video-course-player.component';
+import { UrlVideoPlayerComponent } from './url-course-play/url-video-player.component';
+import { urlLessonResolver } from './url-lesson.resolver';
 
 export const COURSE_ROUTES: Routes = [
   // { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -36,9 +38,22 @@ export const COURSE_ROUTES: Routes = [
     resolve: {
       course: urlCourseResolver,
     },
-    // children: [
-    //   { path: '', pathMatch: 'full', component: UrlVideoCoursePlayerComponent },
-    //   { path: ':id', component: UrlVideoCoursePlayerComponent },
-    // ],
+    children: [
+      {
+        path: '',
+        pathMatch: 'full',
+        component: UrlVideoPlayerComponent,
+        data: {
+          lesson: {},
+        },
+      },
+      {
+        path: ':id',
+        component: UrlVideoPlayerComponent,
+        resolve: {
+          lesson: urlLessonResolver,
+        },
+      },
+    ],
   },
 ];
