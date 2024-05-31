@@ -20,38 +20,58 @@ const headers = new HttpHeaders()
 export class CoursesService {
   constructor(private httpBackend: HttpBackend, private http: HttpClient) {}
 
-  findAll(): Observable<any> {
-    return new HttpClient(this.httpBackend).get('/api/courses.json');
+  findAll(): Observable<Course[]> {
+    const url = `${environment.coursesApiUrl}/api/courses`;
+    const params = new HttpParams();
+    return this.http.get<Course[]>(url, { headers, params });
   }
 
   findCourseById(id: number): Observable<Course> {
-    return new HttpClient(this.httpBackend).get<Course>(
-      `/api/courses/${id}.json`
-    );
+    // return new HttpClient(this.httpBackend).get<Course>(
+    //   `/api/courses/${id}.json`
+    // );
+
+    const url = `${environment.coursesApiUrl}/api/courses/${id}`;
+    const params = new HttpParams();
+    return this.http.get<Course>(url, { headers, params });
   }
 
-  findCourseByUrl(url: string): Observable<Course> {
-    return new HttpClient(this.httpBackend).get<Course>(
-      `/api/courses/${url}.json`
-    );
+  findCoursesByUrl(url: string): Observable<Course[]> {
+    // return new HttpClient(this.httpBackend).get<Course>(
+    //   `/api/courses/${url}.json`
+    // );
+
+    const apiUrl = `${environment.coursesApiUrl}/api/courses`;
+    const params = new HttpParams().set('courseUrl', url);
+    return this.http.get<Course[]>(apiUrl, { headers, params });
   }
 
-  findlessons(courseId: number): Observable<any> {
-    return new HttpClient(this.httpBackend).get(
-      `/api/courses/${courseId}/lessons.json`
-    );
+  findlessons(courseId: number): Observable<Lesson[]> {
+    // return new HttpClient(this.httpBackend).get(
+    //   `/api/courses/${courseId}/lessons.json`
+    // );
+    const url = `${environment.coursesApiUrl}/api/lessons`;
+    const params = new HttpParams().set('courseId', courseId);
+    return this.http.get<Lesson[]>(url, { headers, params });
   }
 
-  findlessonsByUrl(courseUrl: string): Observable<any> {
-    return new HttpClient(this.httpBackend).get(
-      `/api/courses/${courseUrl}/lessons.json`
-    );
+  findlessonsByUrl(courseUrl: string): Observable<Lesson[]> {
+    // return new HttpClient(this.httpBackend).get(
+    //   `/api/courses/${courseUrl}/lessons.json`
+    // );
+
+    const url = `${environment.coursesApiUrl}/api/lessons`;
+    const params = new HttpParams().set('courseUrl', courseUrl);
+    return this.http.get<Lesson[]>(url, { headers, params });
   }
 
   findLessonById(id: number): Observable<Lesson> {
-    return new HttpClient(this.httpBackend).get<Lesson>(
-      `/api/lessons/${id}.json`
-    );
+    // return new HttpClient(this.httpBackend).get<Lesson>(
+    //   `/api/lessons/${id}.json`
+    // );
+    const url = `${environment.coursesApiUrl}/api/lessons/${id}`;
+    const params = new HttpParams();
+    return this.http.get<Lesson>(url, { headers, params });
   }
 
   getSignedUrl(fileName: string, bucketName: string) {

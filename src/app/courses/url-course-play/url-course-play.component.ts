@@ -95,8 +95,10 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
       }
     }
 
-    this.course = this.route.snapshot.data['course'];
-    if (this.course == null) {
+    if (
+      this.route.snapshot.data['courses'] == null ||
+      this.route.snapshot.data['courses'].length == 0
+    ) {
       console.error('No Data found!');
       setTimeout(() => {
         this.router.navigate(['/notfound'], { skipLocationChange: true });
@@ -104,8 +106,12 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
       return;
     }
 
+    this.course = this.route.snapshot.data['courses'][0];
     this.courseUrl = `${this.course.baseUrl}`;
-    this.loadLessonsPage();
+    // this.loadLessonsPage();
+    this.lessons = this.route.snapshot.data['lessons'];
+    if (!this.lessonId) this.selectVideo(0);
+    else this.selectVideo(this.lessons.findIndex((l) => l.id == this.lessonId));
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
@@ -113,7 +119,7 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.lessonsSubscription = this.service // .findlessons(this.course.id)
-      .findlessonsByUrl(this.course.url)
+      .findlessonsByUrl(this.course.courseUrl)
       .pipe(
         tap((lessons) => {
           this.lessons = lessons;
@@ -184,7 +190,7 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
     this.scrollPlaylistTo(index);
     this.router.navigate([
       '../courses',
-      this.course.url,
+      this.course.courseUrl,
       'lessons',
       this.lessons[index].id,
     ]);

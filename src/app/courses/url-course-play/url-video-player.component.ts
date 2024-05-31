@@ -36,9 +36,8 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router // private renderer: Renderer2,
-  ) // private elementRef: ElementRef
-  {}
+    private router: Router // private renderer: Renderer2, // private elementRef: ElementRef
+  ) {}
 
   ngOnInit(): void {
     // console.log(this.route.params['id']);
@@ -53,6 +52,8 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
         }, 100);
         return;
       }
+
+      if (data['lesson']['id'] == null) return;
 
       this.lesson = data['lesson'];
       this.fileName = `${this.lesson.courseId}/${this.lesson.videoUrl}`;
@@ -105,19 +106,28 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
         controls: true,
         // children: ['playbackRates', 'skipButtons'],
         playbackRates: [0.5, 1, 1.5, 2],
-        skipButtons: {
-          forward: 10,
-          backward: 10,
-        },
+        settingsMenuButton: [
+          // 'subtitlesButton',
+          // 'captionsButton',
+          'playbackRateMenuButton',
+          // 'qualityMenuButton',
+          'pictureInPictureToggle',
+        ],
+
+        // skipButtons: {
+        //   forward: 10,
+        //   backward: 10,
+        // },
         controlBar: {
           remainingTimeDisplay: {
             displayNegative: false,
           },
-          playbackRates: [0.5, 1, 1.5, 2],
-          skipButtons: {
-            forward: 10,
-            backward: 10,
-          },
+
+          // playbackRates: [0.5, 1, 1.5, 2],
+          // skipButtons: {
+          //   forward: 10,
+          //   backward: 10,
+          // },
           children: [
             'playToggle',
             'volumePanel',
@@ -126,7 +136,8 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
             // 'timeDivider',
             // 'durationDisplay',
             'progressControl',
-            // 'settingsMenuButton',
+            'flexibleWidthSpacer',
+            'settingsMenuButton',
             // 'skipForwardButton',
             // 'skipBackwardButton',
             'pictureInPictureToggle',
@@ -335,7 +346,7 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
         super(player, options);
         this.addClass('vjs-skip-button');
         // this.controlText(options.controlText);
-        this.el().innerHTML = `<span class="vjs-icon-placeholder ${options.iconClass}"></span>`;
+        this.el().innerHTML = `<span style="cursor: pointer;" class="vjs-icon-placeholder ${options.iconClass}"></span>`;
         this.el().setAttribute('aria-label', options.controlText); // Set the control text as an attribute
         this.on('click', this.handleClick);
       }
@@ -355,7 +366,7 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
       {
         controlText: 'Skip Backward',
         iconClass: 'vjs-icon-replay-10',
-        skipTime: -10, // Skip backward 10 seconds
+        skipTime: -5, // Skip backward 10 seconds
       }
     );
 
@@ -364,7 +375,7 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
       {
         controlText: 'Skip Forward',
         iconClass: 'vjs-icon-forward-10',
-        skipTime: 10, // Skip forward 10 seconds
+        skipTime: 5, // Skip forward 10 seconds
       }
     );
 

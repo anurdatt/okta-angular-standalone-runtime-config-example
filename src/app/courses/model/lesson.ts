@@ -4,6 +4,8 @@ export interface Lesson {
   duration: string;
   seqNo: number;
   courseId: number;
+  iconUrl: string;
+  longDescription: string;
   videoUrl: string;
   fileSize: number;
 }

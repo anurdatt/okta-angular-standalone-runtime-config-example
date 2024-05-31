@@ -6,7 +6,11 @@
 .custom-context-menu {
   display: none;
   position: absolute;
-  background-color: rgb(203, 239, 189);
+  // background-color: rgb(80, 16, 141);
+  // &--primary {
+  background-color: #673ab7;
+  // }
+  color: #ffd740;
   // border: 1px solid #0413dd;
   border: 1px solid #ccc;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
@@ -30,5 +34,81 @@
 }
 
 .custom-context-menu li:hover {
-  background-color: #eee;
+  background-color: #4d037a;
 }
+
+// /* Adjust control bar layout */
+// :host ::ng-deep .video-js .vjs-control-bar {
+//   display: flex;
+//   justify-content: space-between;
+// }
+
+// :host ::ng-deep /* Style for primary control group */
+// .video-js .vjs-control-bar .vjs-primary-controls {
+//   flex: 1; /* Take up remaining space */
+// }
+
+// /* Style for secondary control group */
+// :host ::ng-deep .video-js .vjs-control-bar .vjs-secondary-controls {
+//   flex-shrink: 0; /* Do not shrink beyond initial size */
+//   display: flex;
+//   align-items: center;
+// }
+
+// /* Custom CSS to style controls */
+// /* Adjust primary controls layout */
+// :host ::ng-deep .vjs-control-bar .vjs-primary-controls {
+//   float: left;
+// }
+
+// /* Adjust secondary controls layout */
+// :host ::ng-deep .vjs-control-bar .vjs-secondary-controls {
+//   float: right;
+// }
+
+// /* Style individual controls as needed */
+// .vjs-play-toggle {
+//   /* Styles for play toggle button */
+// }
+
+// .vjs-volume-panel {
+//   /* Styles for volume panel */
+// }
+
+// /* Additional styles for other controls as needed */
+
+// /* Style the skip buttons */
+// // :host ::ng-deep
+// .video-js .vjs-skip-button {
+//   font-size: 16px !important;
+//   line-height: 20px !important;
+//   width: 20px !important;
+//   height: 20px !important;
+//   border-radius: 50% !important;
+//   background-color: rgba(0, 0, 0, 0.6) !important;
+//   color: white !important;
+//   text-align: center !important;
+//   margin: 0 5px !important;
+//   cursor: pointer !important;
+// }
+
+// // :host ::ng-deep
+// .vjs-skip-button .vjs-icon-placeholder {
+//   font-size: 20px;
+//   vertical-align: middle;
+// }
+
+// // :host ::ng-deep
+// .vjs-skip-backward .vjs-icon-placeholder {
+//   transform: rotate(180deg);
+// }
+
+// // :host ::ng-deep
+// .vjs-skip-forward .vjs-icon-placeholder {
+//   transform: rotate(0deg);
+// }
+
+// // :host ::ng-deep
+// .vjs-flip-horizontal {
+//   transform: rotate(180deg);
+// }

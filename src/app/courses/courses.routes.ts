@@ -9,34 +9,36 @@ import { urlCourseResolver } from './url-course.resolver';
 import { UrlVideoCoursePlayerComponent } from './url-course-play/url-video-course-player.component';
 import { UrlVideoPlayerComponent } from './url-course-play/url-video-player.component';
 import { urlLessonResolver } from './url-lesson.resolver';
+import { urlLessonsResolver } from './url-lessons.resolver';
 
 export const COURSE_ROUTES: Routes = [
   // { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '', component: CoursesViewComponent, pathMatch: 'full' },
-  {
-    path: 'course-view/:id',
-    // canActivate: [OktaAuthGuard],
-    component: CourseViewComponent,
-    resolve: {
-      course: courseResolver,
-    },
-  },
-  {
-    path: 'course-play',
-    component: CoursePlayComponent,
-  },
+  // {
+  //   path: 'course-view/:id',
+  //   // canActivate: [OktaAuthGuard],
+  //   component: CourseViewComponent,
+  //   resolve: {
+  //     course: courseResolver,
+  //   },
+  // },
+  // {
+  //   path: 'course-play',
+  //   component: CoursePlayComponent,
+  // },
   {
     path: ':url',
     component: CourseViewComponent,
     resolve: {
-      course: urlCourseResolver,
+      courses: urlCourseResolver,
     },
   },
   {
     path: ':url/lessons',
     component: UrlCoursePlayComponent,
     resolve: {
-      course: urlCourseResolver,
+      courses: urlCourseResolver,
+      lessons: urlLessonsResolver,
     },
     children: [
       {

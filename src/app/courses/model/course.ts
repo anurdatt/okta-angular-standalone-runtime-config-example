@@ -7,6 +7,8 @@ export interface Course {
   category: string;
   lessonsCount: number;
   baseUrl: string;
-  url: string;
+  courseUrl: string;
+  seqNo: number;
+  price: number;
   author: string;
 }

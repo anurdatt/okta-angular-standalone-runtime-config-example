@@ -52,15 +52,17 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.course = this.route.snapshot.data['course'];
-    if (this.course == null) {
+    if (
+      this.route.snapshot.data['courses'] == null ||
+      this.route.snapshot.data['courses'].length == 0
+    ) {
       console.error('No Data found!');
       setTimeout(() => {
         this.router.navigate(['/notfound'], { skipLocationChange: true });
       }, 100);
       return;
     }
-
+    this.course = this.route.snapshot.data['courses'][0];
     this.loadLessonsPage();
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
@@ -73,7 +75,7 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.lessonSubscription = this.service // .findlessons(this.course.id)
-      .findlessonsByUrl(this.course.url)
+      .findlessonsByUrl(this.course.courseUrl)
       .pipe(
         tap((lessons) => (this.lessons = lessons)),
         catchError((err) => {
@@ -95,24 +97,24 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   }
 
   navigateWithQueryParams() {
-    const queryParams: NavigationExtras = {
-      queryParams: {
-        courseUrl: `${environment.mediaApiUrl}?${this.course.url}`,
-        courseAuthor: this.course.author,
-        lessonVideos: JSON.stringify(
-          this.lessons.map((l) => {
-            console.log(JSON.stringify(l) + '\n');
-            return {
-              id: l.id,
-              description: l.description,
-              fileSize: l.fileSize,
-            };
-          })
-        ),
-        courseDescription: this.course.description,
-      },
-    };
+    // const queryParams: NavigationExtras = {
+    //   queryParams: {
+    //     courseUrl: `${environment.mediaApiUrl}?${this.course.courseUrl}`,
+    //     courseAuthor: this.course.author,
+    //     lessonVideos: JSON.stringify(
+    //       this.lessons.map((l) => {
+    //         console.log(JSON.stringify(l) + '\n');
+    //         return {
+    //           id: l.id,
+    //           description: l.description,
+    //           fileSize: l.fileSize,
+    //         };
+    //       })
+    //     ),
+    //     courseDescription: this.course.description,
+    //   },
+    // };
 
-    this.router.navigate(['../courses', this.course.url, 'lessons']);
+    this.router.navigate(['../courses', this.course.courseUrl, 'lessons']);
   }
 }
