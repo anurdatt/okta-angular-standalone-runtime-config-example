@@ -81,7 +81,7 @@ export class TagsComponent implements OnInit, OnDestroy {
   isLoadingResults = true;
   fetchedTags$: BehaviorSubject<Tag[]> | undefined = new BehaviorSubject([]);
 
-  selectedTagId: string = null;
+  selectedTagUrl: string = null;
   fetchTagsSubscription: Subscription;
   // navStartEventSubscription: Subscription;
   navEventSubscription: Subscription;
@@ -95,6 +95,8 @@ export class TagsComponent implements OnInit, OnDestroy {
   tagListDivScrollWidth = 0;
   tagListDivScrollLeftAllowed = false;
   tagListDivScrollRightAllowed = true;
+
+  dummyTag: Tag = { id: 0, tagUrl: 'all-topics', name: 'All topics' };
 
   constructor(
     private route: ActivatedRoute,
@@ -125,10 +127,10 @@ export class TagsComponent implements OnInit, OnDestroy {
     el.scrollTo({ left: left, behavior: 'smooth' });
   }
 
-  scrollTo(tagId: string): void {
+  scrollTo(tagUrl: string): void {
     setTimeout(() => {
       const el = document.getElementById('scrollingDiv');
-      const section = el.querySelector(`#${tagId}`);
+      const section = el.querySelector(`#${tagUrl}`);
       if (section) {
         section.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -163,32 +165,32 @@ export class TagsComponent implements OnInit, OnDestroy {
         //   return route;
         // }),
         mergeMap((route) => route.paramMap),
-        map((params) => params.get('id')),
+        map((params) => params.get('url')),
         distinctUntilChanged() // Filter out consecutive duplicate values
       )
-      .subscribe((id) => {
+      .subscribe((url) => {
         //(params) => {
         // Access route parameters here
         // const id = params.get('id');
-        console.log('Merge Route ID:', id);
+        console.log('Merge Route URL:', url);
         // Process route parameters as needed
         this.fetchedTagsSubscription?.unsubscribe();
-        if (!id) {
-          this.selectedTagId = null;
+        if (!url) {
+          this.selectedTagUrl = null;
           this.fetchAllTags(false);
           this.fetchedTagsSubscription = this.fetchedTags$
             .asObservable()
             .subscribe((tags) => this.scrollToLeft(0)); //this.scrollTo('all-tags'));
         } else {
-          if (!this.selectedTagId) {
-            this.selectedTagId = id;
-            this.fetchTagsRelatedTo(id, true);
+          if (!this.selectedTagUrl) {
+            this.selectedTagUrl = url;
+            this.fetchTagsRelatedTo(url, true);
           } else {
-            this.selectedTagId = id;
+            this.selectedTagUrl = url;
           }
           this.fetchedTagsSubscription = this.fetchedTags$
             .asObservable()
-            .subscribe(() => this.scrollTo(id));
+            .subscribe(() => this.scrollTo(url));
         }
       });
 
@@ -200,14 +202,14 @@ export class TagsComponent implements OnInit, OnDestroy {
 
     console.log('ActivatedRoute Snapshot:', this.route.snapshot);
 
-    if (!this.selectedTagId) {
-      const tagId = this.route.snapshot.firstChild?.params['id'];
-      if (!tagId) {
-        this.selectedTagId = null;
+    if (!this.selectedTagUrl) {
+      const tagUrl = this.route.snapshot.firstChild?.params['url'];
+      if (!tagUrl) {
+        this.selectedTagUrl = null;
         this.fetchAllTags(false);
       } else {
-        this.selectedTagId = tagId;
-        this.fetchTagsRelatedTo(tagId, true);
+        this.selectedTagUrl = tagUrl;
+        this.fetchTagsRelatedTo(tagUrl, true);
       }
     }
 
@@ -246,7 +248,7 @@ export class TagsComponent implements OnInit, OnDestroy {
     // );
   }
 
-  fetchTagsRelatedTo(tagId: string, bringToFront: boolean) {
+  fetchTagsRelatedTo(tagUrl: string, bringToFront: boolean) {
     //TODO: recommended fetch using specific tagid.
     this.fetchAllTags(bringToFront); //For now simply all tags.
   }
@@ -284,9 +286,9 @@ export class TagsComponent implements OnInit, OnDestroy {
           //   duration: 1000,
           // });
 
-          if (bringToFront && this.selectedTagId != null) {
+          if (bringToFront && this.selectedTagUrl != null) {
             const selectedTagIndex = tags.findIndex(
-              (tag) => tag.id === this.selectedTagId
+              (tag) => tag.tagUrl === this.selectedTagUrl
             );
             if (selectedTagIndex >= 0)
               this.fetchedTags$.next(

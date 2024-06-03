@@ -23,15 +23,15 @@ export const BLOG_ROUTES: Routes = [
   //   component: BlogListComponent,
   // },
   {
-    path: 'blog-edit/:id',
+    path: 'blog-edit/:url',
     canMatch: [AuthAdminGuard], //[OktaAuthGuard],
     component: BlogEditComponent,
   },
   {
-    path: 'blog-view/:id',
+    path: 'blog-view/:url',
     component: BlogViewComponent,
     resolve: {
-      postWithTags: postResolver,
+      postWithTagsList: postResolver,
     },
   },
 ];

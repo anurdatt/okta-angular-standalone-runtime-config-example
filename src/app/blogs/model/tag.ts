@@ -1,6 +1,7 @@
 export class Tag {
-  id: string;
+  id?: number;
   name: string;
+  tagUrl?: string;
   sourceApp?: string;
   parentId?: string;
 }

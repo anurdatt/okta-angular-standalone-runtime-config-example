@@ -74,12 +74,8 @@
       >
         <!-- <div class="all-topics"> -->
         <app-tag-list
-          [tags]="
-            [{ id: 'all-topics', name: 'All topics' }].concat(
-              fetchedTags$ | async
-            )
-          "
-          [btnBorderBottomId]="selectedTagId"
+          [tags]="[dummyTag].concat(fetchedTags$ | async)"
+          [btnBorderBottomId]="selectedTagUrl"
           [btnBorderBottom]="true"
         ></app-tag-list>
         <!-- </div> -->

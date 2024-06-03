@@ -21,13 +21,19 @@ export class BlogsService {
     return this.http.get<PostWithTags[]>(url, { headers, params });
   }
 
-  findPostById(id: string): Observable<PostWithTags> {
+  findPostById(id: number): Observable<PostWithTags> {
     const url = `${environment.blogsApiUrl}/api/posts/${id}/detail`;
     const params = new HttpParams();
     return this.http.get<PostWithTags>(url, { headers, params });
   }
 
-  deletePostById(id: string): Observable<any> {
+  findPostsByUrl(url: string): Observable<PostWithTags[]> {
+    const apiUrl = `${environment.blogsApiUrl}/api/posts`;
+    const params = new HttpParams().set('blogUrl', url);
+    return this.http.get<PostWithTags[]>(apiUrl, { headers, params });
+  }
+
+  deletePostById(id: number): Observable<any> {
     const url = `${environment.blogsApiUrl}/api/posts/${id}`;
     const params = new HttpParams();
     return this.http.delete<any>(url, { headers, params });

@@ -67,8 +67,8 @@ export class BlogListComponent implements OnInit, OnDestroy {
     private _snackbar: MatSnackBar
   ) {}
 
-  openPost(id: string) {
-    this.router.navigate(['../../../blogs', 'blog-view', id]);
+  openPost(url: string) {
+    this.router.navigate(['../../../blogs', 'blog-view', url]);
   }
 
   // @HostListener('scroll', ['$event'])
@@ -77,7 +77,7 @@ export class BlogListComponent implements OnInit, OnDestroy {
   //   console.log('window scrol top = ' + window.scrollY);
   // }
 
-  deletePost(id: string) {
+  deletePost(id: number) {
     if (confirm('Are you sure?')) {
       console.log(`deleting post : ${id}`);
       this.isDeletingResults = true;
@@ -125,9 +125,9 @@ export class BlogListComponent implements OnInit, OnDestroy {
     }
   }
 
-  likePost(id: string) {}
+  likePost(id: number) {}
 
-  bookmarkPost(id: string) {}
+  bookmarkPost(id: number) {}
 
   ngOnInit(): void {}
 

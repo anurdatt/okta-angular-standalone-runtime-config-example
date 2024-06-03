@@ -16,7 +16,7 @@ export const TAG_ROUTES: Routes = [
     // },
     children: [
       { path: '', pathMatch: 'full', component: AllTagsViewComponent },
-      { path: ':id', component: TagViewComponent },
+      { path: ':url', component: TagViewComponent },
     ],
   },
   // {

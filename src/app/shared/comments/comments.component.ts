@@ -45,7 +45,7 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class CommentsComponent implements OnInit, OnDestroy {
   @Input('sourceApp') sourceApp: string;
-  @Input('sourceId') sourceId: string | number;
+  @Input('sourceId') sourceId: number;
 
   // @Input('isHidden') isHidden: boolean;
 
@@ -267,7 +267,7 @@ export class CommentsComponent implements OnInit, OnDestroy {
       });
   }
 
-  trackByFn(index: number, comment: NestedComment): string {
+  trackByFn(index: number, comment: NestedComment): number {
     return comment.comment.id; // Use a unique identifier for each comment
   }
 

@@ -8,13 +8,21 @@ import { PostWithTags } from './model/post-with-tags';
 export function postResolver(
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
-): Observable<PostWithTags> {
+): Observable<PostWithTags[]> {
   const service: BlogsService = inject(BlogsService);
-  return service.findPostById(route.params['id']).pipe(
+  // return service.findPostById(route.params['id']).pipe(
+  //   catchError((err) => {
+  //     console.error('In Post resolver - catchError, err = ');
+  //     console.error({ err });
+  //     return observableOf(null);
+  //   })
+  // );
+
+  return service.findPostsByUrl(route.params['url']).pipe(
     catchError((err) => {
-      console.error('In Post resolver - catchError, err = ')
-      console.error({err});
+      console.error('In Post resolver - catchError, err = ');
+      console.error({ err });
       return observableOf(null);
     })
-  )
+  );
 }

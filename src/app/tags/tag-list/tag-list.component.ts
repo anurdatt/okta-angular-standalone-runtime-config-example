@@ -28,9 +28,9 @@ export class TagListComponent {
   constructor(private router: Router) {}
   navigateTo(tag: Tag) {
     // setTimeout(() => {
-    console.log('Navigating to ' + tag.id);
+    console.log('Navigating to ' + tag.tagUrl);
     // if (!this.router.url.endsWith(tagId)) {
-    if (tag.id == 'all-topics') {
+    if (tag.tagUrl == 'all-topics') {
       // this.router.navigate(['/home'], { skipLocationChange: true }).then(() => {
       setTimeout(() => {
         this.router.navigate(['/tags']);
@@ -44,7 +44,7 @@ export class TagListComponent {
       };
 
       setTimeout(() => {
-        this.router.navigate(['/tags', tag.id], queryParams);
+        this.router.navigate(['/tags', tag.tagUrl], queryParams);
       }, 10);
     }
     // }

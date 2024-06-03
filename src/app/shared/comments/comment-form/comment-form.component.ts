@@ -13,7 +13,7 @@ import { Comment } from '../comment';
   styleUrl: './comment-form.component.scss',
 })
 export class CommentFormComponent {
-  @Input('parentId') parentId: string | undefined;
+  @Input('parentId') parentId: number | undefined;
   @Input('placeHolderText') placeHolderText: string | undefined;
 
   @Output() result: EventEmitter<Comment> = new EventEmitter<Comment>();

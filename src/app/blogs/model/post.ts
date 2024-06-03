@@ -1,9 +1,10 @@
 export class Post {
-  id: string;
+  id: number;
   title: string;
   author: string;
   description: string;
-  avatar_image_url: string;
+  avatarImageUrl: string;
+  blogUrl: string;
   content: string;
   date: string;
 }

@@ -117,7 +117,7 @@ export class CommentComponent implements OnInit {
     if (comment != null) this.result.emit(comment);
   }
 
-  trackByFn(index: number, comment: NestedComment): string {
+  trackByFn(index: number, comment: NestedComment): number {
     return comment.comment.id; // Use a unique identifier for each comment
   }
 }

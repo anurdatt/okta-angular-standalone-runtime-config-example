@@ -1,14 +1,14 @@
 <div [ngClass]="{ 'all-categories': !btnHeight }">
   @for (item of tags; track $index) {
   <button
-    [id]="item.id"
+    [id]="item.tagUrl"
     mat-flat-button
     color="accent"
     class="category-button"
     [style.height]="btnHeight"
     [ngClass]="{
       'button-border-bottom': btnBorderBottomId
-        ? btnBorderBottomId == item.id
+        ? btnBorderBottomId == item.tagUrl
         : btnBorderBottom
         ? tags[0].id == item.id
         : false

@@ -12,7 +12,10 @@
 </div>
 }
 <mat-card class="post-card" *ngFor="let postWithTags of postWithTagsList">
-  <mat-card-header class="card-header" (click)="openPost(postWithTags.post.id)">
+  <mat-card-header
+    class="card-header"
+    (click)="openPost(postWithTags.post.blogUrl)"
+  >
     <div
       mat-card-avatar
       class="post-avatar"
@@ -36,7 +39,7 @@
   </mat-card-header>
   <mat-card-content
     class="card-content"
-    (click)="openPost(postWithTags.post.id)"
+    (click)="openPost(postWithTags.post.blogUrl)"
   >
     <div class="post-message">
       <mat-card-title>{{ postWithTags.post.title }}</mat-card-title>
@@ -44,16 +47,18 @@
         ><p>{{ postWithTags.post.description }}</p></mat-card-subtitle
       >
     </div>
-    @if (postWithTags.post.avatar_image_url) {
+    @if (postWithTags.post.avatarImageUrl) {
     <div class="post-message-avatar">
-      <img mat-card-md-image src="{{ postWithTags.post.avatar_image_url }}" />
+      <img mat-card-md-image src="{{ postWithTags.post.avatarImageUrl }}" />
     </div>
     }
   </mat-card-content>
   <mat-card-actions class="post-actions" style="justify-content: space-between">
     <!-- <button mat-button>Read More</button> -->
 
-    <span class="post-reading-time" (click)="openPost(postWithTags.post.id)"
+    <span
+      class="post-reading-time"
+      (click)="openPost(postWithTags.post.blogUrl)"
       >{{ blogUtil.calculateReadingTime(postWithTags.post.content) }} min
       read</span
     >
@@ -93,7 +98,7 @@
           (authService.isAuthenticated$ | async) &&
           authService.isAdmin(authService.userGroups$ | async)
         "
-        [routerLink]="['/blogs/blog-edit', postWithTags.post.id]"
+        [routerLink]="['/blogs/blog-edit', postWithTags.post.blogUrl]"
         style="min-width: fit-content"
       >
         <!-- <small>EDIT POST</small> -->

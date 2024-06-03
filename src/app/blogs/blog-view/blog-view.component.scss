@@ -145,6 +145,31 @@
     serif;
 }
 
+/* Ensure the parent p tag can accommodate the absolutely positioned image */
+// .blog-post-content ::ng-deep p {
+//   // position: relative; /* Make p a positioned element */
+//   margin: 0; /* Remove default margin if necessary */
+//   padding: 0; /* Remove default padding if necessary */
+//   overflow: hidden;
+// }
+
+/* Style the img to be full viewport width */
+// .blog-post-content ::ng-deep p > img {
+//   display: block;
+//   width: calc(100vw + 2 * 16px);
+//   max-width: none;
+//   margin-left: calc(-50vw + 50% - 16px);
+//   height: auto;
+// }
+.blog-post-content ::ng-deep p > img {
+  display: block; /* Ensure image is treated as a block element */
+  // width: 100vw; /* Full viewport width */
+  max-width: none; /* Remove max-width restrictions */
+  margin-left: 50%; /* Move to the middle of the viewport */
+  transform: translateX(-50%); /* Center the image */
+  height: auto; /* Maintain aspect ratio */
+}
+
 .post-avatar {
   width: 40px;
   height: 40px;
@@ -182,10 +207,14 @@
   .blog-post {
     width: 100%;
   }
+
+  .blog-post-content ::ng-deep img {
+    width: 100%;
+  }
 }
 
 @media (min-width: 680px) {
   .blog-post {
-    min-width: 680px;
+    max-width: 680px;
   }
 }

@@ -101,14 +101,21 @@ export class BlogViewComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   async ngOnInit() {
-    this.postWithTags = this.route.snapshot.data['postWithTags'];
-    if (this.postWithTags == null || this.postWithTags.post == null) {
+    const postWithTagsList: PostWithTags[] =
+      this.route.snapshot.data['postWithTagsList'];
+    if (
+      postWithTagsList == null ||
+      postWithTagsList.length == 0 ||
+      postWithTagsList[0].post == null
+    ) {
       console.error('No Data found!');
       setTimeout(() => {
         this.router.navigate(['/notfound'], { skipLocationChange: true });
       }, 100);
       return;
     }
+
+    this.postWithTags = postWithTagsList[0];
     // this.comments = this.loadComments();
     // this.comments = [
     //   { id: 1, author: 'AD', date: 'March 23, 2024', text: 'Dummy Comment 1' },

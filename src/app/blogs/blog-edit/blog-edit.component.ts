@@ -125,14 +125,17 @@ export class BlogEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.findSubscription = this.route.params
       .pipe(
-        map((p) => p['id']),
-        switchMap((id) => {
+        // map((p) => p['id']),
+        map((p) => p['url']),
+        switchMap((url) => {
           this.isLoadingResults = true;
-          if (id == 'new') return observableOf({ post: new Post(), tags: [] });
-          return this.service.findPostById(id).pipe(
+          if (url == 'new')
+            return observableOf([{ post: new Post(), tags: [] }]);
+          // return this.service.findPostById(id).pipe(
+          return this.service.findPostsByUrl(url).pipe(
             catchError((err) => {
               console.error(
-                'FindById failed with error : ' + JSON.stringify(err)
+                'FindByUrl failed with error : ' + JSON.stringify(err)
               );
 
               return observableOf(null);
@@ -140,9 +143,9 @@ export class BlogEditComponent implements OnInit, OnDestroy {
           );
         })
       )
-      .subscribe((postWithTags: PostWithTags) => {
+      .subscribe((postWithTagsList: PostWithTags[]) => {
         this.isLoadingResults = false;
-        if (postWithTags == null) {
+        if (postWithTagsList == null || postWithTagsList.length == 0) {
           // this.feedback = {
           //   type: 'warning',
           //   message: 'Error occured in loading!',
@@ -154,8 +157,8 @@ export class BlogEditComponent implements OnInit, OnDestroy {
             verticalPosition: this.verticalPosition,
           });
         } else {
-          this.post = postWithTags.post;
-          this.tags = postWithTags.tags;
+          this.post = postWithTagsList[0].post;
+          this.tags = postWithTagsList[0].tags;
           // this.feedback = {};
 
           this._snackbar.open('Load completed successfully!', 'Success', {

@@ -17,7 +17,7 @@ export class CommentsService {
 
   findAllNested(
     sourceApp: string,
-    sourceId: string | number
+    sourceId: number
   ): Observable<NestedComment[]> {
     let url = null;
     if (sourceApp === 'BLOG') {
@@ -32,7 +32,7 @@ export class CommentsService {
     return this.http.get<NestedComment[]>(url, { headers, params });
   }
 
-  deleteCommentById(sourceApp: string, id: string): Observable<any> {
+  deleteCommentById(sourceApp: string, id: number): Observable<any> {
     let url = null;
     if (sourceApp === 'BLOG') {
       url = `${environment.blogsApiUrl}/api/comments/${id}`;
