@@ -1,6 +1,20 @@
+.banner {
+  background: linear-gradient(to right, #db6b2f 0%, gold 100%, #e53797 100%);
+}
+.banner-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  padding: 0 80px;
+}
+.banner-left-head {
+  width: 50%;
+}
+
 .course {
   text-align: center;
-  width: 390px;
+  // width: 390px;
   margin: 40px auto;
 }
 
@@ -41,7 +55,7 @@
 .lessons-table {
   min-height: 360px;
   margin-top: 10px;
-  width: 390px;
+  // width: 390px;
   margin-left: auto;
   margin-right: auto;
   tr:hover {
@@ -51,7 +65,7 @@
 }
 
 mat-paginator {
-  width: 390px;
+  // width: 390px;
   padding-bottom: 10px;
   margin-bottom: 100px;
 }
@@ -74,6 +88,19 @@ mat-paginator {
 
 .mat-column-duration {
   font-style: italic;
+}
+
+.handset-portrait .banner-left-head {
+  width: 100%;
+}
+
+.handset-portrait .banner-right-head {
+  width: 100%;
+}
+
+.handset-portrait .banner-header {
+  // padding: 0 60px;
+  flex-direction: column;
 }
 
 @media (max-width: 400px) {

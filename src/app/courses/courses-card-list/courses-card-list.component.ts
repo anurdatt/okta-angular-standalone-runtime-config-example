@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { Course } from '../model/course';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
@@ -8,6 +8,7 @@ import { AuthService } from '../../shared/okta/auth.service';
 import { Observable } from 'rxjs';
 import { CustomUserClaim } from '@okta/okta-auth-js';
 import { RouterLink } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-courses-card-list',
@@ -18,9 +19,11 @@ import { RouterLink } from '@angular/router';
     MatGridListModule,
     MatCardModule,
     MatButtonModule,
+    MatIconModule,
   ],
   templateUrl: './courses-card-list.component.html',
   styleUrl: './courses-card-list.component.scss',
+  // encapsulation: ViewEncapsulation.None,
 })
 export class CoursesCardListComponent {
   @Input()

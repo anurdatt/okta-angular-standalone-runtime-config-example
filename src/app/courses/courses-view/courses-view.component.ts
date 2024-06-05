@@ -38,6 +38,7 @@ export class CoursesViewComponent implements OnInit {
   isAuthenticated$: Observable<boolean>;
   userGroups$: Observable<CustomUserClaim | CustomUserClaim[]>;
 
+  isLoadingResults = false;
   constructor(
     public authService: AuthService,
     private coursesService: CoursesService,
@@ -48,6 +49,7 @@ export class CoursesViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoadingResults = true;
     const courses$: Observable<Course[]> = this.coursesService.findAll();
 
     this.beginnerCourses$ = courses$.pipe(
@@ -61,6 +63,9 @@ export class CoursesViewComponent implements OnInit {
         courses.filter((course) => course.category === 'ADVANCED')
       )
     );
+    courses$.subscribe((courses) => {
+      this.isLoadingResults = false;
+    });
     this.scrollService.scrollToTop(0, 'auto');
   }
 }

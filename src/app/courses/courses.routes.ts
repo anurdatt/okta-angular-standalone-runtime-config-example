@@ -41,14 +41,14 @@ export const COURSE_ROUTES: Routes = [
       lessons: urlLessonsResolver,
     },
     children: [
-      {
-        path: '',
-        pathMatch: 'full',
-        component: UrlVideoPlayerComponent,
-        data: {
-          lesson: {},
-        },
-      },
+      // {
+      //   path: '',
+      //   pathMatch: 'full',
+      //   component: UrlVideoPlayerComponent,
+      //   data: {
+      //     lesson: {},
+      //   },
+      // },
       {
         path: ':id',
         component: UrlVideoPlayerComponent,

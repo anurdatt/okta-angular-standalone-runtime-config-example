@@ -17,6 +17,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { environment } from '../../../environments/environment';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-course-view',
@@ -44,11 +45,14 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   expandedLesson: Lesson = null;
 
   lessonSubscription: Subscription;
+  breakpointSubscription: Subscription;
+  handsetPortrait = false;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private service: CoursesService
+    private service: CoursesService,
+    private responsive: BreakpointObserver
   ) {}
 
   ngOnInit(): void {
@@ -65,10 +69,20 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     this.course = this.route.snapshot.data['courses'][0];
     this.loadLessonsPage();
     window.scrollTo({ top: 0, behavior: 'auto' });
+
+    this.breakpointSubscription = this.responsive
+      .observe(Breakpoints.HandsetPortrait)
+      .subscribe((result) => {
+        this.handsetPortrait = false;
+        if (result.matches) {
+          this.handsetPortrait = true;
+        }
+      });
   }
 
   ngOnDestroy(): void {
     this.lessonSubscription?.unsubscribe();
+    this.breakpointSubscription?.unsubscribe();
   }
 
   loadLessonsPage() {
@@ -115,6 +129,11 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     //   },
     // };
 
-    this.router.navigate(['../courses', this.course.courseUrl, 'lessons']);
+    this.router.navigate([
+      '../courses',
+      this.course.courseUrl,
+      'lessons',
+      this.lessons[0].id,
+    ]);
   }
 }

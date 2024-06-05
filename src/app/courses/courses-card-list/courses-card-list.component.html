@@ -4,24 +4,26 @@
   [ngClass]="{ 'handset-portrait': handsetPortrait }"
 >
   <mat-grid-tile *ngFor="let course of courses">
-    <mat-card class="course-card mat-elevation-z7">
-      <mat-card-header>
+    <mat-card
+      class="course-card mat-elevation-z7"
+      [routerLink]="['../courses', course.courseUrl]"
+    >
+      <!-- <mat-card-header>
         <mat-card-title>{{ course.description }}</mat-card-title>
-      </mat-card-header>
+      </mat-card-header> -->
 
       <img mat-card-image [src]="course.iconUrl" />
 
-      <mat-card-content>
-        <p>{{ course.longDescription }}</p>
+      <mat-card-content class="course-card-body">
+        <div class="card-course-title-text">
+          {{ course.description }}
+        </div>
+        <p class="course-description">{{ course.longDescription }}</p>
       </mat-card-content>
 
       <mat-card-actions class="course-actions">
-        <button
-          mat-raised-button
-          color="primary"
-          [routerLink]="['../courses', course.courseUrl]"
-        >
-          VIEW COURSE
+        <button mat-flat-button class="total-lessons">
+          <mat-icon>airplay</mat-icon> {{ course.lessonsCount }} lessons
         </button>
 
         <button

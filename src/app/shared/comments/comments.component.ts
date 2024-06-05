@@ -2,9 +2,11 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import {
   MatSnackBar,
@@ -43,7 +45,7 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss',
 })
-export class CommentsComponent implements OnInit, OnDestroy {
+export class CommentsComponent implements OnChanges, OnInit, OnDestroy {
   @Input('sourceApp') sourceApp: string;
   @Input('sourceId') sourceId: number;
 
@@ -71,6 +73,19 @@ export class CommentsComponent implements OnInit, OnDestroy {
     private commentsService: CommentsService,
     private _snackbar: MatSnackBar
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['sourceId']) {
+      // console.log(
+      //   'sourceId changed from',
+      //   changes['sourceId'].previousValue,
+      //   'to',
+      //   changes['sourceId'].currentValue
+      // );
+      // Handle the change - reload data, update view, etc.
+      this.loadComments();
+    }
+  }
 
   ngOnInit(): void {
     console.log('Comments initiated!');

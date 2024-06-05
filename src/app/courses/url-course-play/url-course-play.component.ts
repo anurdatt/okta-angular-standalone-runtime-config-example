@@ -79,22 +79,6 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
     //   this.courseDescription = p['courseDescription'];
     // });
 
-    // this.route.firstChild.params.subscribe((params) => {
-    //   if (params['id']) this.lessonId = params['id'];
-    // });
-    if (
-      this.route.firstChild &&
-      this.route.firstChild.snapshot.paramMap.get('id')
-    ) {
-      try {
-        this.lessonId = parseInt(
-          this.route.firstChild.snapshot.paramMap.get('id')
-        );
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
     if (
       this.route.snapshot.data['courses'] == null ||
       this.route.snapshot.data['courses'].length == 0
@@ -110,8 +94,47 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
     this.courseUrl = `${this.course.baseUrl}`;
     // this.loadLessonsPage();
     this.lessons = this.route.snapshot.data['lessons'];
-    if (!this.lessonId) this.selectVideo(0);
-    else this.selectVideo(this.lessons.findIndex((l) => l.id == this.lessonId));
+
+    if (!this.route.firstChild) {
+      console.error('Invalid route!');
+      setTimeout(() => {
+        this.router.navigate(['/notfound'], { skipLocationChange: true });
+      }, 100);
+      return;
+    }
+
+    this.route.firstChild.params.subscribe((params) => {
+      console.log('route.firstChild.params changed', params['id']);
+      if (this.lessons.length > 0) {
+        if (params['id']) {
+          try {
+            this.lessonId = parseInt(params['id']);
+            this.selectVideo(
+              this.lessons.findIndex((l) => l.id == this.lessonId)
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        } else {
+          this.selectVideo(0);
+        }
+      }
+    });
+    // if (
+    //   this.route.firstChild &&
+    //   this.route.firstChild.snapshot.paramMap.get('id')
+    // ) {
+    //   try {
+    //     this.lessonId = parseInt(
+    //       this.route.firstChild.snapshot.paramMap.get('id')
+    //     );
+    //   } catch (e) {
+    //     console.error(e);
+    //   }
+    // }
+
+    // if (!this.lessonId) this.selectVideo(0);
+    // else this.selectVideo(this.lessons.findIndex((l) => l.id == this.lessonId));
     window.scrollTo({ top: 0, behavior: 'auto' });
   }
 
