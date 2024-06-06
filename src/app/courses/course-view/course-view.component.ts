@@ -18,6 +18,8 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { environment } from '../../../environments/environment';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-course-view',
@@ -31,6 +33,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
     MatCheckboxModule,
     MatProgressSpinnerModule,
     MatButtonModule,
+    MatCardModule,
+    MatIconModule
   ],
   templateUrl: './course-view.component.html',
   styleUrl: './course-view.component.scss',
@@ -135,5 +139,9 @@ export class CourseViewComponent implements OnInit, OnDestroy {
       'lessons',
       this.lessons[0].id,
     ]);
+  }
+
+  showPreview() {
+    alert("Play preview video in player");
   }
 }
