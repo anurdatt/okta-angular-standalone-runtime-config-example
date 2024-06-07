@@ -21,6 +21,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { ScrollService } from '../../shared/scroll/scroll.service';
+import { MatDialog } from '@angular/material/dialog';
+import { UrlVideoDialogComponent } from './url-video-dialog/url-video-dialog.component';
 
 @Component({
   selector: 'app-course-view',
@@ -59,7 +61,8 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private service: CoursesService,
     private responsive: BreakpointObserver,
-    private scrollService: ScrollService
+    private scrollService: ScrollService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -166,6 +169,16 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   }
 
   showPreview() {
-    alert('Play preview video in player');
+    // alert('Play preview video in player');
+    const dialogRef = this.dialog.open(UrlVideoDialogComponent, {
+      width: this.handsetPortrait ? '90%' : '50%',
+      height: 'fit-content',
+      disableClose: true,
+      data: { lessons: this.lessons }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 }

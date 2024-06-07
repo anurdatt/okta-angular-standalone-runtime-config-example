@@ -1,0 +1,10 @@
+
+<div mat-dialog-actions style="display: flex; flex-direction: column;align-items: end;">
+    <button mat-button (click)="onNoClick()">X</button>
+</div>
+<h1 mat-dialog-title> Course Preview</h1>
+<div mat-dialog-content>
+    <app-url-video-player [lessonInput]="selectedLesson"></app-url-video-player>
+    <div style="width: 100%; height: 100px; margin-top: 20px;">Playlist</div>
+</div>
+

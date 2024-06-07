@@ -8,6 +8,7 @@ import {
   AfterViewInit,
   HostListener,
   Renderer2,
+  Input,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import videojs from 'video.js';
@@ -25,6 +26,7 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
   @ViewChild('target', { static: true }) target!: ElementRef<HTMLVideoElement>;
   @ViewChild('customContextMenu', { static: true })
   customContextMenu: ElementRef;
+  @Input('lessonInput') lessonInput: Lesson;
 
   lesson: Lesson;
   videoUrl: string | undefined;
@@ -42,6 +44,11 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // console.log(this.route.params['id']);
 
+    if (this.lessonInput) {
+      this.lesson = this.lessonInput;
+      this.fileName = `${this.lesson.courseId}/${this.lesson.videoUrl}`;
+      this.fetchVideoUrl();
+    } else {
     this.route.data.subscribe((data) => {
       // this.ngOnDestroy();
 
@@ -59,6 +66,9 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
       this.fileName = `${this.lesson.courseId}/${this.lesson.videoUrl}`;
       this.fetchVideoUrl();
     });
+  }
+
+    
   }
 
   fetchVideoUrl() {
