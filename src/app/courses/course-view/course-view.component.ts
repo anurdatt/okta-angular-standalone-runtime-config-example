@@ -20,6 +20,7 @@ import { environment } from '../../../environments/environment';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { ScrollService } from '../../shared/scroll/scroll.service';
 
 @Component({
   selector: 'app-course-view',
@@ -34,7 +35,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatProgressSpinnerModule,
     MatButtonModule,
     MatCardModule,
-    MatIconModule
+    MatIconModule,
   ],
   templateUrl: './course-view.component.html',
   styleUrl: './course-view.component.scss',
@@ -50,13 +51,15 @@ export class CourseViewComponent implements OnInit, OnDestroy {
 
   lessonSubscription: Subscription;
   breakpointSubscription: Subscription;
+  scrollSubscription: Subscription;
   handsetPortrait = false;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private service: CoursesService,
-    private responsive: BreakpointObserver
+    private responsive: BreakpointObserver,
+    private scrollService: ScrollService
   ) {}
 
   ngOnInit(): void {
@@ -75,11 +78,32 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     window.scrollTo({ top: 0, behavior: 'auto' });
 
     this.breakpointSubscription = this.responsive
-      .observe(Breakpoints.HandsetPortrait)
+      .observe([
+        // Breakpoints.TabletLandscape,
+        Breakpoints.TabletPortrait,
+        Breakpoints.HandsetLandscape,
+        Breakpoints.HandsetPortrait,
+      ])
       .subscribe((result) => {
         this.handsetPortrait = false;
         if (result.matches) {
           this.handsetPortrait = true;
+        }
+      });
+
+    this.scrollSubscription = this.scrollService
+      .getScrollPosition()
+      .subscribe((p) => {
+        const overlayDiv = document.querySelector(
+          '.sidebar-purchase-container'
+        );
+        console.log('From CourseView - scroll position = ' + p.toString());
+        if (overlayDiv) {
+          if (p > 370) {
+            overlayDiv.classList.add('fixed');
+          } else {
+            overlayDiv.classList.remove('fixed');
+          }
         }
       });
   }
@@ -142,6 +166,6 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   }
 
   showPreview() {
-    alert("Play preview video in player");
+    alert('Play preview video in player');
   }
 }
