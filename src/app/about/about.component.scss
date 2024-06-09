@@ -13,6 +13,10 @@
   text-align: justify;
 }
 
+.developer-container {
+  text-align: center;
+}
+
 .architecture-diagram {
   width: 100%;
   max-width: 800px;
@@ -40,4 +44,49 @@
 
 .architecture-diagram {
   max-width: 100%;
+}
+
+.developer-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  // background-color: #f4f4f4;
+  color: #333;
+}
+.developer-container h1 {
+  color: #333;
+}
+.developer-container h2 {
+  color: #666;
+}
+.developer-container p {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.profession {
+  font-style: italic;
+}
+.colors {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+.color-box {
+  width: 50px;
+  height: 50px;
+  margin: 0 10px;
+  border-radius: 50%;
+}
+#blue {
+  background-color: blue;
+}
+#green {
+  background-color: green;
+}
+#purple {
+  background-color: purple;
 }

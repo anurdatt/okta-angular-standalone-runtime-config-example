@@ -8,4 +8,5 @@ export interface Lesson {
   longDescription: string;
   videoUrl: string;
   fileSize: number;
+  paid: boolean;
 }

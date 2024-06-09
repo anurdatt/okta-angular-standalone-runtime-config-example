@@ -100,7 +100,7 @@ export class CourseViewComponent implements OnInit, OnDestroy {
         const overlayDiv = document.querySelector(
           '.sidebar-purchase-container'
         );
-        console.log('From CourseView - scroll position = ' + p.toString());
+        // console.log('From CourseView - scroll position = ' + p.toString());
         if (overlayDiv) {
           if (p > 370) {
             overlayDiv.classList.add('fixed');
@@ -171,13 +171,13 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   showPreview() {
     // alert('Play preview video in player');
     const dialogRef = this.dialog.open(UrlVideoDialogComponent, {
-      width: this.handsetPortrait ? '90%' : '50%',
-      height: 'fit-content',
+      // width: this.handsetPortrait ? '90%' : '50%',
+      // height: 'fit-content',
       disableClose: true,
-      data: { lessons: this.lessons }
+      data: { lessons: this.lessons.filter((l) => !l.paid) },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
   }

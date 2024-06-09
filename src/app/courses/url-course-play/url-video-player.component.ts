@@ -9,6 +9,8 @@ import {
   HostListener,
   Renderer2,
   Input,
+  OnChanges,
+  SimpleChanges,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import videojs from 'video.js';
@@ -22,7 +24,7 @@ import { Lesson } from '../model/lesson';
   templateUrl: './url-video-player.component.html',
   styleUrl: './url-video-player.component.scss',
 }) //, AfterViewInit
-export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
+export class UrlVideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('target', { static: true }) target!: ElementRef<HTMLVideoElement>;
   @ViewChild('customContextMenu', { static: true })
   customContextMenu: ElementRef;
@@ -49,26 +51,32 @@ export class UrlVideoPlayerComponent implements OnInit, OnDestroy {
       this.fileName = `${this.lesson.courseId}/${this.lesson.videoUrl}`;
       this.fetchVideoUrl();
     } else {
-    this.route.data.subscribe((data) => {
-      // this.ngOnDestroy();
+      this.route.data.subscribe((data) => {
+        // this.ngOnDestroy();
 
-      if (data == null || data['lesson'] == null) {
-        console.error('No Data found!');
-        setTimeout(() => {
-          this.router.navigate(['/notfound'], { skipLocationChange: true });
-        }, 100);
-        return;
-      }
+        if (data == null || data['lesson'] == null) {
+          console.error('No Data found!');
+          setTimeout(() => {
+            this.router.navigate(['/notfound'], { skipLocationChange: true });
+          }, 100);
+          return;
+        }
 
-      if (data['lesson']['id'] == null) return;
+        if (data['lesson']['id'] == null) return;
 
-      this.lesson = data['lesson'];
-      this.fileName = `${this.lesson.courseId}/${this.lesson.videoUrl}`;
-      this.fetchVideoUrl();
-    });
+        this.lesson = data['lesson'];
+        this.fileName = `${this.lesson.courseId}/${this.lesson.videoUrl}`;
+        this.fetchVideoUrl();
+      });
+    }
   }
 
-    
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['lessonInput']) {
+      this.lesson = this.lessonInput;
+      this.fileName = `${this.lesson.courseId}/${this.lesson.videoUrl}`;
+      this.fetchVideoUrl();
+    }
   }
 
   fetchVideoUrl() {

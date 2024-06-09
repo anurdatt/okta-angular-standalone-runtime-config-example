@@ -1,0 +1,72 @@
+.dialog-container {
+  // width: 80%;
+  padding: 0 10px;
+  height: fit-content;
+  min-width: 30rem;
+  background-color: rgb(96, 93, 93);
+  color: gold;
+}
+
+.dialog-content {
+  width: 100%;
+}
+
+.playlist-div {
+  // padding: 20px 0;
+  // background-color: #f4f4f4;
+  border-radius: 8px;
+  height: 100%;
+}
+
+.playlist-body-div {
+  max-height: 200px;
+  overflow-y: auto;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.playlist-div h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.playlist-div ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.playlist-div li {
+  cursor: pointer;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  transition: background-color 0.3s;
+}
+
+.playlist-div li:hover {
+  background-color: #76627e;
+}
+
+.playlist-div .selected {
+  background-color: #c4a6dcf5;
+}
+
+@media screen and (max-width: 30rem), screen and (max-height: 480px) {
+  .dialog-container {
+    width: 18rem;
+    min-width: 18rem;
+    justify-content: center;
+    padding: 0 5px;
+  }
+
+  // .dialog-content {
+  //   width: 100%;
+  // }
+}
+
+// @media (max-width: 550px) {
+//   .dialog-container {
+//     width: 500px;
+//     min-width: 500px;
+//   }
+// }
