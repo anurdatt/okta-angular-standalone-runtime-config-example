@@ -28,6 +28,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { TrackScrollDirective } from './shared/scroll/track-scroll.directive';
 import { ScrollService } from './shared/scroll/scroll.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { CartService } from './cart/cart.service';
+import { Cart } from './cart/model/cart';
 
 @Component({
   selector: 'app-root',
@@ -66,10 +68,13 @@ export class AppComponent implements OnInit, OnDestroy {
   loading: boolean = false;
   isSubMenuOpen = false;
 
+  cart: Cart | undefined;
+
   constructor(
     private router: Router,
     private scrollService: ScrollService,
-    private responsive: BreakpointObserver
+    private responsive: BreakpointObserver,
+    private cartService: CartService
   ) {
     this.routerEventSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
@@ -82,6 +87,11 @@ export class AppComponent implements OnInit, OnDestroy {
         this.loading = false;
       }
     });
+
+    cartService.cartChanged$.asObservable().subscribe((changed) => {
+      if (changed) this.cart = cartService.getCart();
+    });
+    this.cart = cartService.getCart();
   }
 
   @HostListener('window:scroll', ['$event'])

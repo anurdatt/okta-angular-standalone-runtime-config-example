@@ -1,3 +1,7 @@
+import { environment } from '../../environments/environment';
+import CryptoJS from 'crypto-js';
+// declare const CryptoJS: any;
+
 export class CommonUtil {
   formatDate(inputDate: string): string {
     const months = [
@@ -37,5 +41,14 @@ export class CommonUtil {
     } else {
       return 'Just now';
     }
+  }
+
+  Encrypt(data: any): string {
+    const jsonData = JSON.stringify(data);
+    return CryptoJS.AES.encrypt(jsonData, environment.encKey);
+  }
+  Decrypt(data: string): any {
+    const bytes = CryptoJS.AES.decrypt(data, environment.encKey);
+    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   }
 }

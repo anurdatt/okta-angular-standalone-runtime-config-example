@@ -1,0 +1,106 @@
+<div class="cart-container">
+  <div class="cart-title-area">
+    <h1 class="heading-xxl">Shopping Cart</h1>
+  </div>
+  <div class="cart-shopping-area">
+    <div class="cart-item-list">
+      <h3 class="heading-md">{{ cart.items.length }} Course(s) in cart</h3>
+      @if (cart.items.length > 0) {
+
+      <ul class="cart-unstyled-list" *ngFor="let citem of cart.items">
+        <div class="cart-item-container">
+          <div class="cart-item-image">
+            <div class="cart-item-image-wrapper">
+              <img
+                [src]="citem.imageUrl"
+                alt=""
+                height="68"
+                width="120"
+                loading="lazy"
+                class="cart-item-course-image"
+              />
+            </div>
+          </div>
+          <div class="cart-item-header">
+            <h3 class="heading-md cart-item-course-title">
+              {{ citem.name }}
+            </h3>
+            <div class="text-xs cart-item-course-instructor">
+              <div class="cart-item-course-instructor-list">
+                By Anuran Datta
+              </div>
+            </div>
+          </div>
+          <div class="cart-item-badges">
+            <div class="cart-item-course-badge-bestseller badge heading-xs">
+              Bestseller
+            </div>
+          </div>
+          <div class="cart-item-ratings">
+            <span class="text-xs car-item-review">50,000 views</span>
+          </div>
+          <div class="cart-item-meta text-xs">
+            <span class="cart-item-meta-couse-length">61.5 total hours</span>
+            <svg
+              aria-hidden="true"
+              focusable="false"
+              class="icon icon-xxsmall icon-color-subdued"
+            >
+              <use xlink:href="#icon-bullet"></use>
+            </svg>
+            <span class="cart-item-meta-couse-length">11 lessons</span>
+          </div>
+          <div class="cart-item-actions">
+            <button
+              type="button"
+              class="btn btn-xsmall btn-ghost text-sm"
+              (click)="deleteItem(citem.itemId)"
+            >
+              <span>Remove</span>
+            </button>
+            <!-- <button type="button" class="btn btn-xsmall btn-ghost text-sm">
+              <span>Save for later</span>
+            </button> -->
+          </div>
+          <div class="cart-item-price">
+            <div class="item-price-text-container heading-md">
+              <span>₹{{ citem.unitPrice }}</span>
+            </div>
+          </div>
+        </div>
+      </ul>
+      } @else {
+      <div class="empty-shopping-cart">
+        <p class="empty-shopping-cart-message">
+          Your cart is empty. Keep shopping to find a course!
+        </p>
+        <a
+          mat-flat-button
+          color="primary"
+          [routerLink]="['../', 'courses']"
+          class="cart-checkout-button empty-shopping-cart-button heading-md"
+          ><span>Keep shopping</span></a
+        >
+      </div>
+      }
+    </div>
+    @if(cart.items.length > 0) {
+    <div class="cart-checkout">
+      <div class="total-price-container">
+        <div class="total-price-total-label heading-md">Total:</div>
+        <div class="total-price-base-price heading-xl">
+          <span>₹{{ cart.total }}</span>
+        </div>
+      </div>
+      <button
+        mat-flat-button
+        class="cart-checkout-button heading-md"
+        color="primary"
+        (click)="checkOut()"
+      >
+        <span>Checkout</span>
+      </button>
+    </div>
+    }
+  </div>
+</div>

@@ -23,6 +23,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ScrollService } from '../../shared/scroll/scroll.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UrlVideoDialogComponent } from './url-video-dialog/url-video-dialog.component';
+import { CartService } from '../../cart/cart.service';
 
 @Component({
   selector: 'app-course-view',
@@ -62,7 +63,8 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     private service: CoursesService,
     private responsive: BreakpointObserver,
     private scrollService: ScrollService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
@@ -180,5 +182,16 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
+  }
+
+  addToCart(course: Course) {
+    console.log('In AddToCart() - course=', course);
+    this.cartService.addToCart(
+      course.id,
+      course.description,
+      course.iconUrl,
+      course.price,
+      1
+    );
   }
 }

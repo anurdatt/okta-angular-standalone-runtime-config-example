@@ -11,4 +11,6 @@ export const environment = {
   mediaHttpApiUrl:
     'https://n8ke2vxks2.execute-api.us-east-1.amazonaws.com/media',
   coursesBucketName: 'lng-courses',
+  encKey: 'encryption@12345678',
+  taxRate: 18,
 };
