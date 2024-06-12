@@ -4,7 +4,11 @@
   </div>
   <div class="cart-shopping-area">
     <div class="cart-item-list">
-      <h3 class="heading-md">{{ cart.items.length }} Course(s) in cart</h3>
+      <h3 class="heading-md">
+        @if(cart.items.length > 1) {
+        <span>{{ cart.items.length }} Courses in cart</span> } @else {
+        <span>{{ cart.items.length }} Course in cart</span> }
+      </h3>
       @if (cart.items.length > 0) {
 
       <ul class="cart-unstyled-list" *ngFor="let citem of cart.items">
@@ -64,7 +68,9 @@
           </div>
           <div class="cart-item-price">
             <div class="item-price-text-container heading-md">
-              <span>₹{{ citem.unitPrice }}</span>
+              <span>{{
+                citem.unitPrice | currency : "INR" : true : "1.0-2"
+              }}</span>
             </div>
           </div>
         </div>
@@ -89,7 +95,7 @@
       <div class="total-price-container">
         <div class="total-price-total-label heading-md">Total:</div>
         <div class="total-price-base-price heading-xl">
-          <span>₹{{ cart.total }}</span>
+          <span>{{ cart.total | currency : "INR" : true : "1.0-2" }}</span>
         </div>
       </div>
       <button

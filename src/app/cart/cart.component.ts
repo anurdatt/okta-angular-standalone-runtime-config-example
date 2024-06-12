@@ -25,7 +25,7 @@ export class CartComponent implements OnDestroy {
   ) {
     this.authSubscription = this.authService.isAuthenticated$.subscribe(
       async (isAuth) => {
-        if (isAuth) this.user = await this.authService.getUserFullname();
+        if (isAuth) this.user = await this.authService.getUserEmail();
         else this.user = undefined;
       }
     );
@@ -50,9 +50,9 @@ export class CartComponent implements OnDestroy {
       }
     } else {
       this.cart.userId = this.user;
-      this.cartService.saveCartToDB(this.cart).subscribe((res) => {
-        this.router.navigate(['/payment']);
-      });
+      // this.cartService.saveCartToDB(this.cart).subscribe((res) => {
+      this.router.navigate(['/payment']);
+      // });
     }
   }
 

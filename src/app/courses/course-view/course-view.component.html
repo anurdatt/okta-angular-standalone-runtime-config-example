@@ -47,52 +47,7 @@
           }
 
           <div class="sidebar-purchase-container" *ngIf="!handsetPortrait">
-            <div class="purchase-box">
-              <div class="purchase-section-container">
-                <div class="buy-box-main">
-                  <div class="buy-box-item">
-                    <div class="base-price-text">
-                      @if (course.price > 0) {
-                      <span>₹{{ course.price }}</span>
-                      }@else {
-                      <span>Free</span>
-                      }
-                    </div>
-                  </div>
-                  <div class="buy-box-add-to-cart">
-                    @if (course.price > 0) {
-                    <button
-                      mat-flat-button
-                      color="primary"
-                      class="buy-box-add-to-cart-btn"
-                      (click)="addToCart(course)"
-                    >
-                      Add to cart
-                    </button>
-                    } @else {
-                    <button
-                      mat-flat-button
-                      color="primary"
-                      class="buy-box-add-to-cart-btn"
-                      (click)="navigateWithQueryParams()"
-                    >
-                      Go to course
-                    </button>
-                    }
-                  </div>
-                  @if (course.price > 0) {
-                  <div class="buy-box-by-now">
-                    <button
-                      mat-flat-button
-                      class="buy-box-add-to-cart-btn buy-box-buy-now-btn"
-                    >
-                      Buy now
-                    </button>
-                  </div>
-                  }
-                </div>
-              </div>
-            </div>
+            <ng-container *ngTemplateOutlet="purbox"></ng-container>
           </div>
         </mat-card>
       </div>
@@ -100,6 +55,69 @@
   </div>
   <!-- </div>
 </div> -->
+
+  <ng-template #purbox>
+    <div class="purchase-box">
+      <div class="purchase-section-container">
+        <div class="buy-box-main">
+          <div class="buy-box-item">
+            <div class="base-price-text heading-xl">
+              @if (course.price > 0) {
+              <span>{{
+                course.price | currency : "INR" : true : "1.0-2"
+              }}</span>
+              }@else {
+              <span>Free</span>
+              }
+            </div>
+            @if (course.price > 0) {
+            <div class="base-price-text original-price-text text-sm">
+              <span
+                ><s>{{
+                  (course.price * 100) / 25 | currency : "INR" : true : "1.0-2"
+                }}</s></span
+              >
+            </div>
+            <div class="base-price-text discount-percent-text text-sm">
+              <span>75% off</span>
+            </div>
+            }
+          </div>
+          <div class="buy-box-add-to-cart">
+            @if (course.price > 0) {
+            <button
+              mat-flat-button
+              color="primary"
+              class="buy-box-add-to-cart-btn"
+              (click)="addToCart(course)"
+            >
+              Add to cart
+            </button>
+            } @else {
+            <button
+              mat-flat-button
+              color="primary"
+              class="buy-box-add-to-cart-btn"
+              (click)="navigateWithQueryParams()"
+            >
+              Go to course
+            </button>
+            }
+          </div>
+          @if (course.price > 0) {
+          <div class="buy-box-by-now">
+            <button
+              mat-flat-button
+              class="buy-box-add-to-cart-btn buy-box-buy-now-btn"
+            >
+              Buy now
+            </button>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+  </ng-template>
 
   <!-- <ol class="breadcrumb">
   <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
@@ -113,52 +131,7 @@
   <div class="course-landing">
     <div class="course-landing-main">
       <div class="landing-purchase-container" *ngIf="handsetPortrait">
-        <div class="purchase-box">
-          <div class="purchase-section-container">
-            <div class="buy-box-main">
-              <div class="buy-box-item">
-                <div class="base-price-text">
-                  @if (course.price > 0) {
-                  <span>₹{{ course.price }}</span>
-                  }@else {
-                  <span>Free</span>
-                  }
-                </div>
-              </div>
-              <div class="buy-box-add-to-cart">
-                @if (course.price > 0) {
-                <button
-                  mat-flat-button
-                  color="primary"
-                  class="buy-box-add-to-cart-btn"
-                  (click)="addToCart(course)"
-                >
-                  Add to cart
-                </button>
-                } @else {
-                <button
-                  mat-flat-button
-                  color="primary"
-                  class="buy-box-add-to-cart-btn"
-                  (click)="navigateWithQueryParams()"
-                >
-                  Go to course
-                </button>
-                }
-              </div>
-              @if (course.price > 0) {
-              <div class="buy-box-by-now">
-                <button
-                  mat-flat-button
-                  class="buy-box-add-to-cart-btn buy-box-buy-now-btn"
-                >
-                  Buy now
-                </button>
-              </div>
-              }
-            </div>
-          </div>
-        </div>
+        <ng-container *ngTemplateOutlet="purbox"></ng-container>
       </div>
       <div class="spinner-container" *ngIf="loading">
         <mat-spinner></mat-spinner>

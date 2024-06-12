@@ -204,11 +204,30 @@
   line-height: 1;
   padding: 0.4rem 0;
   white-space: nowrap;
-
+  margin-right: 0.8rem;
+}
+.heading-xl {
   font-weight: 700;
   letter-spacing: 0;
   font-size: 2rem;
   max-width: 36em;
+}
+.text-sm {
+  font-weight: 400;
+  line-height: 1;
+  font-size: 1rem;
+}
+.original-price-text {
+  color: #6a6f73;
+  font-size: 1.2rem;
+}
+
+.discount-percent-text {
+  font-size: 1.2rem;
+}
+
+.base-price-text:last-child {
+  margin-right: 0;
 }
 
 .buy-box-add-to-cart {

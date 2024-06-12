@@ -32,6 +32,12 @@ export const routes: Routes = [
     component: CartComponent,
   },
   {
+    path: 'payment',
+    canActivate: [OktaAuthGuard],
+    loadChildren: () =>
+      import('./payment/payment.routes').then((mod) => mod.PAYMENT_ROUTES),
+  },
+  {
     path: 'notes',
     canActivate: [OktaAuthGuard],
     loadChildren: () =>

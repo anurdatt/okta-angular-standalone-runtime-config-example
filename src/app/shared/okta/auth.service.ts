@@ -130,6 +130,10 @@ export class AuthService implements OnDestroy {
     return (await this.oktaAuth.getUser()).name;
   }
 
+  public async getUserEmail(): Promise<string> {
+    return (await this.oktaAuth.getUser()).email;
+  }
+
   public async getUserProfileUrl(): Promise<string> {
     return (await this.oktaAuth.getUser())['profile']?.toString();
   }
