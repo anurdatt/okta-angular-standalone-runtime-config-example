@@ -1,0 +1,93 @@
+<div class="checkout-main-container">
+  <main class="checkout-order-details">
+    <h1 class="checkout-header heading-xxl">Checkout</h1>
+    <section class="order-details-container">
+      <h2 class="order-details-header heading-xl">Order details</h2>
+      <ul
+        class="order-item-list"
+        *ngFor="let citem of cart.items; let index = index"
+      >
+        <li class="order-item-list-item">
+          <div class="order-item-list-item-summary">
+            <img
+              class="order-item-list-item-image"
+              [src]="citem.imageUrl"
+              width="50"
+              height="50"
+              alt=""
+            />
+            <span>{{ citem.name }}</span>
+          </div>
+          <div class="order-item-list-item-price">
+            <div class="order-item-list-item-purchase-price">
+              <span>{{
+                citem.unitPrice | currency : "INR" : true : "1.0-2"
+              }}</span>
+            </div>
+            <div class="order-item-list-item-original-price">
+              <span
+                ><s>{{
+                  (citem.unitPrice * 100) / 25
+                    | currency : "INR" : true : "1.0-2"
+                }}</s></span
+              >
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
+  <aside class="checkout-order-summary">
+    <div class="checkout-summary-wrapper">
+      <section class="pricing-summary-container">
+        <h2 class="heading-xl">Summary</h2>
+        <div class="text-sm">
+          <span>Original Price:</span>
+          <span>{{
+            (cart.total * 100) / 25 | currency : "INR" : true : "1.0-2"
+          }}</span>
+        </div>
+        <div class="text-sm">
+          <span>Discounts:</span>
+          <span
+            >-{{
+              (cart.total * 100) / 25 - cart.total
+                | currency : "INR" : true : "1.0-2"
+            }}</span
+          >
+        </div>
+        <div class="pricing-summary-divider"></div>
+        <div class="pricing-summary-total-price text-sm">
+          <span>Total:</span>
+          <span>{{ cart.total | currency : "INR" : true : "1.0-2" }}</span>
+        </div>
+      </section>
+      <div class="checkout-button-container">
+        <div class="checkout-total-price text-lg">
+          <span>Total:</span>
+          <span>{{ cart.total | currency : "INR" : true : "1.0-2" }}</span>
+        </div>
+        <div class="checkout-button-term-wrapper">
+          <div class="checkout-term">
+            <span
+              >By completing your purchase you agree to these Terms of
+              service.</span
+            >
+          </div>
+          <div class="checkout-button">
+            <button
+              mat-flat-button
+              color="primary"
+              class="checkout-button-button heading-md"
+            >
+              <span>Complete Payment</span>
+            </button>
+          </div>
+          <div class="checkout-term-centered text-xs">
+            30-Day Money-Back Guarantee
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+</div>
