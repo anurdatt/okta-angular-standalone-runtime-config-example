@@ -244,3 +244,18 @@ blockquote {
   font-size: 14px;
   color: #333;
 }
+
+
+.cartCounter{
+  background-color: #ec5252;
+  border-radius: 12px;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.43;
+  margin: -26px 0 -5px 15px;
+  padding: 0px 7px;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 1;
+}
