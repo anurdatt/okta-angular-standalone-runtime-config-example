@@ -43,11 +43,11 @@ export class CommonUtil {
     }
   }
 
-  Encrypt(data: any): string {
+  Encrypt(data: any): any {
     const jsonData = JSON.stringify(data);
     return CryptoJS.AES.encrypt(jsonData, environment.encKey);
   }
-  Decrypt(data: string): any {
+  Decrypt(data: any): any {
     const bytes = CryptoJS.AES.decrypt(data, environment.encKey);
     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
   }

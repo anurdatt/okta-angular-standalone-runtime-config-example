@@ -159,6 +159,12 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   goToCart() {
     this.router.navigate(['/cart']);
   }
+
+  goToPaymentCheckout() {
+    this.cartService.removeCart();
+    this.addToCart(this.course);
+    this.router.navigate(['/payment/checkout']);
+  }
   navigateWithQueryParams() {
     // const queryParams: NavigationExtras = {
     //   queryParams: {

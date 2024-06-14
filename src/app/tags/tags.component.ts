@@ -132,7 +132,7 @@ export class TagsComponent implements OnInit, OnDestroy {
       const el = document.getElementById('scrollingDiv');
       const section = el.querySelector(`#${tagUrl}`);
       if (section) {
-        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        section.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }, 10);
   }
