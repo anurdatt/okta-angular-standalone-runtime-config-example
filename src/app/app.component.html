@@ -175,14 +175,13 @@
           flex-direction: row;
           /* align-self: center; */
           text-decoration: none;
+          margin-right: 10px;
         "
       >
-      @if(cart?.items.length > 0) {
+        @if(cart?.items.length > 0) {
 
-        <span class="cartCounter" >{{
-          cart?.items.length
-        }}</span>
-      }
+        <span class="cartCounter">{{ cart?.items.length }}</span>
+        }
         <!-- <svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
@@ -196,12 +195,11 @@
           />
         </svg> -->
 
-        @if(cart?.items.length > 0) {
-          <mat-icon>shopping_cart</mat-icon>
-        } @else {
+        <!-- @if(cart?.items.length > 0) { -->
+        <mat-icon>shopping_cart</mat-icon>
+        <!-- } @else {
           <mat-icon>add_shopping_cart</mat-icon>
-        }
-
+        } -->
       </a>
       <a mat-button *ngIf="!(isAuthenticated$ | async)" (click)="signIn()">
         <mat-icon>account_circle</mat-icon>

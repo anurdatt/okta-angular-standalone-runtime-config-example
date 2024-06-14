@@ -84,7 +84,16 @@
             }
           </div>
           <div class="buy-box-add-to-cart">
-            @if (course.price > 0) {
+            @if (course.price > 0) { @if (cartContainsCourse) {
+            <button
+              mat-flat-button
+              color="primary"
+              class="buy-box-add-to-cart-btn"
+              (click)="goToCart()"
+            >
+              Go to cart
+            </button>
+            } @else {
             <button
               mat-flat-button
               color="primary"
@@ -93,7 +102,7 @@
             >
               Add to cart
             </button>
-            } @else {
+            } } @else {
             <button
               mat-flat-button
               color="primary"

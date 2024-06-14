@@ -55,6 +55,8 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   lessonSubscription: Subscription;
   breakpointSubscription: Subscription;
   scrollSubscription: Subscription;
+
+  cartContainsCourse = false;
   handsetPortrait = false;
 
   constructor(
@@ -111,11 +113,22 @@ export class CourseViewComponent implements OnInit, OnDestroy {
           }
         }
       });
+
+    this.cartService.cartChanged$.asObservable().subscribe((changed) => {
+      if (changed)
+        this.cartContainsCourse = this.cartService.isCartContainsCourse(
+          this.course.id
+        );
+    });
+    this.cartContainsCourse = this.cartService.isCartContainsCourse(
+      this.course.id
+    );
   }
 
   ngOnDestroy(): void {
     this.lessonSubscription?.unsubscribe();
     this.breakpointSubscription?.unsubscribe();
+    this.scrollSubscription?.unsubscribe();
   }
 
   loadLessonsPage() {
@@ -143,6 +156,9 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     }
   }
 
+  goToCart() {
+    this.router.navigate(['/cart']);
+  }
   navigateWithQueryParams() {
     // const queryParams: NavigationExtras = {
     //   queryParams: {

@@ -13,4 +13,7 @@ export const environment = {
   coursesBucketName: 'lng-courses',
   encKey: 'encryption@12345678',
   taxRate: 18,
+  razorPay: {
+    key: 'rzp_test_WaN28MVAY04Grw',
+  },
 };

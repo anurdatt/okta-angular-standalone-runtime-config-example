@@ -85,9 +85,17 @@ export class CartService {
     return this.cart;
   }
 
+  isCartContainsCourse(courseId: number): boolean {
+    if (this.cart.items.findIndex((item) => item.itemId == courseId) >= 0)
+      return true;
+    else return false;
+  }
+
   removeCart(): void {
     localStorage.removeItem(this.cart.id);
     localStorage.removeItem(CART_ID);
+    this.cart = new Cart();
+    this.cartChanged$.next(true);
   }
   saveCartToDB(cart: Cart): Observable<any> {
     this.cart.userId = cart.userId;
