@@ -20,26 +20,49 @@
 <mat-sidenav-container
   fullscreen
   style="height: min-content"
-  [ngClass]="{ 'handset-portrait': handsetPortrait }"
+  [ngClass]="{
+    'handset-portrait': handsetPortrait,
+    'hide-general-menu': hideGeneralMenu
+  }"
 >
   <mat-sidenav #sidenav class="sidenav">
     <mat-nav-list (click)="sidenav.close()">
-      <a mat-list-item routerLink="courses" routerLinkActive="active">
+      <a
+        mat-list-item
+        routerLink="courses"
+        routerLinkActive="active"
+        class="general-menu"
+      >
         <mat-icon mat-list-icon>library_books</mat-icon>
         <span mat-line>Courses</span>
       </a>
 
-      <a mat-list-item routerLink="blogs" routerLinkActive="active">
+      <a
+        mat-list-item
+        routerLink="blogs"
+        routerLinkActive="active"
+        class="general-menu"
+      >
         <mat-icon>newspaper</mat-icon>
         <span>Blogs</span>
       </a>
 
-      <a mat-list-item routerLink="notes" routerLinkActive="active">
+      <a
+        mat-list-item
+        routerLink="notes"
+        routerLinkActive="active"
+        class="general-menu"
+      >
         <mat-icon>event_note</mat-icon>
         <span>Notes</span>
       </a>
 
-      <a mat-list-item routerLink="tags" routerLinkActive="active">
+      <a
+        mat-list-item
+        routerLink="tags"
+        routerLinkActive="active"
+        class="general-menu"
+      >
         <mat-icon>topic</mat-icon>
         <span>Topics</span>
 
@@ -61,7 +84,12 @@
         </mat-nav-list> -->
       </a>
 
-      <a mat-list-item routerLink="about" routerLinkActive="active">
+      <a
+        mat-list-item
+        routerLink="about"
+        routerLinkActive="active"
+        class="general-menu"
+      >
         <mat-icon>question_answer</mat-icon>
         <span>About</span>
       </a>
@@ -75,6 +103,7 @@
       color="accent"
       (click)="sidenav.open()"
       style="height: 42px"
+      class="general-menu"
     >
       <mat-icon>menu</mat-icon>
     </button>
@@ -95,7 +124,7 @@
         *ngIf="!handsetPortrait"
         routerLink="courses"
         routerLinkActive="active"
-        class="toolbar-button"
+        class="toolbar-button general-menu"
       >
         <mat-icon>library_books</mat-icon>
         <span>Courses</span>
@@ -106,7 +135,7 @@
         *ngIf="!handsetPortrait"
         routerLink="blogs"
         routerLinkActive="active"
-        class="toolbar-button"
+        class="toolbar-button general-menu"
       >
         <mat-icon>newspaper</mat-icon>
         <span>Blogs</span>
@@ -117,7 +146,7 @@
         *ngIf="!handsetPortrait"
         [matMenuTriggerFor]="dropdown"
         routerLinkActive="active"
-        class="toolbar-button"
+        class="toolbar-button general-menu"
       >
         <mat-icon>topic</mat-icon>
         <span>Topics</span>
@@ -140,7 +169,7 @@
         *ngIf="!handsetPortrait"
         routerLink="notes"
         routerLinkActive="active"
-        class="toolbar-button"
+        class="toolbar-button general-menu"
       >
         <mat-icon>event_note</mat-icon>
         <span>Notes</span>
@@ -151,7 +180,7 @@
         *ngIf="!handsetPortrait"
         routerLink="about"
         routerLinkActive="active"
-        class="toolbar-button"
+        class="toolbar-button general-menu"
       >
         <mat-icon>question_answer</mat-icon>
         <span>About</span>
@@ -171,17 +200,7 @@
         <use xlink:href="#icon-cart"></use>
       </svg> -->
 
-      <a
-        [routerLink]="['/cart']"
-        style="
-          align-items: center;
-          display: flex;
-          flex-direction: row;
-          /* align-self: center; */
-          text-decoration: none;
-          margin-right: 10px;
-        "
-      >
+      <a [routerLink]="['/cart']" class="cart general-menu">
         @if(cart?.items.length > 0) {
 
         <span class="cartCounter">{{ cart?.items.length }}</span>
@@ -205,11 +224,21 @@
           <mat-icon>add_shopping_cart</mat-icon>
         } -->
       </a>
-      <a mat-button *ngIf="!(isAuthenticated$ | async)" (click)="signIn()">
+      <a
+        mat-button
+        *ngIf="!(isAuthenticated$ | async)"
+        (click)="signIn()"
+        class="general-menu"
+      >
         <mat-icon>account_circle</mat-icon>
         <span>Login/Register</span>
       </a>
-      <a mat-button *ngIf="isAuthenticated$ | async" (click)="signOut()">
+      <a
+        mat-button
+        *ngIf="isAuthenticated$ | async"
+        (click)="signOut()"
+        class="general-menu"
+      >
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
       </a>
@@ -237,14 +266,14 @@
             <h4>
               <span
                 class="left-col-text-span"
-                style="margin-right: 10px; cursor: pointer"
+                style="margin-right: 5px; cursor: pointer"
               >
                 Policy
               </span>
               |
               <span
                 class="left-col-text-span"
-                style="margin-left: 10px; cursor: pointer"
+                style="margin-left: 5px; cursor: pointer"
               >
                 Terms & Conditions</span
               >

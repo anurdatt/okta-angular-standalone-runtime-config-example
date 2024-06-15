@@ -1,25 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { RECEIPT_ID } from '../../app.constants';
 import { CommonUtil } from '../../shared/CommonUtil';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { Location } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-receipt',
   standalone: true,
-  imports: [RouterLink],
+  imports: [MatButtonModule, RouterLink],
   templateUrl: './receipt.component.html',
   styleUrl: './receipt.component.scss',
 })
 export class ReceiptComponent implements OnInit {
   util: CommonUtil = new CommonUtil();
   receiptId: string;
-  constructor() {}
+  constructor(private location: Location) {}
 
   ngOnInit(): void {
-    console.log(localStorage.getItem(RECEIPT_ID));
-    console.log(this.util.Decrypt(localStorage.getItem(RECEIPT_ID)));
-    this.receiptId = //JSON.stringify(
-      this.util.Decrypt(localStorage.getItem(RECEIPT_ID)).receipt;
+    const receiptRaw = localStorage.getItem(RECEIPT_ID);
+    console.log(receiptRaw);
+    if (receiptRaw == null) {
+      this.location.back();
+    }
+
+    const receiptObj = this.util.Decrypt(receiptRaw);
+    console.log(receiptObj);
+    this.receiptId = receiptObj.receipt; //JSON.stringify(
     // );
+    // localStorage.removeItem(RECEIPT_ID);
+
+    window.scrollTo({ top: 0, behavior: 'auto' });
   }
 }

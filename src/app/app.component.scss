@@ -141,6 +141,19 @@ mat-toolbar a {
   /* Other styles for main content */
 }
 
+.cart {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  /* align-self: center; */
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.hide-general-menu .general-menu {
+  display: none;
+}
+
 .footer {
   height: fit-content;
   // border: 1px solid black;

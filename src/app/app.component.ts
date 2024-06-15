@@ -71,6 +71,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   cart: Cart | undefined;
 
+  hideGeneralMenu = false;
+
   constructor(
     private router: Router,
     private scrollService: ScrollService,
@@ -88,6 +90,11 @@ export class AppComponent implements OnInit, OnDestroy {
         event instanceof NavigationError
       ) {
         this.loading = false;
+        if (this.router.url.endsWith('payment/checkout')) {
+          this.hideGeneralMenu = true;
+        } else {
+          this.hideGeneralMenu = false;
+        }
       }
     });
 

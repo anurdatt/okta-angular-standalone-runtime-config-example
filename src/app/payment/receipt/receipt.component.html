@@ -1,12 +1,24 @@
-<div class="container">
-  <h1 style="margin-top: 3.6rem">Payment successfull</h1>
-  <hr />
-  <h2 style="margin-top: 2.6rem">Thanks for your order. Your reciept:</h2>
-  <h2>
-    <span> {{ receiptId }}</span>
-  </h2>
-
-  <h3>
-    <p>Browse for more courses <a routerLink="/courses"> here </a></p>
-  </h3>
+<div class="receipt-container">
+  <div class="receipt-title-area">
+    <h1 class="heading-xxxl">Payment successfull</h1>
+  </div>
+  <div class="receipt-display-area">
+    <div class="receipt-item-list">
+      <h3 class="heading-md">
+        <span>Thanks for your order. Your reciept:</span>
+      </h3>
+      <div class="empty-shopping-cart">
+        <p class="empty-shopping-cart-message">
+          <span>[Receipt ID: {{ receiptId }}]</span>
+        </p>
+        <a
+          mat-flat-button
+          color="primary"
+          [routerLink]="['../../', 'courses']"
+          class="cart-checkout-button empty-shopping-cart-button heading-md"
+          ><span>Keep shopping</span></a
+        >
+      </div>
+    </div>
+  </div>
 </div>

@@ -119,6 +119,15 @@ body {
   background: red;
 }
 
+// .heading-xxxl {
+//   font-family: Arial, sans-serif; //var(--font-stack-heading);
+//   font-weight: 700;
+//   line-height: 1.2;
+//   letter-spacing: 0;
+//   font-size: 4rem;
+//   max-width: 36em;
+// }
+
 .breadcrumb {
   padding: 10px 12px;
   list-style: none !important;
@@ -245,8 +254,7 @@ blockquote {
   color: #333;
 }
 
-
-.cartCounter{
+.cartCounter {
   background-color: #ec5252;
   border-radius: 12px;
   color: #ffffff;

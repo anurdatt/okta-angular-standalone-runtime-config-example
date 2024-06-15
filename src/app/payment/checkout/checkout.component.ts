@@ -71,6 +71,14 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    if (
+      this.cart == null ||
+      this.cart.items == null ||
+      this.cart.items.length == 0
+    ) {
+      this.router.navigate(['/cart']);
+    }
+
     const script: HTMLScriptElement = document.createElement('script');
     script.src = 'https://checkout.razorpay.com/v1/checkout.js';
     script.async = true;
@@ -82,6 +90,8 @@ export class CheckoutComponent implements OnInit, OnDestroy {
       'INR',
       'NA'
     );
+
+    window.scrollTo({ top: 0, behavior: 'auto' });
 
     // this.createOrderSubscription = this.paymentService
     //   .createOrder(order)
