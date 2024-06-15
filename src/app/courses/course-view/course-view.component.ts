@@ -24,6 +24,7 @@ import { ScrollService } from '../../shared/scroll/scroll.service';
 import { MatDialog } from '@angular/material/dialog';
 import { UrlVideoDialogComponent } from './url-video-dialog/url-video-dialog.component';
 import { CartService } from '../../cart/cart.service';
+import { AuthService } from '../../shared/okta/auth.service';
 
 @Component({
   selector: 'app-course-view',
@@ -56,6 +57,7 @@ export class CourseViewComponent implements OnInit, OnDestroy {
   breakpointSubscription: Subscription;
   scrollSubscription: Subscription;
 
+  user: string | undefined;
   cartContainsCourse = false;
   handsetPortrait = false;
 
@@ -66,7 +68,8 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     private responsive: BreakpointObserver,
     private scrollService: ScrollService,
     private dialog: MatDialog,
-    private cartService: CartService
+    private cartService: CartService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -123,6 +126,11 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     this.cartContainsCourse = this.cartService.isCartContainsCourse(
       this.course.id
     );
+
+    this.authService.isAuthenticated$.subscribe(async (isAuthed) => {
+      if (isAuthed) this.user = await this.authService.getUserEmail();
+      else this.user = undefined;
+    });
   }
 
   ngOnDestroy(): void {
@@ -160,10 +168,19 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     this.router.navigate(['/cart']);
   }
 
-  goToPaymentCheckout() {
-    this.cartService.removeCart();
-    this.addToCart(this.course);
-    this.router.navigate(['/payment/checkout']);
+  async goToPaymentCheckout() {
+    if (this.user == undefined) {
+      if (
+        confirm('You need to login/signup to checkout. Do you want to proceed?')
+      ) {
+        await this.authService.signIn();
+      }
+    } else {
+      this.cartService.removeCart();
+      this.addToCart(this.course);
+      this.cartService.getCart().userId = this.user;
+      this.router.navigate(['/payment/checkout']);
+    }
   }
   navigateWithQueryParams() {
     // const queryParams: NavigationExtras = {
@@ -210,6 +227,7 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     console.log('In AddToCart() - course=', course);
     this.cartService.addToCart(
       course.id,
+      course.courseUrl,
       course.description,
       course.iconUrl,
       course.price,

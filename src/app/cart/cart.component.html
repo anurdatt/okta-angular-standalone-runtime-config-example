@@ -15,19 +15,31 @@
         <div class="cart-item-container">
           <div class="cart-item-image">
             <div class="cart-item-image-wrapper">
-              <img
-                [src]="citem.imageUrl"
-                alt=""
-                height="68"
-                width="120"
-                loading="lazy"
-                class="cart-item-course-image"
-              />
+              <a
+                [href]="'/courses/' + citem.itemUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  [src]="citem.imageUrl"
+                  alt=""
+                  height="68"
+                  width="120"
+                  loading="lazy"
+                  class="cart-item-course-image"
+                />
+              </a>
             </div>
           </div>
           <div class="cart-item-header">
             <h3 class="heading-md cart-item-course-title">
-              {{ citem.name }}
+              <a
+                [href]="'/courses/' + citem.itemUrl"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {{ citem.name }}
+              </a>
             </h3>
             <div class="text-xs cart-item-course-instructor">
               <div class="cart-item-course-instructor-list">

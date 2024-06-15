@@ -3,6 +3,7 @@ export class CartItem {
   total: number = 0;
   constructor(
     public itemId: number,
+    public itemUrl: string,
     public name: string,
     public imageUrl: string,
     public unitPrice: number,

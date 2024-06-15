@@ -45,6 +45,7 @@ export class CartService {
 
   addToCart(
     itemId: number,
+    itemUrl: string,
     name: string,
     imageUrl: string,
     unitPrice: number,
@@ -54,6 +55,7 @@ export class CartService {
     if (index === -1) {
       const item: CartItem = new CartItem(
         itemId,
+        itemUrl,
         name,
         imageUrl,
         unitPrice,

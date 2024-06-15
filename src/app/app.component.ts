@@ -21,7 +21,7 @@ import { AuthState } from '@okta/okta-auth-js';
 import { Subscription, filter, map } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -30,6 +30,7 @@ import { ScrollService } from './shared/scroll/scroll.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { CartService } from './cart/cart.service';
 import { Cart } from './cart/model/cart';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
@@ -74,7 +75,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private router: Router,
     private scrollService: ScrollService,
     private responsive: BreakpointObserver,
-    private cartService: CartService
+    private cartService: CartService,
+    private matIconRegistry: MatIconRegistry,
+    private domSanitizer: DomSanitizer
   ) {
     this.routerEventSubscription = this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
@@ -92,6 +95,16 @@ export class AppComponent implements OnInit, OnDestroy {
       if (changed) this.cart = cartService.getCart();
     });
     this.cart = cartService.getCart();
+
+    matIconRegistry.addSvgIconSet(
+      // 'youtube',
+      domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/icons.svg')
+    );
+
+    matIconRegistry.addSvgIcon(
+      'linkedin',
+      domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/linkedin.svg')
+    );
   }
 
   @HostListener('window:scroll', ['$event'])

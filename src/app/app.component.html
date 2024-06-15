@@ -17,7 +17,11 @@
 
 <router-outlet></router-outlet> -->
 
-<mat-sidenav-container fullscreen style="height: min-content">
+<mat-sidenav-container
+  fullscreen
+  style="height: min-content"
+  [ngClass]="{ 'handset-portrait': handsetPortrait }"
+>
   <mat-sidenav #sidenav class="sidenav">
     <mat-nav-list (click)="sidenav.close()">
       <a mat-list-item routerLink="courses" routerLinkActive="active">
@@ -223,9 +227,78 @@
   <div class="footer">
     <div class="bootstrap-wrapper">
       <div class="container">
-        <div style=" display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: center;">
-          <div style="height: 35px;"></div>
-          <h3 style="color: gold;">LNG-DEV - Copyright 2024 All Rights Reserved | Privacy Policy | Terms & Conditions</h3>
+        <div class="footer-center-row">
+          <div class="footer-left-col">
+            <h4>
+              <span class="left-col-text-span"
+                >ad-lngdev.online - © 2024 All Rights Reserved</span
+              >
+            </h4>
+            <h4>
+              <span
+                class="left-col-text-span"
+                style="margin-right: 10px; cursor: pointer"
+              >
+                Policy
+              </span>
+              |
+              <span
+                class="left-col-text-span"
+                style="margin-left: 10px; cursor: pointer"
+              >
+                Terms & Conditions</span
+              >
+            </h4>
+          </div>
+          <div class="footer-right-col">
+            <!-- <h2>Social Icons</h2> -->
+            <!-- <mat-icon svgIcon="youtubeIcon" color="accent"></mat-icon> -->
+            <a
+              href="https://www.youtube.com/@anurandatta4692"
+              target="_blank"
+              style="color: inherit"
+            >
+              <svg class="icon">
+                <use xlink:href="assets/icons/icons.svg#youtubeSqIcon"></use>
+              </svg>
+            </a>
+            <a
+              href="https://www.facebook.com/anuran.datta"
+              target="_blank"
+              style="color: inherit"
+            >
+              <svg class="icon">
+                <use xlink:href="assets/icons/icons.svg#facebookSqIcon"></use>
+              </svg>
+            </a>
+            <a
+              href="https://x.com/anuran4u"
+              target="_blank"
+              style="color: inherit"
+            >
+              <svg class="icon">
+                <use xlink:href="assets/icons/icons.svg#twitterSqIcon"></use>
+              </svg>
+            </a>
+            <a
+              href="https://github.com/anurdatt"
+              target="_blank"
+              style="color: inherit"
+            >
+              <svg class="icon">
+                <use xlink:href="assets/icons/icons.svg#githubSqIcon"></use>
+              </svg>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/anuran-datta-5244901b"
+              target="_blank"
+              style="color: inherit"
+            >
+              <svg class="icon">
+                <use xlink:href="assets/icons/icons.svg#linkedinIcon"></use>
+              </svg>
+            </a>
+          </div>
         </div>
       </div>
     </div>
