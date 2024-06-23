@@ -130,10 +130,10 @@
   </ng-template>
 
   <!-- <ol class="breadcrumb">
-  <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-  <li class="breadcrumb-item"><a routerLink="../../courses">Courses</a></li>
-  <li class="breadcrumb-item active">Course-View</li>
-</ol> -->
+    <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+    <li class="breadcrumb-item"><a routerLink="../../courses">Courses</a></li>
+    <li class="breadcrumb-item active">Course-View</li>
+  </ol> -->
 
   <!-- <div class="bootstrap-wrapper">
   <div class="container"> -->
@@ -143,6 +143,15 @@
       <div class="landing-purchase-container" *ngIf="handsetPortrait">
         <ng-container *ngTemplateOutlet="purbox"></ng-container>
       </div>
+
+      <ol class="breadcrumb" style="margin-left: 0">
+        <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
+        <li class="breadcrumb-item">
+          <a routerLink="../../courses">Courses</a>
+        </li>
+        <li class="breadcrumb-item active">Course-View</li>
+      </ol>
+
       <div class="spinner-container" *ngIf="loading">
         <mat-spinner></mat-spinner>
       </div>

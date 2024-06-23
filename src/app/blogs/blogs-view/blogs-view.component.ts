@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Post } from '../model/post';
-import { Tag } from '../model/tag';
+import { Tag } from '../../tags/model/tag';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { BlogListComponent } from '../blog-list/blog-list.component';
 import { CommonModule } from '@angular/common';

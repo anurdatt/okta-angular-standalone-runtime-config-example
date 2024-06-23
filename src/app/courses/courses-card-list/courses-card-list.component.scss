@@ -1,4 +1,5 @@
 .course-card {
+  width: 100%;
   margin: 20px 10px;
   max-width: 474px;
   border-radius: 8px;
@@ -7,13 +8,12 @@
   box-shadow: 0 2px 8px #00000026;
 }
 
-.course-actions {
-  display: flex;
-  justify-content: center;
+.mat-grid-tile {
+  padding: 0 10px;
 }
 
-.course-actions button {
-  margin-right: 5px;
+:host ::ng-deep .mat-grid-tile-content {
+  position: relative;
 }
 
 .course-thumbnail {
@@ -31,13 +31,13 @@ mat-card-content p {
 }
 
 .handset-portrait .course-card {
-  width: 100%;
+  // width: 100%;
   margin: 0;
   // padding: 16px 0;
 }
 
 .handset-portrait .course-thumbnail {
-  width: 100%;
+  // width: 100%;
   margin: 0;
 }
 
@@ -74,7 +74,14 @@ mat-card-content p {
 .course-card-body {
   padding: 0.875rem;
   line-height: 24px;
+  display: flex;
+  flex-direction: column;
 }
+
+// .handset-portrait .course-card-body {
+//   padding: 0.5rem;
+//   line-height: 16px;
+// }
 
 .card-course-title-text {
   color: #673ab7; //#4d037a;
@@ -86,17 +93,38 @@ mat-card-content p {
   margin-top: 0.3rem;
 }
 
+// .handset-portrait .card-course-title-text {
+//   font-size: 1rem;
+// }
+
 .course-description {
   font-size: 16px;
   color: #5e5e5e;
 }
 
-.course-actions .total-lessons {
+// .handset-portrait .course-description {
+//   font-size: 10px;
+// }
+
+.course-card-body .total-lessons {
   border-radius: 8px;
   border: #673ab7 solid 1px;
   align-items: center;
-  margin-bottom: 0.3rem;
+  align-self: center;
+  // margin-bottom: 0.3rem;
   color: #09161acc;
+  width: fit-content;
+}
+
+.course-actions {
+  display: flex;
+  // justify-content: center;
+  padding: 0 0.875rem;
+  justify-content: space-between;
+}
+
+.course-actions button {
+  margin-right: 5px;
 }
 
 // .mat-mdc-button {

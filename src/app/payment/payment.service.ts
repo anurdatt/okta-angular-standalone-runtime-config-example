@@ -4,6 +4,7 @@ import { RazorPayOrder } from './model/razor-pay-order';
 import { Observable } from 'rxjs';
 import { Payment } from './model/payment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -21,20 +22,17 @@ export class PaymentService {
     //     obs.complete();
     //   }, 500);
     // });
+
+    const url = environment.apiUrl + '/api/payments/create-order';
     return this.http.post(
-      'https://api.razorpay.com/v1/orders',
+      url,
       {
         amount: order.grandTotal,
         currency: order.currency,
         receipt: order.receipt,
       },
       {
-        headers: new HttpHeaders()
-          .append(
-            'Authorization',
-            'Basic cnpwX3Rlc3RfV2FOMjhNVkFZMDRHcnc6T0ZCS00wRFhtaEpIWDRrT2d0YlJyaUt1'
-          )
-          .append('Content-Type', 'application/json'),
+        headers: new HttpHeaders().append('Content-Type', 'application/json'),
       }
     );
   }

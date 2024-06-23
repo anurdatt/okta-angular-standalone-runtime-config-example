@@ -26,7 +26,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarHorizontalPosition } from '@angular/material/snack-bar';
 import { MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { PostWithTags } from '../model/post-with-tags';
-import { Tag } from '../model/tag';
+import { Tag } from '../../tags/model/tag';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipInputEvent, MatChipsModule } from '@angular/material/chips';
 import {

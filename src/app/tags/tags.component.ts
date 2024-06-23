@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Tag } from '../blogs/model/tag';
+import { Tag } from './model/tag';
 import { TagListComponent } from './tag-list/tag-list.component';
 import {
   ActivatedRoute,

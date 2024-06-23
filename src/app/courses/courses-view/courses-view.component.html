@@ -33,6 +33,27 @@
         </button>
       </div>
     </div>
+    @if (title == null) {
+
+    <div style="display: flex">
+      <app-tag-list [tags]="fetchedTags"></app-tag-list>
+      <!-- </div> -->
+      <a
+        [routerLink]="['/tags']"
+        style="text-decoration: none; width: fit-content; margin: 0 10px"
+      >
+        <H4 style="margin: 10px"> See more topics </H4>
+      </a>
+    </div>
+    <section class="filter-section">
+      <mat-checkbox
+        class="checkbox-margin"
+        [(ngModel)]="findFree"
+        (change)="findAndMapCourses()"
+        >Free Courses</mat-checkbox
+      >
+    </section>
+    }
     <mat-tab-group>
       <mat-tab label="Beginners">
         <app-courses-card-list [courses]="beginnerCourses$ | async">

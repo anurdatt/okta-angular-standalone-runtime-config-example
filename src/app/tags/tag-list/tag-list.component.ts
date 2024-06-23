@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Tag } from '../../blogs/model/tag';
+import { Tag } from '../model/tag';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
 import { NavigationExtras, Router, RouterLink } from '@angular/router';

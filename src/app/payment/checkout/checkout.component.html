@@ -1,4 +1,10 @@
 <div class="checkout-main-container">
+  @if(loadingOrder) {
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <div class="loading-message">Loading...</div>
+  </div>
+  }
   <main class="checkout-order-details">
     <h1 class="checkout-header heading-xxl">Checkout</h1>
     <section class="order-details-container">

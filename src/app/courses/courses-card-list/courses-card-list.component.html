@@ -4,29 +4,96 @@
   [ngClass]="{ 'handset-portrait': handsetPortrait }"
 >
   <mat-grid-tile *ngFor="let course of courses">
-    <mat-card
-      class="course-card mat-elevation-z7"
-      [routerLink]="['../courses', course.courseUrl]"
-    >
+    <mat-card class="course-card mat-elevation-z7">
       <!-- <mat-card-header>
         <mat-card-title>{{ course.description }}</mat-card-title>
       </mat-card-header> -->
 
-      <img mat-card-image [src]="course.iconUrl" />
+      <img
+        mat-card-image
+        [src]="course.iconUrl"
+        [routerLink]="['../courses', course.courseUrl]"
+      />
 
-      <mat-card-content class="course-card-body">
+      <mat-card-content
+        class="course-card-body"
+        [routerLink]="['../courses', course.courseUrl]"
+      >
         <div class="card-course-title-text">
           {{ course.description }}
         </div>
         <p class="course-description">{{ course.longDescription }}</p>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 0.5rem;
+          "
+        >
+          @if (course.courseListIcon) {
+          <span mat-line style="display: flex; margin-top: 5px">
+            <h3 style="margin: 0; color: red"><strong>P</strong></h3>
+            <img
+              [src]="course.courseListIcon"
+              alt=""
+              width="20"
+              height="20"
+              style="width: 20px"
+            />
+          </span>
+          }
+          <button mat-flat-button class="total-lessons">
+            <mat-icon>airplay</mat-icon> {{ course.lessonsCount }} lessons
+          </button>
+          @if (course.courseListIcon) {
+          <span mat-line style="display: flex; margin-top: 5px">
+            <h3 style="margin: 0; color: red"><strong>P</strong></h3>
+            <img
+              [src]="course.courseListIcon"
+              alt=""
+              width="20"
+              height="20"
+              style="width: 20px"
+            />
+          </span>
+          }
+        </div>
       </mat-card-content>
 
       <mat-card-actions class="course-actions">
-        <button mat-flat-button class="total-lessons">
-          <mat-icon>airplay</mat-icon> {{ course.lessonsCount }} lessons
-        </button>
+        <app-tag-list [tags]="[testTag]" [btnHeight]="'30px'"></app-tag-list>
 
-        <button
+        <div class="course-action-buttons">
+          <button
+            mat-button
+            color="accent"
+            *ngIf="
+              (authService.isAuthenticated$ | async) &&
+              authService.isAdmin(authService.userGroups$ | async)
+            "
+            [routerLink]="['/courses/course-edit', course.courseUrl]"
+            style="min-width: fit-content"
+          >
+            <!-- <small>EDIT POST</small> -->
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            mat-button
+            color="warn"
+            *ngIf="
+              (authService.isAuthenticated$ | async) &&
+              authService.isAdmin(authService.userGroups$ | async)
+            "
+            (click)="deleteCourse(course.id)"
+            style="min-width: fit-content"
+          >
+            <!-- <small>DELETE POST</small> -->
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        <!-- <button
           mat-raised-button
           color="accent"
           *ngIf="
@@ -35,7 +102,7 @@
           "
         >
           EDIT COURSE
-        </button>
+        </button> -->
       </mat-card-actions>
     </mat-card>
   </mat-grid-tile>

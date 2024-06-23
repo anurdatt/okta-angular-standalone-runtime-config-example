@@ -129,11 +129,14 @@ body {
 // }
 
 .breadcrumb {
+  // left: 0;
+  // position: absolute;
   padding: 10px 12px;
   list-style: none !important;
   list-style-type: none;
   background-color: #eee;
   margin: 10px;
+  width: fit-content;
 }
 .breadcrumb li {
   display: inline;

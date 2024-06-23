@@ -25,7 +25,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { TagListComponent } from '../../tags/tag-list/tag-list.component';
-import { Tag } from '../model/tag';
+import { Tag } from '../../tags/model/tag';
 import { PostWithTags } from '../model/post-with-tags';
 
 @Component({

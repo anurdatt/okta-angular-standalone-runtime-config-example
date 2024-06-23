@@ -15,6 +15,8 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import videojs from 'video.js';
 import { Lesson } from '../model/lesson';
+import { environment } from '../../../environments/environment';
+import { catchError, of as observableOf } from 'rxjs';
 // import 'video.js/dist/video-js.css';
 
 @Component({
@@ -81,25 +83,25 @@ export class UrlVideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
 
   fetchVideoUrl() {
     this.http
-      .get(
-        'https://tsw1pqoa9d.execute-api.us-east-1.amazonaws.com/Stage/courses/api/media/signed-url',
-        {
-          params: new HttpParams()
-            .set('bucketName', 'lng-courses')
-            .set('fileName', this.fileName),
-          responseType: 'text',
-        }
+      .get(environment.coursesApiUrl + '/api/media/signed-url', {
+        params: new HttpParams()
+          .set('bucketName', 'lng-courses')
+          .set('fileName', this.fileName),
+        responseType: 'text',
+      })
+      .pipe(
+        catchError((error) => {
+          console.error('Error fetching video URL:', error);
+          return observableOf(null);
+        })
       )
-      .subscribe(
-        (response) => {
+      .subscribe((response) => {
+        if (response != null) {
           this.videoUrl = response;
           console.log('Fetched Video URL:', this.videoUrl);
           this.setupVideoPlayer();
-        },
-        (error) => {
-          console.error('Error fetching video URL:', error);
         }
-      );
+      });
   }
 
   setupVideoPlayer() {

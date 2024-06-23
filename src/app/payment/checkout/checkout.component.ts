@@ -11,8 +11,9 @@ import { RazorPayOrder } from '../model/razor-pay-order';
 import { Payment } from '../model/payment';
 import { RECEIPT_ID } from '../../app.constants';
 
-import { Subscription } from 'rxjs';
+import { Subscription, catchError, of } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { L } from '@angular/cdk/keycodes';
 
 declare const Razorpay: any;
 
@@ -31,13 +32,15 @@ export class CheckoutComponent implements OnInit, OnDestroy {
   createOrderSubscription: Subscription;
   savePaymentSubscription: Subscription;
 
+  loadingOrder = false;
+
   RAZORPAY_OPTIONS = {
     key: '',
-    amount: '',
+    amount: 0,
     currency: '',
     name: '',
     description: '',
-    image: '/assets/pexels-pixabay-247819.png',
+    image: 'https://lng-images.s3.amazonaws.com/pexels-pixabay-247819.jpg',
     order_id: '',
     handler: (res: any) => {
       //console.log(res);
@@ -86,22 +89,31 @@ export class CheckoutComponent implements OnInit, OnDestroy {
 
     const order: RazorPayOrder = new RazorPayOrder(
       // this.cart.grandTotal,
-      this.cart.total,
+      this.cart.total * 100,
       'INR',
       'NA'
     );
 
     window.scrollTo({ top: 0, behavior: 'auto' });
 
-    // this.createOrderSubscription = this.paymentService
-    //   .createOrder(order)
-    //   .subscribe((res) => {
-    //     if (res.status == 200) {
-    return (this.RAZORPAY_OPTIONS.order_id = null); // res.body.id);
-    //   } else {
-    //     return this.router.navigate(['/cart']);
-    //   }
-    // });
+    this.loadingOrder = true;
+    this.createOrderSubscription = this.paymentService
+      .createOrder(order)
+      .pipe(
+        catchError((err) => {
+          console.error('Error creating order - ' + err);
+          return of(null);
+        })
+      )
+      .subscribe((res) => {
+        this.loadingOrder = false;
+        if (res != null) {
+          this.RAZORPAY_OPTIONS.order_id = res.orderId;
+          // return;
+        } else {
+          this.router.navigate(['/cart']);
+        }
+      });
   }
 
   payWithRazorPay() {
@@ -110,7 +122,7 @@ export class CheckoutComponent implements OnInit, OnDestroy {
     } else {
       this.RAZORPAY_OPTIONS.name = this.userName;
       this.RAZORPAY_OPTIONS.key = environment.razorPay.key;
-      this.RAZORPAY_OPTIONS.amount = (100 * this.cart.total).toString();
+      this.RAZORPAY_OPTIONS.amount = this.cart.total;
       this.RAZORPAY_OPTIONS.currency = 'INR';
 
       let items = '';
