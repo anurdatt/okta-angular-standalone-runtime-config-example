@@ -35,7 +35,7 @@
       <div class="col-md-4 order-md-2">
         <div class="playlist-div">
           <h2 class="course-title">
-            {{ course.description }}
+            {{ courseWithTags.course.description }}
           </h2>
           <div class="playlist-body-div" id="playListScroll">
             <ul>
@@ -75,7 +75,7 @@
                       border-top-right-radius: 50%;
                     "
                   >
-                    @if (course.author?.startsWith("Anuran")) {
+                    @if (courseWithTags.course.author?.startsWith("Anuran")) {
                     <img
                       src="https://s.gravatar.com/avatar/78b7529fba9fea752d845d768d54c033?s=80"
                     />
@@ -83,7 +83,7 @@
                   </div>
                   <div class="course-author-time">
                     <div class="course-author">
-                      {{ course.author }}
+                      {{ courseWithTags.course.author }}
                     </div>
                     <!-- <mat-card-subtitle class="course-time">
                       <span class="course-date">{{

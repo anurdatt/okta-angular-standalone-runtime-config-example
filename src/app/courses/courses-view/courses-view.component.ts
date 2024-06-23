@@ -29,6 +29,7 @@ import { FormsModule } from '@angular/forms';
 import { TagListComponent } from '../../tags/tag-list/tag-list.component';
 import { TagsService } from '../../tags/tags.service';
 import { Tag } from '../../tags/model/tag';
+import { CourseWithTags } from '../model/course-with-tags';
 
 @Component({
   selector: 'app-courses-view',
@@ -55,13 +56,14 @@ export class CoursesViewComponent implements OnInit, OnDestroy {
 
   findFree: boolean = false;
 
-  beginnerCourses$: Observable<Course[]>;
-  advancedCourses$: Observable<Course[]>;
+  beginnerCourses$: Observable<CourseWithTags[]>;
+  advancedCourses$: Observable<CourseWithTags[]>;
 
   isAuthenticated$: Observable<boolean>;
   userGroups$: Observable<CustomUserClaim | CustomUserClaim[]>;
 
   isLoadingResults = false;
+  isLoadingTags = false;
   coursesSubscription: Subscription;
   fetchTagsSubscription: Subscription;
 
@@ -86,38 +88,53 @@ export class CoursesViewComponent implements OnInit, OnDestroy {
   findAndMapCourses() {
     this.coursesSubscription?.unsubscribe();
     this.isLoadingResults = true;
-    const courses$: Observable<Course[]> = this.coursesService.findAll();
+    const courses$: Observable<CourseWithTags[]> =
+      this.coursesService.findAll();
 
     this.beginnerCourses$ = courses$.pipe(
-      map((courses) =>
-        courses
+      map((coursesWithTags) =>
+        coursesWithTags
           .filter(
-            (course) =>
-              course.category === 'BEGINNER' &&
-              (this.findFree ? course.price == 0 : course.price >= 0)
+            (courseWithTags) =>
+              courseWithTags.course.category === 'BEGINNER' &&
+              (this.findFree
+                ? courseWithTags.course.price == 0
+                : courseWithTags.course.price >= 0)
           )
-          .flatMap((course) => [course, course, course, course])
+          .flatMap((courseWithTags) => [
+            courseWithTags,
+            courseWithTags,
+            courseWithTags,
+            courseWithTags,
+          ])
       )
     );
 
     this.advancedCourses$ = courses$.pipe(
-      map((courses) =>
-        courses
+      map((coursesWithTags) =>
+        coursesWithTags
           .filter(
-            (course) =>
-              course.category === 'ADVANCED' &&
-              (this.findFree ? course.price == 0 : course.price >= 0)
+            (courseWithTags) =>
+              courseWithTags.course.category === 'ADVANCED' &&
+              (this.findFree
+                ? courseWithTags.course.price == 0
+                : courseWithTags.course.price >= 0)
           )
-          .flatMap((course) => [course, course, course, course])
+          .flatMap((courseWithTags) => [
+            courseWithTags,
+            courseWithTags,
+            courseWithTags,
+            courseWithTags,
+          ])
       )
     );
-    this.coursesSubscription = courses$.subscribe((courses) => {
+    this.coursesSubscription = courses$.subscribe((courseWithTags) => {
       this.isLoadingResults = false;
     });
   }
 
   fetchTopTags(count: number) {
-    this.isLoadingResults = true;
+    this.isLoadingTags = true;
 
     this.fetchTagsSubscription = this.tagsService
       .findAll()
@@ -130,7 +147,7 @@ export class CoursesViewComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((tags: Tag[]) => {
-        this.isLoadingResults = false;
+        this.isLoadingTags = false;
         if (tags == null) {
           console.error('Tags fetch failed..');
 

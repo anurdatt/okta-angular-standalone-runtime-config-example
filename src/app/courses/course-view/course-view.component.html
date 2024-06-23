@@ -8,9 +8,12 @@
     <!-- <div class="banner-header" style="height: fit-content;"> -->
     <div class="banner-header">
       <div class="banner-left-head course-header col-md-8 order-md-1">
-        <h1 class="course-title-header">{{ course?.description }}</h1>
+        <app-tag-list [tags]="courseWithTags?.tags"></app-tag-list>
+        <h1 class="course-title-header">
+          {{ courseWithTags.course?.description }}
+        </h1>
         <div class="course-description-header">
-          {{ course?.longDescription }}
+          {{ courseWithTags.course?.longDescription }}
         </div>
         <div class="course-rate-enrollment banner-text-small">
           <mat-icon>visibility</mat-icon><span>&nbsp;</span>
@@ -32,9 +35,9 @@
           <img
             mat-card-image
             class="preview-card-image"
-            [src]="course.iconUrl"
+            [src]="courseWithTags.course.iconUrl"
           />
-          @if (course.price > 0) {
+          @if (courseWithTags.course.price > 0) {
           <span class="preview-card-gradient"></span>
           <span class="preview-card-play-button">
             <mat-icon [inline]="true" class="play-icon-large" color="accent"
@@ -62,19 +65,20 @@
         <div class="buy-box-main">
           <div class="buy-box-item">
             <div class="base-price-text heading-xl">
-              @if (course.price > 0) {
+              @if (courseWithTags.course.price > 0) {
               <span>{{
-                course.price | currency : "INR" : true : "1.0-2"
+                courseWithTags.course.price | currency : "INR" : true : "1.0-2"
               }}</span>
               }@else {
               <span>Free</span>
               }
             </div>
-            @if (course.price > 0) {
+            @if (courseWithTags.course.price > 0) {
             <div class="base-price-text original-price-text text-sm">
               <span
                 ><s>{{
-                  (course.price * 100) / 25 | currency : "INR" : true : "1.0-2"
+                  (courseWithTags.course.price * 100) / 25
+                    | currency : "INR" : true : "1.0-2"
                 }}</s></span
               >
             </div>
@@ -84,7 +88,7 @@
             }
           </div>
           <div class="buy-box-add-to-cart">
-            @if (course.price > 0) { @if (cartContainsCourse) {
+            @if (courseWithTags.course.price > 0) { @if (cartContainsCourse) {
             <button
               mat-flat-button
               color="primary"
@@ -98,7 +102,7 @@
               mat-flat-button
               color="primary"
               class="buy-box-add-to-cart-btn"
-              (click)="addToCart(course)"
+              (click)="addToCart(courseWithTags.course)"
             >
               Add to cart
             </button>
@@ -113,7 +117,7 @@
             </button>
             }
           </div>
-          @if (course.price > 0) {
+          @if (courseWithTags.course.price > 0) {
           <div class="buy-box-by-now">
             <button
               mat-flat-button

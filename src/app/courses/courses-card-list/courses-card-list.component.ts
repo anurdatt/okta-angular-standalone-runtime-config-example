@@ -13,6 +13,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TagListComponent } from '../../tags/tag-list/tag-list.component';
 import { Tag } from '../../tags/model/tag';
 import { MatLineModule } from '@angular/material/core';
+import { CourseWithTags } from '../model/course-with-tags';
 
 @Component({
   selector: 'app-courses-card-list',
@@ -33,7 +34,7 @@ import { MatLineModule } from '@angular/material/core';
 })
 export class CoursesCardListComponent implements OnInit, OnDestroy {
   @Input()
-  courses: Course[];
+  courses: CourseWithTags[];
 
   cols = 2;
 

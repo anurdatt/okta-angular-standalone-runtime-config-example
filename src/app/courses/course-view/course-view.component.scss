@@ -1,5 +1,11 @@
 .banner {
-  background: linear-gradient(to right, gold 0%, #e53797 100%, #db6b2f 100%);
+  // background: linear-gradient(to right, gold 0%, #e53797 100%, #db6b2f 100%);
+  background: linear-gradient(
+    to right,
+    #2d2f31 0%,
+    // #0ce6f9 50%,
+    #117399 100%
+  );
   // max-height: 400px;
 }
 .banner-header {
@@ -26,7 +32,7 @@
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: 0;
-  font-size: 2rem;
+  font-size: 1.8rem;
   max-width: 36em;
   margin: 1.2rem auto;
   max-width: 118.4rem;
@@ -34,19 +40,20 @@
 .course-header {
   font-family: Inter, sans-serif; //, "SF Pro Text", -apple-system, BlinkMacSystemFont, Roboto, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI";
   color: //#673ab7 //
-    #4d037a;
+    // #4d037a;
+    snow;
 }
 .course-description-header {
   font-weight: 500;
   line-height: 1;
-  font-size: 1.6rem;
-  margin-bottom: 1.6rem;
+  font-size: 1.5rem;
+  margin-bottom: 1.2rem;
 }
 
 .course-rate-enrollment {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   align-items: center;
 }
 
@@ -63,7 +70,7 @@
   white-space: normal;
   flex: 1;
   min-width: 1px;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .course-preview-card {
@@ -412,9 +419,9 @@
   font-style: italic;
 }
 
-.handset-portrait .banner {
-  background: transparent;
-}
+// .handset-portrait .banner {
+//   background: transparent;
+// }
 
 .handset-portrait .banner-left-head {
   width: 100%;

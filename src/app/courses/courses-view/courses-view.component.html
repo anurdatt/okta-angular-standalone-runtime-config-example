@@ -3,7 +3,7 @@
   <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
   <li class="breadcrumb-item active">Courses</li>
 </ol>
-} @if (isLoadingResults) {
+} @if (isLoadingResults || isLoadingTags) {
 <div class="loading-spinner">
   <div class="spinner"></div>
   <div class="loading-message">Loading...</div>

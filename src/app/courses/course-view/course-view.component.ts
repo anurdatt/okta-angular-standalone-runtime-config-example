@@ -25,6 +25,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { UrlVideoDialogComponent } from './url-video-dialog/url-video-dialog.component';
 import { CartService } from '../../cart/cart.service';
 import { AuthService } from '../../shared/okta/auth.service';
+import { CourseWithTags } from '../model/course-with-tags';
+import { TagListComponent } from '../../tags/tag-list/tag-list.component';
 
 @Component({
   selector: 'app-course-view',
@@ -40,12 +42,13 @@ import { AuthService } from '../../shared/okta/auth.service';
     MatButtonModule,
     MatCardModule,
     MatIconModule,
+    TagListComponent,
   ],
   templateUrl: './course-view.component.html',
   styleUrl: './course-view.component.scss',
 })
 export class CourseViewComponent implements OnInit, OnDestroy {
-  course: Course;
+  courseWithTags: CourseWithTags;
   lessons: Lesson[] = [];
   loading: boolean = false;
 
@@ -83,7 +86,7 @@ export class CourseViewComponent implements OnInit, OnDestroy {
       }, 100);
       return;
     }
-    this.course = this.route.snapshot.data['courses'][0];
+    this.courseWithTags = this.route.snapshot.data['courses'][0];
     this.loadLessonsPage();
     window.scrollTo({ top: 0, behavior: 'auto' });
 
@@ -120,11 +123,11 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     this.cartService.cartChanged$.asObservable().subscribe((changed) => {
       if (changed)
         this.cartContainsCourse = this.cartService.isCartContainsCourse(
-          this.course.id
+          this.courseWithTags.course.id
         );
     });
     this.cartContainsCourse = this.cartService.isCartContainsCourse(
-      this.course.id
+      this.courseWithTags.course.id
     );
 
     this.authService.isAuthenticated$.subscribe(async (isAuthed) => {
@@ -143,7 +146,7 @@ export class CourseViewComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.lessonSubscription = this.service // .findlessons(this.course.id)
-      .findlessonsByUrl(this.course.courseUrl)
+      .findlessonsByUrl(this.courseWithTags.course.courseUrl)
       .pipe(
         tap((lessons) => (this.lessons = lessons)),
         catchError((err) => {
@@ -177,7 +180,7 @@ export class CourseViewComponent implements OnInit, OnDestroy {
       }
     } else {
       this.cartService.removeCart();
-      this.addToCart(this.course);
+      this.addToCart(this.courseWithTags.course);
       this.cartService.getCart().userId = this.user;
       this.router.navigate(['/payment/checkout']);
     }
@@ -203,7 +206,7 @@ export class CourseViewComponent implements OnInit, OnDestroy {
 
     this.router.navigate([
       '../courses',
-      this.course.courseUrl,
+      this.courseWithTags.course.courseUrl,
       'lessons',
       this.lessons[0].id,
     ]);

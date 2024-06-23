@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 import { Course } from './model/course';
 import { environment } from '../../environments/environment';
 import { Lesson } from './model/lesson';
+import { CourseWithTags } from './model/course-with-tags';
 
 const headers = new HttpHeaders()
   .set('Accept', '*/*')
@@ -20,30 +21,30 @@ const headers = new HttpHeaders()
 export class CoursesService {
   constructor(private httpBackend: HttpBackend, private http: HttpClient) {}
 
-  findAll(): Observable<Course[]> {
+  findAll(): Observable<CourseWithTags[]> {
     const url = `${environment.coursesApiUrl}/api/courses`;
     const params = new HttpParams();
-    return this.http.get<Course[]>(url, { headers, params });
+    return this.http.get<CourseWithTags[]>(url, { headers, params });
   }
 
-  findCourseById(id: number): Observable<Course> {
+  findCourseById(id: number): Observable<CourseWithTags> {
     // return new HttpClient(this.httpBackend).get<Course>(
     //   `/api/courses/${id}.json`
     // );
 
     const url = `${environment.coursesApiUrl}/api/courses/${id}`;
     const params = new HttpParams();
-    return this.http.get<Course>(url, { headers, params });
+    return this.http.get<CourseWithTags>(url, { headers, params });
   }
 
-  findCoursesByUrl(url: string): Observable<Course[]> {
+  findCoursesByUrl(url: string): Observable<CourseWithTags[]> {
     // return new HttpClient(this.httpBackend).get<Course>(
     //   `/api/courses/${url}.json`
     // );
 
     const apiUrl = `${environment.coursesApiUrl}/api/courses`;
     const params = new HttpParams().set('courseUrl', url);
-    return this.http.get<Course[]>(apiUrl, { headers, params });
+    return this.http.get<CourseWithTags[]>(apiUrl, { headers, params });
   }
 
   findlessons(courseId: number): Observable<Lesson[]> {

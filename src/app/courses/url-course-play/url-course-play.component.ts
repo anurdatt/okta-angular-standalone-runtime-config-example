@@ -13,6 +13,7 @@ import { Lesson } from '../model/lesson';
 import { CoursesService } from '../courses.service';
 import { environment } from '../../../environments/environment';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { CourseWithTags } from '../model/course-with-tags';
 
 @Component({
   selector: 'app-url-course-play',
@@ -39,7 +40,7 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
 
   // paramSubscription: Subscription;
 
-  course: Course;
+  courseWithTags: CourseWithTags;
   lessons: Lesson[] = [];
   loading: boolean = false;
   lessonsSubscription: Subscription;
@@ -90,8 +91,8 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.course = this.route.snapshot.data['courses'][0];
-    this.courseUrl = `${this.course.baseUrl}`;
+    this.courseWithTags = this.route.snapshot.data['courses'][0];
+    this.courseUrl = `${this.courseWithTags.course.baseUrl}`;
     // this.loadLessonsPage();
     this.lessons = this.route.snapshot.data['lessons'];
 
@@ -142,7 +143,7 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
     this.loading = true;
 
     this.lessonsSubscription = this.service // .findlessons(this.course.id)
-      .findlessonsByUrl(this.course.courseUrl)
+      .findlessonsByUrl(this.courseWithTags.course.courseUrl)
       .pipe(
         tap((lessons) => {
           this.lessons = lessons;
@@ -213,7 +214,7 @@ export class UrlCoursePlayComponent implements OnInit, OnDestroy {
     this.scrollPlaylistTo(index);
     this.router.navigate([
       '../courses',
-      this.course.courseUrl,
+      this.courseWithTags.course.courseUrl,
       'lessons',
       this.lessons[index].id,
     ]);

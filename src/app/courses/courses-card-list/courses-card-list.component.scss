@@ -1,7 +1,7 @@
 .course-card {
   width: 100%;
   margin: 20px 10px;
-  max-width: 474px;
+  max-width: 374px;
   border-radius: 8px;
   padding: 0;
   cursor: pointer;
@@ -17,13 +17,13 @@
 }
 
 .course-thumbnail {
-  max-width: 474px;
-  max-height: 267px;
+  max-width: 374px;
+  max-height: 167px;
 }
 
 .long-description {
-  min-height: 50px;
-  max-width: 442px;
+  min-height: 30px;
+  max-width: 342px;
 }
 
 mat-card-content p {
@@ -73,7 +73,7 @@ mat-card-content p {
 
 .course-card-body {
   padding: 0.875rem;
-  line-height: 24px;
+  line-height: 22px;
   display: flex;
   flex-direction: column;
 }
