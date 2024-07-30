@@ -71,7 +71,7 @@
       <small>Programming</small>
     </button> -->
     <app-tag-list
-      [tags]="postWithTags.tags"
+      [tags]="postWithTags.tags.slice(0, 1)"
       [btnHeight]="'25px'"
     ></app-tag-list>
     <!-- <div class="post-action-buttons" style="padding: 5px; width: 100%;justify-content: space-evenly;"> -->

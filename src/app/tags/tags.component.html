@@ -14,6 +14,8 @@
         /* padding: 15px; */
         flex-direction: row;
         align-items: center;
+        max-width: calc(100% - 10px);
+        margin: 0 5px;
       "
     >
       @if (isLoadingResults) {
@@ -43,7 +45,8 @@
         (click)="scroll(-100)"
         *ngIf="tagListDivScrollLeftAllowed"
         style="/* position: absolute;  */ /* left: 15px */ margin-bottom: 10px"
-        ><</a
+      >
+        <mat-icon>chevron_left</mat-icon></a
       >
 
       <!-- </div> -->
@@ -87,7 +90,7 @@
         *ngIf="tagListDivScrollRightAllowed"
         style="/* position: absolute; 
       right: 15px */ margin-bottom: 10px"
-        >></a
+        ><mat-icon>chevron_right</mat-icon></a
       >
     </div>
     <!-- <hr /> -->

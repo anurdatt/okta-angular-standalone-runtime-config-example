@@ -36,8 +36,12 @@ export class CoursesCardListComponent implements OnInit, OnDestroy {
   @Input()
   courses: CourseWithTags[];
 
-  cols = 2;
+  @Input()
+  colsInput = 2;
 
+  cols = this.colsInput;
+
+  @Input()
   rowHeight = '550px';
 
   handsetPortrait = false;
@@ -65,7 +69,7 @@ export class CoursesCardListComponent implements OnInit, OnDestroy {
       .subscribe((result) => {
         this.handsetPortrait = false;
         // this.rowHeight = '500px';
-        this.cols = 2;
+        this.cols = this.colsInput;
         if (result.matches) {
           this.handsetPortrait = true;
           // this.rowHeight = '300px';

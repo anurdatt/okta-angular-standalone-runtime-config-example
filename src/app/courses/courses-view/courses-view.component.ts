@@ -101,12 +101,11 @@ export class CoursesViewComponent implements OnInit, OnDestroy {
                 ? courseWithTags.course.price == 0
                 : courseWithTags.course.price >= 0)
           )
-          .flatMap((courseWithTags) => [
-            courseWithTags,
-            courseWithTags,
-            courseWithTags,
-            courseWithTags,
-          ])
+          .flatMap((courseWithTags) =>
+            this.title
+              ? [courseWithTags]
+              : [courseWithTags, courseWithTags, courseWithTags, courseWithTags]
+          )
       )
     );
 
@@ -120,12 +119,11 @@ export class CoursesViewComponent implements OnInit, OnDestroy {
                 ? courseWithTags.course.price == 0
                 : courseWithTags.course.price >= 0)
           )
-          .flatMap((courseWithTags) => [
-            courseWithTags,
-            courseWithTags,
-            courseWithTags,
-            courseWithTags,
-          ])
+          .flatMap((courseWithTags) =>
+            this.title
+              ? [courseWithTags]
+              : [courseWithTags, courseWithTags, courseWithTags, courseWithTags]
+          )
       )
     );
     this.coursesSubscription = courses$.subscribe((courseWithTags) => {
