@@ -117,6 +117,7 @@ export class UrlVideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
     } else {
       this.player = videojs(this.target.nativeElement, {
         fluid: true,
+        poster: this.lesson.iconUrl,
         sources: [
           {
             src: this.videoUrl,
