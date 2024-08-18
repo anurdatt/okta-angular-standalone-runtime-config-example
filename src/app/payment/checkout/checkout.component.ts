@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { CartService } from '../../cart/cart.service';
 import { AuthService } from '../../shared/okta/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PaymentService } from '../payment.service';
 import { CommonUtil } from '../../shared/CommonUtil';
 import { Cart } from '../../cart/model/cart';
@@ -20,7 +20,7 @@ declare const Razorpay: any;
 @Component({
   selector: 'app-checkout',
   standalone: true,
-  imports: [CommonModule, MatButtonModule],
+  imports: [CommonModule, MatButtonModule, RouterLink],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
 })

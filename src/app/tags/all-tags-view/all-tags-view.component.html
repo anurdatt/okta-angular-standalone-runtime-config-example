@@ -5,15 +5,26 @@
     <strong>Explore topics</strong>
   </h1>
 
-  <!-- <div class="example-form-field-wrapper"> -->
-  <mat-form-field class="example-form-field">
-    <mat-label></mat-label>
-    <input matInput type="text" placeholder="Search" class="example-input" />
-    <button mat-button matSuffix>
-      <mat-icon>search</mat-icon>
-    </button>
-  </mat-form-field>
+  <form (submit)="searchTopic($event)" class="example-form">
+    <!-- <div class="example-form-field-wrapper"> -->
+    <mat-form-field class="example-form-field">
+      <!-- <mat-label>Search</mat-label> -->
+      <input
+        matInput
+        type="text"
+        name="search"
+        placeholder="Search"
+        class="example-input"
+        [(ngModel)]="searchText"
+      />
+      <button type="submit" mat-button matSuffix>
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
   <!-- </div> -->
+
+  <div class="search-result">Search results</div>
 </div>
 <!-- </div>
 </div> -->

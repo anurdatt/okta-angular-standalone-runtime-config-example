@@ -189,7 +189,18 @@
               Description
             </th>
 
-            <td mat-cell *matCellDef="let lesson">{{ lesson.description }}</td>
+            <td mat-cell *matCellDef="let lesson">
+              <!-- {{ lesson.description }} -->
+              <div mat-line class="lesson-line">
+                <img
+                  [src]="lesson.iconUrl"
+                  class="lesson-line-icon"
+                  width="60"
+                  height="45"
+                />
+                <span>{{ lesson.description }}</span>
+              </div>
+            </td>
           </ng-container>
 
           <ng-container matColumnDef="duration">

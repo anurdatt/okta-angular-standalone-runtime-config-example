@@ -107,11 +107,12 @@ export class UrlVideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
   setupVideoPlayer() {
     console.log('player', this.player);
     if (this.player) {
+      this.player.poster(undefined);
       this.player.src({
         src: this.videoUrl,
         type: 'video/mp4',
       });
-
+      this.player.poster(this.lesson.iconUrl);
       // this.player.load();
       // this.player.play();
     } else {
@@ -175,6 +176,19 @@ export class UrlVideoPlayerComponent implements OnInit, OnChanges, OnDestroy {
           console.log('Network error: Attempting to regenerate signed URL');
           this.fetchVideoUrl();
         }
+      });
+
+      const pl = this.player;
+      // console.log('pl =' + JSON.stringify(pl));
+      this.player.on('ended', () => {
+        // this.player.posterImage.show();
+        // this.player.trigger('loadstart');
+
+        pl.src(undefined);
+        pl.src({
+          src: this.videoUrl,
+          type: 'video/mp4',
+        });
       });
 
       // this.renderer.listen('document', 'fullscreenchange', () =>

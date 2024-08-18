@@ -45,7 +45,18 @@
                 [ngClass]="{ selected: i == currentIndex }"
                 [id]="'v' + i"
               >
-                {{ video.description }}
+                <div mat-line class="lesson-line">
+                  <img
+                    [src]="video.iconUrl"
+                    class="lesson-line-icon"
+                    width="60"
+                    height="45"
+                  />
+                  <div class="lesson-detail">
+                    <span>{{ video.description }}</span>
+                    <span>{{ video.duration }}</span>
+                  </div>
+                </div>
               </li>
             </ul>
           </div>

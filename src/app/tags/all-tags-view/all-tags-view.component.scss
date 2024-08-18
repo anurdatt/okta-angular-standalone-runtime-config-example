@@ -7,6 +7,17 @@
   margin-bottom: 4.8rem;
 }
 
+.search-result {
+  height: 100px;
+  border: 1px dashed darkgray;
+  width: 80%;
+  margin-top: 3.6rem;
+}
+
+.example-form {
+  width: 100%; //300px; /* Adjust width as needed */
+}
+
 .example-form-field {
   border-radius: 60px;
   background-color: #f0f0f0;

@@ -222,6 +222,22 @@
   background-color: #c4a6dcf5;
 }
 
+.playlist-div .lesson-line {
+  display: flex;
+  // justify-content: space-between;
+  // align-items: center;
+}
+
+.playlist-div .lesson-line .lesson-detail {
+  display: flex;
+  justify-content: space-between;
+  width: -webkit-fill-available;
+}
+
+.playlist-div .lesson-line .lesson-detail span {
+  margin-left: 10px;
+}
+
 .controls {
   position: relative;
   /* bottom: 20px;
